@@ -12,3 +12,216 @@ body {
     color: var(--color-secondary);
     font-family: "Nata Sans", sans-serif;
 }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 110px;
+}
+
+header {
+    height: 70px;
+    padding: 0 20px;
+}
+
+.fotopng {
+    width: 60px;
+}
+
+.search {
+    background: #4e70b4;
+    border-radius: 15px;
+    padding-left: 10px;
+    width: 180px;
+    height: 30px;
+    
+}
+
+.cart {
+    color: var(--color-text);
+}
+
+a {
+    color: white
+}
+
+
+#menu {
+    display: none;
+}
+
+.label-menu {
+    color: black;
+}
+
+.label-menu:hover {
+    opacity: 1;
+}
+
+.ul-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    background: #4e70b4;
+    transition: max-height 0.4s;
+}
+
+.li-menu {
+    list-style: none;
+}
+
+.li-menu:first-child {
+    margin-top: 25px;
+}
+
+.li-menu:last-child {
+    margin-bottom: 25px;
+}
+
+#menu:checked + .ul-menu {
+    max-height: 400px;
+    border-bottom: 1px solid rgba(24, 52, 155, 0.12);
+}
+
+nav a {
+    font-size: 22px;
+    white-space: nowrap;
+}
+
+nav a, footer a {
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+nav a:hover, footer a:hover {
+    opacity: 1;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+header,
+footer {
+    flex-shrink: 0;
+}
+
+/* El main ocupa todo el alto que dejan el header y el footer */
+main {
+    flex: 1;
+}
+
+footer {
+    display: flex;
+    min-height: 90px;
+    padding: 24px 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px 28px;
+    border-top: 1px solid rgba(120, 150, 255, 0.12);
+    background:#4e70b4;
+}
+
+footer a {
+    display: inline-flex;
+    padding: 8px 12px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 10px;
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+footer a:hover,
+footer a:focus-visible {
+    color: var(--white);
+    background: rgba(128, 199, 143, 0.1);
+    transform: translateY(-1px);
+}
+
+footer i {
+    color: #8fc49a;
+    font-size: 1.05rem;
+}
+
+/* Responsive */
+
+/* Móviles pequeños: el buscador se achica para que quepa todo en el header */
+@media (max-width: 400px) {
+    header {
+        padding: 0 12px;
+    }
+
+    .search {
+        width: 110px;
+    }
+
+    nav a {
+        font-size: 20px;
+    }
+}
+
+/* Tablet y escritorio: menú en línea, sin hamburguesa */
+@media (min-width: 768px) {
+    header {
+        padding: 0 40px;
+    }
+
+    .search {
+        width: 260px;
+    }
+
+    .label-menu {
+        display: none;
+    }
+
+    .ul-menu {
+        position: static;
+        width: auto;
+        max-height: none;
+        overflow: visible;
+        flex-direction: row;
+        gap: 30px;
+        background: transparent;
+        transition: none;
+    }
+
+    .li-menu:first-child,
+    .li-menu:last-child {
+        margin: 0;
+    }
+
+    #menu:checked + .ul-menu {
+        border-bottom: none;
+    }
+
+    nav a {
+        font-size: 18px;
+    }
+}
+
+/* Pantallas grandes: el contenido no se estira de más */
+@media (min-width: 1280px) {
+    header {
+        padding: 0 max(40px, calc((100% - 1200px) / 2));
+    }
+
+    .search {
+        width: 340px;
+    }
+}
+
+
