@@ -45,8 +45,14 @@ a {
 }
 
 
+/* Checkbox oculto a la vista pero accesible con teclado */
 #menu {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
 }
 
 .label-menu {
@@ -55,6 +61,14 @@ a {
 
 .label-menu:hover {
     opacity: 1;
+}
+
+/* Indicador de foco: el label va antes del checkbox, por eso se usa :has() */
+.label-menu:has(+ #menu:focus-visible) {
+    opacity: 1;
+    outline: 3px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 .ul-menu {
@@ -72,7 +86,9 @@ a {
     align-items: center;
     gap: 25px;
     background: #4e70b4;
-    transition: max-height 0.4s;
+    /* Cerrado: los links no reciben foco con Tab */
+    visibility: hidden;
+    transition: max-height 0.4s, visibility 0s 0.4s;
 }
 
 .li-menu {
@@ -89,6 +105,8 @@ a {
 
 #menu:checked + .ul-menu {
     max-height: 400px;
+    visibility: visible;
+    transition: max-height 0.4s, visibility 0s;
     border-bottom: 1px solid rgba(24, 52, 155, 0.12);
 }
 
@@ -200,11 +218,13 @@ footer i {
         margin: 0 auto;
     }
 
-    .label-menu {
+    .label-menu,
+    #menu {
         display: none;
     }
 
     .ul-menu {
+        visibility: visible;
         position: static;
         width: auto;
         max-height: none;
