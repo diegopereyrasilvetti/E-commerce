@@ -1,5 +1,14 @@
+/* La paleta (--color-primary, --color-secondary, etc.) se define en el
+   bloque @theme de index.html para que Tailwind y este CSS compartan los mismos valores. */
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+body {
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: "Nata Sans", sans-serif;
 }
