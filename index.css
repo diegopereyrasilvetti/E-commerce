@@ -8,7 +8,7 @@
 }
 
 body {
-    background: var(--color-background);
-    color: var(--color-text);
+    background: var(--color-surface);
+    color: var(--color-secondary);
     font-family: "Nata Sans", sans-serif;
 }
