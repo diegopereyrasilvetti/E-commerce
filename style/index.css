@@ -45,8 +45,14 @@ a {
 }
 
 
+/* Checkbox oculto a la vista pero accesible con teclado */
 #menu {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
 }
 
 .label-menu {
@@ -55,6 +61,14 @@ a {
 
 .label-menu:hover {
     opacity: 1;
+}
+
+/* Indicador de foco: el label va antes del checkbox, por eso se usa :has() */
+.label-menu:has(+ #menu:focus-visible) {
+    opacity: 1;
+    outline: 3px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 .ul-menu {
@@ -72,7 +86,9 @@ a {
     align-items: center;
     gap: 25px;
     background: #4e70b4;
-    transition: max-height 0.4s;
+    /* Cerrado: los links no reciben foco con Tab */
+    visibility: hidden;
+    transition: max-height 0.4s, visibility 0s 0.4s;
 }
 
 .li-menu {
@@ -89,6 +105,8 @@ a {
 
 #menu:checked + .ul-menu {
     max-height: 400px;
+    visibility: visible;
+    transition: max-height 0.4s, visibility 0s;
     border-bottom: 1px solid rgba(24, 52, 155, 0.12);
 }
 
@@ -159,6 +177,21 @@ footer i {
 
 /* Responsive */
 
+/* Móvil: buscador centrado en el header; carrito y hamburguesa agrupados a la derecha */
+@media (max-width: 767px) {
+    .search {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .cart {
+        margin-left: auto;
+        margin-right: 16px;
+    }
+}
+
 /* Móviles pequeños: el buscador se achica para que quepa todo en el header */
 @media (max-width: 400px) {
     header {
@@ -182,13 +215,16 @@ footer i {
 
     .search {
         width: 260px;
+        margin: 0 auto;
     }
 
-    .label-menu {
+    .label-menu,
+    #menu {
         display: none;
     }
 
     .ul-menu {
+        visibility: visible;
         position: static;
         width: auto;
         max-height: none;
@@ -210,6 +246,14 @@ footer i {
 
     nav a {
         font-size: 18px;
+        color: var(--color-secondary);
+    }
+
+    /* El carrito pasa al final, a la derecha de todo */
+    .cart {
+        order: 1;
+        margin-left: 24px;
+        color: var(--color-secondary);
     }
 }
 

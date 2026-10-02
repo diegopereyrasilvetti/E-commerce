@@ -1,0 +1,86 @@
+[
+    {
+        "id": 1,
+        "nombre": "AMD Ryzen 5 5600X",
+        "precio": 185000,
+        "descripcion": "Procesador de 6 núcleos y 12 hilos, hasta 4.6 GHz, socket AM4. Ideal para gaming y multitarea.",
+        "categoria": "Procesadores"
+    },
+    {
+        "id": 2,
+        "nombre": "Intel Core i7-12700K",
+        "precio": 365000,
+        "descripcion": "Procesador de 12 núcleos (8P + 4E), hasta 5.0 GHz, socket LGA1700. Desbloqueado para overclock.",
+        "categoria": "Procesadores"
+    },
+    {
+        "id": 3,
+        "nombre": "ASUS TUF Gaming B550-PLUS",
+        "precio": 210000,
+        "descripcion": "Motherboard ATX socket AM4 con chipset B550, PCIe 4.0, doble M.2 y WiFi.",
+        "categoria": "Mothers"
+    },
+    {
+        "id": 4,
+        "nombre": "NVIDIA GeForce RTX 4060 8GB",
+        "precio": 540000,
+        "descripcion": "Placa de video con 8 GB GDDR6, DLSS 3 y Ray Tracing. Pensada para jugar en 1080p con altos FPS.",
+        "categoria": "Placas de Video"
+    },
+    {
+        "id": 5,
+        "nombre": "Corsair Vengeance 16GB (2x8GB) DDR4 3200MHz",
+        "precio": 62000,
+        "descripcion": "Kit de memoria RAM DDR4 de doble canal, 3200 MHz, latencia CL16 y disipador de aluminio.",
+        "categoria": "Memorias RAM"
+    },
+    {
+        "id": 6,
+        "nombre": "Kingston NV2 1TB NVMe M.2",
+        "precio": 78000,
+        "descripcion": "SSD NVMe PCIe 4.0 con velocidades de lectura de hasta 3500 MB/s. Formato M.2 2280.",
+        "categoria": "Almacenamiento"
+    },
+    {
+        "id": 7,
+        "nombre": "Cooler Master Hyper 212 Black Edition",
+        "precio": 54000,
+        "descripcion": "Cooler de torre para CPU con 4 heatpipes y ventilador de 120 mm. Compatible con AMD e Intel.",
+        "categoria": "Refrigeración"
+    },
+    {
+        "id": 8,
+        "nombre": "NZXT H510 Flow",
+        "precio": 120000,
+        "descripcion": "Gabinete mid tower con panel frontal de malla para mayor flujo de aire y panel lateral de vidrio templado.",
+        "categoria": "Gabinetes"
+    },
+    {
+        "id": 9,
+        "nombre": "Corsair CV650 650W 80 Plus Bronze",
+        "precio": 95000,
+        "descripcion": "Fuente de poder de 650 W con certificación 80 Plus Bronze, no modular y protecciones eléctricas.",
+        "categoria": "Fuentes"
+    },
+    {
+        "id": 10,
+        "nombre": "Samsung Odyssey G5 27\" 144Hz",
+        "precio": 310000,
+        "descripcion": "Monitor curvo de 27 pulgadas QHD, 144 Hz, 1 ms y panel VA. Compatible con FreeSync Premium.",
+        "categoria": "Monitores"
+    },
+    {
+        "id": 11,
+        "nombre": "Logitech G203 Lightsync",
+        "precio": 28000,
+        "descripcion": "Mouse gamer con sensor de 8000 DPI, iluminación RGB personalizable y 6 botones programables.",
+        "categoria": "Periféricos"
+    },
+    {
+        "id": 12,
+        "nombre": "Redragon Kumara K552 TKL",
+        "precio": 45000,
+        "descripcion": "Teclado mecánico TKL con switches rojos, retroiluminación LED y construcción metálica resistente.",
+        "categoria": "Periféricos"
+    }
+]
