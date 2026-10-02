@@ -37,7 +37,7 @@ header {
 }
 
 .cart {
-    color: black;
+    color: var(--color-text);
 }
 
 a {
@@ -131,7 +131,7 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 14px 28px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(120, 150, 255, 0.12);
     background:#4e70b4;
 }
 

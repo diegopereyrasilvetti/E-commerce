@@ -17,7 +17,7 @@
             --color-primary: #4F46E5;    /* Azul índigo */
             --color-secondary: #0F172A;  /* Azul noche */
             --color-background: #06B6D4; /* Cian */
-            --color-text: #F8FAFC;       /* Texto principal (sobre fondos oscuros) */
+            --color-text: #000;       /* Texto principal (sobre fondos oscuros) */
             --color-surface: #F1F5F9;    /* Fondo claro de la página */
 
             --color-success: #16A34A;
@@ -26,15 +26,15 @@
         }
     </style>
 </head>
-<body class="bg-[#364769] min-h-screen font-['Noto_Sans'] leading-[1.7]"></body>
+<body class="bg-[#364769] min-h-screen font-['Noto_Sans'] leading-[1.7]">
     <header class="relative border-b border-[rgba(120,150,255,0.12)]" >
         <nav class="flex justify-between items-center h-full">
             <h1 class="text-[20px] font-bold">
                 <span class="sr-only">Proyecto</span>
-                <img class="fotopng" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="fotopng">
+                <img class="fotopng" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
             </h1>
-            <input type="text" class="search">
-            <a class="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+            <input type="text" class="search" aria-label="Buscar productos">
+            <a class="cart" href="#" aria-label="Carrito"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i></a>
             <label class="label-menu text-2xl cursor-pointer opacity-80" for="menu">
                 <i class="fa-solid fa-bars"></i>
             </label>
@@ -47,7 +47,7 @@
         </nav>
     </header>
     <main>
-        
+
     </main>
     <footer>
         <a href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
