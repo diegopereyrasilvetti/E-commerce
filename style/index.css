@@ -159,6 +159,21 @@ footer i {
 
 /* Responsive */
 
+/* Móvil: buscador centrado en el header; carrito y hamburguesa agrupados a la derecha */
+@media (max-width: 767px) {
+    .search {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .cart {
+        margin-left: auto;
+        margin-right: 16px;
+    }
+}
+
 /* Móviles pequeños: el buscador se achica para que quepa todo en el header */
 @media (max-width: 400px) {
     header {
@@ -182,6 +197,7 @@ footer i {
 
     .search {
         width: 260px;
+        margin: 0 auto;
     }
 
     .label-menu {
@@ -210,6 +226,14 @@ footer i {
 
     nav a {
         font-size: 18px;
+        color: var(--color-secondary);
+    }
+
+    /* El carrito pasa al final, a la derecha de todo */
+    .cart {
+        order: 1;
+        margin-left: 24px;
+        color: var(--color-secondary);
     }
 }
 
