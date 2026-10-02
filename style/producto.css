@@ -1,6 +1,21 @@
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px 32px;
+}
+
 .categorias {
-    width: min(100%, 320px);
-    margin: 24px auto 0;
+    width: 100%;
+    margin-top: 24px;
+}
+
+/* Grilla de productos: se adapta sola al ancho disponible */
+.card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
 }
 
 .categorias summary {
@@ -68,8 +83,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: min(100%, 320px);
-    margin: 24px auto;
+    width: 100%;
     padding: 20px;
     background: white;
     color: var(--color-secondary, #0F172A);
@@ -133,4 +147,24 @@
 .butoncard:focus-visible {
     outline: 3px solid var(--color-background, #06B6D4);
     outline-offset: 2px;
+}
+
+/* Escritorio: categorías como columna lateral y productos a la derecha */
+@media (min-width: 900px) {
+    main {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 32px;
+        align-items: start;
+        padding: 0 40px 48px;
+    }
+
+    .categorias {
+        position: sticky;
+        top: 24px;
+    }
+
+    .card {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
 }
