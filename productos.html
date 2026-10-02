@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexo Store</title>
+    <title>Kodex</title>
     <meta name="robots" content="index, follow">
     <meta name="description" content="Encontrá productos de computación, componentes, periféricos y accesorios para PC. Calidad, variedad y todo lo que necesitás para potenciar tu equipo.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/index.css">
+    <link rel="stylesheet" href="./style/producto.css">
     <script src="https://kit.fontawesome.com/0609dfb132.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
@@ -26,12 +27,12 @@
         }
     </style>
 </head>
-<body class="bg-[#364769] min-h-screen font-['Noto_Sans'] leading-[1.7]">
+<body>
     <header class="relative border-b border-[rgba(120,150,255,0.12)]" >
         <nav class="flex justify-between items-center h-full">
             <h1 class="text-[20px] font-bold">
                 <a href="./index.html">
-                    <span class="sr-only">Nexo Store</span>
+                    <span class="sr-only">Kodex</span>
                     <img class="fotopng" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
                 </a>
             </h1>
@@ -52,9 +53,50 @@
         </nav>
     </header>
     <main>
-        <img src="./images/Imagen_de_ChatGPT_2_oct_2026_07_42_22_p.m.png" alt="">
+        <details class="categorias">
+            <summary>Categorías</summary>
+            <ul class="categorias-lista">
+                <li>Procesadores</li>
+                <li>Mothers</li>
+                <li>Placas de Video</li>
+                <li>Memorias RAM</li>
+                <li>Almacenamiento</li>
+                <li>Refrigeración</li>
+                <li>Gabinetes</li>
+                <li>Fuentes</li>
+                <li>Monitores</li>
+                <li>Periféricos</li>
+            </ul>
+        </details>
+        <section class="card">
+            <article class="article">            
+                <img class="productimage" src="./images/Productos/compragamer_Imganen_general_55494_Procesador_AMD_Ryzen_7_5800X3D_4.5GHz_Turbo_AM4_10th_Anniversary_Edition_c4f9572a-grn.jpg" alt="">
+                <h2><strong>Procesador AMD Ryzen 7 5800X3D 4.5GHz Turbo AM4 10th Anniversary Edition</strong></h2>
+                <span>$ 723.042</span>
+                <p class="textbuy">Incluye 10% de descuento
+                    por pago con depósito o transferencia.
+                    Precio s/imp. nac. $ 654.337</p>
+                <span>Garantía - 12 meses</span>
+                <input class="butoncard" type="button" value="Agregar al carrito">
+                
+            </article>
+            <article class="article">            
+                <img class="productimage" src="./images/Productos/compragamer_Imganen_general_16752_Procesador_AMD_Ryzen_3_3200G_4.0GHz_Turbo___Radeon_Vega_8_AM4___Wraith_Stealth_Cooler_f414a507-grn.jpg" alt="">
+                <h2><strong>Procesador AMD Ryzen 3 3200G 4.0GHz Turbo + Radeon Vega 8 AM4 + Wraith Stealth Cooler</strong></h2>
+                <span>$ 114.712</span>
+                <p class="textbuy">Incluye 10% de descuento
+                    por pago con depósito o transferencia.
+                    Precio s/imp. nac. $ 103.812</p>
+                <span>Garantía - 12 meses</span>
+                <input class="butoncard" type="button" value="Agregar al carrito">
+                
+            </article>
+
+    </section>
     </main>
-    <footer>
+    
+
+<footer>
         <a href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
         <a href="https://www.instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i>Instagram</a>
     </footer>
