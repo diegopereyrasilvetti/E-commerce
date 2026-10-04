@@ -32,7 +32,10 @@
             <h1 class="text-[20px] font-bold">
                 <a href="./index.html">
                     <span class="sr-only">Kodex</span>
-                    <img class="fotopng" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
+                    <picture>
+                        <source media="(min-width: 768px)" srcset="./images/Logotipo%20Kodex%20con%20circuito%20azul.png">
+                        <img class="fotopng" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
+                    </picture>
                 </a>
             </h1>
             <input type="search" class="search" placeholder="Buscar..." aria-label="Buscar productos">
@@ -54,7 +57,22 @@
     <main>
         <h2 class="title">Kodex</h2>
         <p>Encontrá todo lo que necesitás para potenciar tu PC. Componentes, periféricos y accesorios de calidad, con opciones para gaming, trabajo y uso diario.</p>
-        <img src="./images/marketing/pc-gamer.jpg" alt="">
+    <section class="marketing" id="marketing" aria-label="Promociones">
+        <div class="carousel" role="group" aria-roledescription="carrusel">
+            <button type="button" class="carousel-btn carousel-prev" aria-label="Imagen anterior">&#10094;</button>
+            <div class="carousel-viewport">
+                <div class="carousel-track">
+                    <a class="carousel-slide" href="./productos.html">
+                        <img src="./images/marketing1.png" alt="Los mejores productos de computación. Ver productos">
+                    </a>
+                    <a class="carousel-slide" href="./productos.html">
+                        <img src="./images/marketing2.png" alt="Coolers y water cooling de alto rendimiento. Ver productos">
+                    </a>
+                </div>
+            </div>
+            <button type="button" class="carousel-btn carousel-next" aria-label="Imagen siguiente">&#10095;</button>
+        </div>
+    </section>
         <p>Encontrá componentes, periféricos y accesorios para gaming, trabajo y entretenimiento.</p>
         <p><strong>¡Tu próxima mejora empieza acá!</strong></p>
         
@@ -63,5 +81,50 @@
         <a href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
         <a href="https://www.instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i>Instagram</a>
     </footer>
+    <script>
+        (function () {
+            var track = document.querySelector('.carousel-track');
+            if (!track) return;
+            var slides = track.querySelectorAll('.carousel-slide');
+            var current = 0;
+
+            function show(index) {
+                current = (index + slides.length) % slides.length;
+                track.style.transform = 'translateX(-' + current * 100 + '%)';
+                slides.forEach(function (slide, i) {
+                    // Las imágenes fuera de vista no reciben foco con el teclado
+                    slide.inert = i !== current;
+                    slide.setAttribute('aria-hidden', i !== current);
+                });
+            }
+
+            var carousel = document.querySelector('.carousel');
+            var timer = null;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Cambio automático cada 4 segundos
+            function start() {
+                if (reduceMotion) return;
+                stop();
+                timer = setInterval(function () { show(current + 1); }, 4000);
+            }
+
+            function stop() {
+                clearInterval(timer);
+            }
+
+            document.querySelector('.carousel-prev').addEventListener('click', function () { show(current - 1); start(); });
+            document.querySelector('.carousel-next').addEventListener('click', function () { show(current + 1); start(); });
+
+            // Se pausa mientras el mouse o el foco del teclado están sobre el carrusel
+            carousel.addEventListener('mouseenter', stop);
+            carousel.addEventListener('mouseleave', start);
+            carousel.addEventListener('focusin', stop);
+            carousel.addEventListener('focusout', start);
+
+            show(0);
+            start();
+        })();
+    </script>
 </body>
 </html>
