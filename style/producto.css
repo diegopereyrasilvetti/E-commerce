@@ -124,11 +124,18 @@ main {
     color: #475569;
 }
 
+/* El precio siempre en azul y grande, aunque la tarjeta no tenga garantía */
+.article > span.precio {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-primary, #4F46E5);
+}
+
 .butoncard {
     cursor: pointer;
     width: 100%;
     height: 42px;
-    margin-top: 6px;
+    margin-top: auto;
     border: none;
     border-radius: 50px;
     background-color: var(--color-primary, #4F46E5);
@@ -167,4 +174,62 @@ main {
     .card {
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
+}
+
+/* Productos agrupados por categoría */
+.productos {
+    min-width: 0;
+}
+
+/* Cada categoría se muestra solo al elegirla en el menú de categorías (:target = #id de la URL) */
+.categoria {
+    display: none;
+    margin-top: 24px;
+}
+
+.categoria:target {
+    display: block;
+}
+
+.productos-vacio {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 16px;
+    background: white;
+    text-align: center;
+    color: #475569;
+}
+
+.productos:has(.categoria:target) .productos-vacio {
+    display: none;
+}
+
+.categoria-titulo {
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-primary, #4F46E5);
+    font-size: 1.4rem;
+    color: var(--color-secondary, #0F172A);
+}
+
+.categoria .card {
+    margin-top: 16px;
+}
+
+.categorias-lista a {
+    display: block;
+    margin: -10px -12px;
+    padding: 10px 12px;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Categoría sin productos todavía (el div .card está vacío) */
+.card:empty::before {
+    content: "Todavía no hay productos en esta categoría.";
+    grid-column: 1 / -1;
+    padding: 20px;
+    border-radius: 16px;
+    background: white;
+    text-align: center;
+    color: #475569;
 }
