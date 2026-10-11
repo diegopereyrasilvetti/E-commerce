@@ -19,8 +19,18 @@ html {
 }
 
 header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     height: 70px;
     padding: 0 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+::selection {
+    background: var(--color-background);
+    color: var(--color-secondary);
 }
 
 .fotopng {
@@ -100,7 +110,7 @@ a {
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    background: #4e70b4;
+    background: var(--color-secondary);
     /* Cerrado: los links no reciben foco con Tab */
     visibility: hidden;
     transition: max-height 0.4s, visibility 0s 0.4s;
@@ -179,8 +189,9 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 14px 28px;
-    border-top: 1px solid rgba(120, 150, 255, 0.12);
-    background:#4e70b4;
+    margin-top: 48px;
+    border-top: 3px solid var(--color-background);
+    background: var(--color-secondary);
 }
 
 footer a {
@@ -193,15 +204,19 @@ footer a {
     font-weight: 600;
 }
 
+footer a {
+    transition: background-color 0.2s, transform 0.2s;
+}
+
 footer a:hover,
 footer a:focus-visible {
-    color: var(--white);
-    background: rgba(128, 199, 143, 0.1);
+    color: white;
+    background: rgba(255, 255, 255, 0.12);
     transform: translateY(-1px);
 }
 
 footer i {
-    color: #8fc49a;
+    color: var(--color-background);
     font-size: 1.05rem;
 }
 
@@ -302,6 +317,14 @@ footer i {
     nav a {
         font-size: 18px;
         color: var(--color-secondary);
+        font-weight: 600;
+        transition: color 0.2s, opacity 0.2s;
+    }
+
+    .ul-menu a:hover,
+    .ul-menu a:focus-visible,
+    .cart:hover {
+        color: var(--color-primary);
     }
 
     /* El carrito pasa al final, a la derecha de todo */
@@ -389,5 +412,177 @@ footer i {
         width: 32px;
         height: 32px;
         font-size: 0.9rem;
+    }
+}
+
+/* Contenido de la página de inicio */
+.beneficios,
+.categorias-home {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.beneficios {
+    margin-top: 24px;
+}
+
+.beneficios-lista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    list-style: none;
+}
+
+.beneficios-lista li {
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    font-size: 0.78rem;
+    line-height: 1.25;
+}
+
+.beneficios-lista li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+}
+
+.beneficios-lista i {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(79, 70, 229, 0.1);
+    font-size: 0.9rem;
+    color: var(--color-primary);
+}
+
+.seccion-titulo {
+    margin: 40px 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--color-background);
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    color: var(--color-secondary);
+}
+
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    list-style: none;
+}
+
+.categorias-grid a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    padding: 20px 12px;
+    background: white;
+    color: var(--color-secondary);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    opacity: 1;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.categorias-grid i {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(79, 70, 229, 0.1);
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.categorias-grid a:hover,
+.categorias-grid a:focus-visible {
+    transform: translateY(-3px);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 18px rgba(79, 70, 229, 0.35);
+    color: white;
+}
+
+.categorias-grid a:focus-visible {
+    outline: 3px solid var(--color-background);
+    outline-offset: 2px;
+}
+
+.categorias-grid a:hover i,
+.categorias-grid a:focus-visible i {
+    background: rgba(255, 255, 255, 0.18);
+    color: white;
+}
+
+.banner-promo {
+    display: block;
+    width: calc(100% - 32px);
+    max-width: 1200px;
+    margin: 40px auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.banner-promo:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.35);
+}
+
+.banner-promo img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.banner-promo:focus-visible {
+    outline: 3px solid var(--color-background);
+    outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+    .beneficios,
+    .categorias-home {
+        padding: 0 40px;
+    }
+
+    .beneficios-lista {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .categorias-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+    }
+
+    .banner-promo {
+        width: calc(100% - 80px);
+    }
+}
+
+/* Respeta la preferencia de "reducir movimiento" */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        scroll-behavior: auto !important;
     }
 }
