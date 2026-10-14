@@ -71,6 +71,13 @@
             <button type="button" class="carousel-btn carousel-next" aria-label="Imagen siguiente">&#10095;</button>
         </div>
     </section>
+    <section class="destacados" id="destacados" aria-labelledby="destacados-titulo">
+        <div class="destacados-cabecera">
+            <h2 class="seccion-titulo" id="destacados-titulo">Productos destacados</h2>
+            <a class="destacados-ver" href="./productos.html">Ver todos</a>
+        </div>
+        <div class="destacados-grid" id="destacados-grid"></div>
+    </section>
     <section class="beneficios" aria-label="Beneficios">
         <ul class="beneficios-lista">
             <li><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span><strong>Envío gratis</strong> a toda la Argentina</span></li>
@@ -101,7 +108,93 @@
     <footer>
         <a href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
         <a href="https://www.instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i>Instagram</a>
+        <button type="button" class="footer-top" aria-label="Volver al inicio de la página"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i>Subir</button>
     </footer>
+    <script src="./data/productos.js"></script>
+    <script>
+        (function () {
+            var grid = document.getElementById('destacados-grid');
+            var productos = window.PRODUCTOS || [];
+            if (!grid || !productos.length) { if (grid) grid.parentNode.hidden = true; return; }
+
+            var CANTIDAD = 4;      // tarjetas visibles
+            var INTERVALO = 8000;  // cambia cada 8 segundos
+            var actuales = [];
+            var timer = null;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Mezcla la lista y toma N, evitando repetir los que ya se ven si alcanzan los demás
+            function elegir() {
+                var pool = productos.filter(function (p) { return actuales.indexOf(p) === -1; });
+                if (pool.length < CANTIDAD) pool = productos.slice();
+                for (var i = pool.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+                }
+                return pool.slice(0, Math.min(CANTIDAD, pool.length));
+            }
+
+            function tarjeta(p) {
+                var a = document.createElement('a');
+                a.className = 'destacado';
+                a.href = './productos.html#' + p.categoriaId;
+
+                var img = document.createElement('img');
+                img.src = './' + p.imagen;
+                img.alt = '';
+                img.loading = 'lazy';
+
+                var cat = document.createElement('span');
+                cat.className = 'destacado-cat';
+                cat.textContent = p.categoria;
+
+                var nombre = document.createElement('h3');
+                nombre.className = 'destacado-nombre';
+                nombre.textContent = p.nombre;
+
+                var precio = document.createElement('span');
+                precio.className = 'destacado-precio';
+                precio.textContent = p.precio;
+
+                var cta = document.createElement('span');
+                cta.className = 'destacado-cta';
+                cta.textContent = 'Ver producto';
+
+                a.append(img, cat, nombre, precio, cta);
+                return a;
+            }
+
+            function render() {
+                actuales = elegir();
+                grid.replaceChildren.apply(grid, actuales.map(tarjeta));
+            }
+
+            function cambiar() {
+                grid.classList.add('destacados-saliendo');
+                setTimeout(function () {
+                    render();
+                    grid.classList.remove('destacados-saliendo');
+                }, reduceMotion ? 0 : 300);
+            }
+
+            function start() {
+                if (reduceMotion) return;
+                stop();
+                timer = setInterval(cambiar, INTERVALO);
+            }
+
+            function stop() { clearInterval(timer); }
+
+            // Se pausa mientras el mouse o el foco del teclado están sobre las tarjetas
+            grid.addEventListener('mouseenter', stop);
+            grid.addEventListener('mouseleave', start);
+            grid.addEventListener('focusin', stop);
+            grid.addEventListener('focusout', start);
+
+            render();
+            start();
+        })();
+    </script>
     <script>
         (function () {
             var track = document.querySelector('.carousel-track');
@@ -146,6 +239,15 @@
             show(0);
             start();
         })();
+    </script>
+    <script>
+        // Botón del footer: vuelve al header sin cambiar la dirección de la página
+        document.querySelectorAll('.footer-top').forEach(function (b) {
+            b.addEventListener('click', function () {
+                var suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                window.scrollTo({ top: 0, behavior: suave ? 'smooth' : 'auto' });
+            });
+        });
     </script>
 </body>
 </html>
