@@ -12,7 +12,7 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
 });
 
 // ============================================================
-// Inicio (index.html): productos destacados que rotan cada 8 segundos
+// Inicio y Productos (index.html y productos.html): productos destacados que rotan cada 8 segundos
 // ============================================================
 (function () {
     var grid = document.getElementById('destacados-grid');
@@ -175,6 +175,20 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
 document.querySelectorAll('details a').forEach(function (link) {
     link.addEventListener('click', function () {
         link.closest('details').open = false;
+    });
+});
+
+// ============================================================
+// Productos (productos.html): "Ver todos" abre el desplegable de categorías
+// ============================================================
+document.querySelectorAll('[data-abrir-categorias]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var detalle = document.querySelector('details');
+        if (!detalle) return;
+        detalle.open = true;
+        var suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        detalle.scrollIntoView({ behavior: suave ? 'smooth' : 'auto', block: 'start' });
     });
 });
 
