@@ -5,7 +5,8 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
 ## Páginas
 
 - **Inicio (`index.html`)**: carrusel de promociones, productos destacados que rotan solos, beneficios (envío gratis, cuotas, compra segura, productos originales), acceso por categoría y banner de cuotas y envíos.
-- **Productos (`productos.html`)**: catálogo agrupado en 10 categorías. Al elegir una categoría en el botón "Categorías" se muestran solo sus productos, y cada categoría se puede ordenar por precio.
+- **Productos (`productos.html`)**: tarjeta de bienvenida, acceso a las 10 categorías y catálogo agrupado por categoría. Al elegir una categoría se muestran solo sus productos, y cada categoría se puede ordenar por precio.
+- **Login (`login.html`)**: formulario de inicio de sesión con el mismo header (solo el logo, centrado) y footer del resto del sitio.
 
 ## Características
 
@@ -14,7 +15,12 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
 - Carrusel con cambio automático cada 4 segundos, flechas y pausa al pasar el mouse. Cada imagen lleva a la página de productos.
 - **Productos destacados**: 4 productos al azar que cambian cada 8 segundos, con pausa al pasar el mouse o enfocar con teclado. Cada tarjeta lleva a su categoría.
 - **Ordenar por precio**: cada categoría tiene un selector "Más relevantes", "Menor precio" y "Mayor precio".
-- Tarjetas de producto en grilla: dos por fila en celular, más columnas en pantallas grandes.
+- **Categorías de tres formas** en la página de productos, todas llevan a la misma categoría:
+  - botón "Categorías" arriba y centrado, que al abrirse muestra tarjetas grandes (de a 2 por fila en celular, de a 5 desde tablet) y se cierra solo al elegir una;
+  - tarjetas más chicas con ícono y nombre, debajo de la tarjeta de bienvenida;
+  - el catálogo agrupado por categoría (solo se ve la elegida).
+- Tarjetas de producto en grilla a todo el ancho: dos por fila en celular, más columnas en pantallas grandes.
+- **Login**: usuario o email, contraseña con botón "Mostrar" / "Ocultar", "Recordarme", y validación de campos obligatorios. Todavía no hay servidor: al enviar solo se muestra un aviso y no se inicia sesión.
 - Botón "Subir" en el footer para volver al header.
 - Respeta la opción del sistema "reducir movimiento": no hay cambios automáticos ni animaciones.
 - Paleta de colores definida una sola vez en el tema de Tailwind y usada con clases como `bg-primary` o `text-secondary`.
@@ -37,7 +43,7 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 ├── images/
 │   ├── marketing/        Banners del carrusel y de promociones
 │   └── Productos/        Imágenes de productos, una carpeta por categoría
-└── tailwind.config.js
+└── tailwind.config.js    Vacío: no se usa (Tailwind se carga por CDN y se configura en el <head>)
 ```
 
 ## Paleta de colores
@@ -58,7 +64,7 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html`, `produ
 
 - Todo el diseño está en las clases de cada elemento. Para cambiar cómo se ve algo, editá sus clases en el HTML.
 - En el bloque `<style type="text/tailwindcss">` del `<head>` hay tres configuraciones: la variante `hover` (para que funcione también en pantallas táctiles), los cortes de pantalla `max-400`, `max-599`, `max-767` y `max-1099` (equivalentes a `max-width`), y el tema con la paleta. Los cortes hacia arriba usan los de Tailwind, por ejemplo `min-[768px]:` y `min-[1100px]:`.
-- Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. No las borres.
+- Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. También se usan por `id`: `destacados-grid`, `login-form`, `password`, `login-mostrar` y `login-estado`. No los borres.
 - Las tarjetas de "Productos destacados" se crean desde JavaScript (en `js/index.js`), con sus clases de Tailwind escritas ahí.
 
 ## Cómo agregar un producto
@@ -98,6 +104,15 @@ Reglas a tener en cuenta:
 - El precio tiene que conservar la clase `precio` (además de sus clases de Tailwind): el selector "Ordenar por" la usa para leer el precio.
 - El `categoriaId` de `js/productos.js` es el `id` de la sección en `productos.html`.
 - Si cambiás un nombre o un precio en `productos.html`, cambialo también en `js/productos.js`.
+
+## Cómo agregar una categoría
+
+Una categoría nueva se muestra en varios lugares de `productos.html`; hay que agregarla en todos con el mismo `id` (por ejemplo `monitores`):
+
+1. Una `<section class="categoria" id="...">` con su título, su selector "Ordenar por" y su `<div class="card">`. Conviene copiar una existente.
+2. Una tarjeta en el desplegable "Categorías" (`<details>`) y otra en las tarjetas chicas de abajo de la bienvenida. Copiá una de cada una y cambiá el `href`, el ícono y el nombre.
+3. Una tarjeta en "Comprá por categoría" de `index.html`, con el `href` `./productos.html#id`.
+4. Una carpeta con su nombre en `images/Productos/` para las imágenes.
 
 ## Cómo ejecutarlo
 
