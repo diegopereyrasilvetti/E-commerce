@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth scroll-pt-[110px] motion-reduce:scroll-auto!">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodex Login</title>
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Encontrá productos de computación, componentes, periféricos y accesorios para PC. Calidad, variedad y todo lo que necesitás para potenciar tu equipo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/0609dfb132.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        /* hover real también en pantallas táctiles (por defecto Tailwind v4 solo lo aplica si el dispositivo tiene mouse) */
+        @custom-variant hover (&:hover);
+        /* mismos cortes de pantalla que usaba el CSS (max-width es inclusivo) */
+        @custom-variant max-400 (@media (max-width: 400px));
+        @custom-variant max-599 (@media (max-width: 599px));
+        @custom-variant max-767 (@media (max-width: 767px));
+        @custom-variant max-1099 (@media (max-width: 1099px));
+
+        @theme static {
+            --color-primary: #4F46E5;    /* Azul índigo */
+            --color-secondary: #0F172A;  /* Azul noche */
+            --color-background: #06B6D4; /* Cian */
+            --color-text: #000;       /* Texto principal (sobre fondos oscuros) */
+            --color-surface: #F1F5F9;    /* Fondo claro de la página */
+
+            --color-success: #16A34A;
+            --color-warning: #F59E0B;
+            --color-error: #DC2626;
+        }
+    </style>
+</head>
+<body class="min-h-dvh flex flex-col bg-surface text-secondary font-[family-name:Nata_Sans,sans-serif] leading-[1.7] selection:bg-background selection:text-secondary">
+    <header class="sticky top-0 z-20 h-[70px] px-5 max-400:px-3 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
+        <nav class="flex justify-center items-center h-full">
+            <h1 class="text-[20px] font-bold">
+                <a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" href="./index.html">
+                    <span class="sr-only m-0!">Kodex</span>
+                    <picture>
+                        <source media="(min-width: 768px)" srcset="./images/Logotipo%20Kodex%20con%20circuito%20azul.png">
+                        <img class="w-[60px] min-[768px]:w-auto min-[768px]:h-[60px] min-[768px]:ml-5" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
+                    </picture>
+                </a>
+            </h1>
+        </nav>
+    </header>
+    <main class="flex-1 flex items-center justify-center px-4 py-10">
+        <section class="w-full max-w-[420px] p-6 min-[600px]:p-8 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-2xl shadow-[0_4px_12px_rgba(15,23,42,0.12)]" aria-labelledby="login-titulo">
+            <h2 id="login-titulo" class="text-[1.5rem] font-bold">Iniciar sesión</h2>
+            <p class="mt-1 text-[0.9rem] text-[#475569]">Ingresá con tu cuenta para comprar y ver tus pedidos.</p>
+
+            <form id="login-form" class="mt-6 flex flex-col gap-4" action="#" method="post">
+                <div class="flex flex-col gap-1.5">
+                    <label for="usuario" class="text-[0.9rem] font-semibold">Usuario o email</label>
+                    <input id="usuario" name="usuario" type="text" autocomplete="username" required placeholder="usuario / @email.com" class="w-full h-11 px-4 bg-white text-secondary text-[0.95rem] border border-[rgba(15,23,42,0.2)] rounded-xl shadow-[0_1px_3px_rgba(15,23,42,0.1)] [transition:border-color_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! placeholder:text-[#64748B] focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(79,70,229,0.3)]">
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="password" class="text-[0.9rem] font-semibold">Contraseña</label>
+                        <button type="button" id="login-mostrar" class="text-[0.8rem] font-semibold text-primary cursor-pointer hover:underline focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" aria-controls="password" aria-pressed="false">Mostrar</button>
+                    </div>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="Tu contraseña" class="w-full h-11 px-4 bg-white text-secondary text-[0.95rem] border border-[rgba(15,23,42,0.2)] rounded-xl shadow-[0_1px_3px_rgba(15,23,42,0.1)] [transition:border-color_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! placeholder:text-[#64748B] focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(79,70,229,0.3)]">
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[0.85rem]">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" name="recordarme" class="size-4 accent-primary cursor-pointer">
+                        Recordarme
+                    </label>
+                    <a href="#" class="text-primary font-semibold hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="w-full h-11 rounded-[50px] bg-primary text-white text-[0.95rem] font-semibold cursor-pointer shadow-[0_4px_8px_rgba(0,0,0,0.25)] [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-secondary hover:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2">Iniciar sesión</button>
+
+                <p id="login-estado" role="status" class="hidden p-3 rounded-xl bg-[#F1F5F9] text-[0.85rem] text-[#475569] text-center"></p>
+            </form>
+
+            <p class="mt-6 text-center text-[0.9rem]">¿No tenés cuenta? <a href="#" class="text-primary font-semibold hover:underline">Registrate</a></p>
+        </section>
+    </main>
+    <footer class="flex shrink-0 min-h-[90px] px-5 py-6 flex-wrap items-center justify-center gap-x-7 gap-y-3.5 mt-12 border-t-[3px] border-background bg-secondary">
+        <a class="inline-flex px-3 py-2 items-center gap-2 rounded-[10px] text-[0.94rem] font-semibold text-white no-underline opacity-80 hover:opacity-100 [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:text-white hover:bg-[rgba(255,255,255,0.12)] hover:[transform:translateY(-1px)] focus-visible:text-white focus-visible:bg-[rgba(255,255,255,0.12)] focus-visible:[transform:translateY(-1px)]" href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
+        <a class="inline-flex px-3 py-2 items-center gap-2 rounded-[10px] text-[0.94rem] font-semibold text-white no-underline opacity-80 hover:opacity-100 [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:text-white hover:bg-[rgba(255,255,255,0.12)] hover:[transform:translateY(-1px)] focus-visible:text-white focus-visible:bg-[rgba(255,255,255,0.12)] focus-visible:[transform:translateY(-1px)]" href="https://www.instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i>Instagram</a>
+        <button type="button" class="footer-top inline-flex items-center gap-2 px-4 py-2 border border-background rounded-[999px] bg-transparent text-white text-[0.94rem] font-semibold cursor-pointer [transition:background-color_0.2s,color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-background hover:text-secondary hover:[transform:translateY(-1px)] focus-visible:bg-background focus-visible:text-secondary focus-visible:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-white focus-visible:outline-offset-2" aria-label="Volver al inicio de la página"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i>Subir</button>
+    </footer>
+    <script src="./js/index.js"></script>
+</body>
+</html>
