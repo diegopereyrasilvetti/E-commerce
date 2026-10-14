@@ -1,6 +1,6 @@
 # Kodex Tech Store
 
-Proyecto de e-commerce de productos de computación, desarrollado con HTML, CSS, JavaScript y Tailwind CSS. Es un sitio estático: no necesita servidor ni instalación.
+Proyecto de e-commerce de productos de computación, desarrollado con HTML, JavaScript y Tailwind CSS. Todos los estilos están escritos como clases de Tailwind dentro del HTML, sin archivos CSS propios. Es un sitio estático: no necesita servidor ni instalación.
 
 ## Páginas
 
@@ -17,7 +17,7 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, CSS,
 - Tarjetas de producto en grilla: dos por fila en celular, más columnas en pantallas grandes.
 - Botón "Subir" en el footer para volver al header.
 - Respeta la opción del sistema "reducir movimiento": no hay cambios automáticos ni animaciones.
-- Paleta de colores definida una sola vez y compartida entre CSS y Tailwind.
+- Paleta de colores definida una sola vez en el tema de Tailwind y usada con clases como `bg-primary` o `text-secondary`.
 
 ## Categorías
 
@@ -26,11 +26,8 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 ## Estructura
 
 ```
-├── index.html            Página de inicio
-├── productos.html        Catálogo de productos
-├── style/
-│   ├── index.css         Estilos generales, header, footer e inicio
-│   └── producto.css      Estilos de categorías, tarjetas y selector de orden
+├── index.html            Página de inicio (estilos con clases de Tailwind)
+├── productos.html        Catálogo de productos (estilos con clases de Tailwind)
 ├── data/
 │   ├── productos.js      Copia de los productos para "Productos destacados" (se usa en el inicio)
 │   └── productos.json    Ejemplos de productos (no se usa en las páginas)
@@ -42,7 +39,7 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 
 ## Paleta de colores
 
-Se define en el bloque `@theme` de `index.html` y se usa tanto en CSS (`var(--color-primary)`) como en Tailwind (`bg-primary`, `text-secondary`, etc.).
+Se define en el bloque `@theme` que está en el `<head>` de `index.html` y de `productos.html`, y se usa con clases de Tailwind (`bg-primary`, `text-secondary`, `border-background`, etc.). Si cambiás un color, cambialo en las dos páginas.
 
 | Variable | Color | Uso |
 |---|---|---|
@@ -54,6 +51,13 @@ Se define en el bloque `@theme` de `index.html` y se usa tanto en CSS (`var(--co
 | `--color-warning` | `#F59E0B` | Advertencia |
 | `--color-error` | `#DC2626` | Error |
 
+## Estilos con Tailwind
+
+- Todo el diseño está en las clases de cada elemento. Para cambiar cómo se ve algo, editá sus clases en el HTML.
+- En el bloque `<style type="text/tailwindcss">` del `<head>` hay tres configuraciones: la variante `hover` (para que funcione también en pantallas táctiles), los cortes de pantalla `max-400`, `max-599`, `max-767` y `max-1099` (equivalentes a `max-width`), y el tema con la paleta. Los cortes hacia arriba usan los de Tailwind, por ejemplo `min-[768px]:` y `min-[1100px]:`.
+- Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. No las borres.
+- Las tarjetas de "Productos destacados" se crean desde JavaScript (al final de `index.html`), con sus clases de Tailwind escritas ahí.
+
 ## Cómo agregar un producto
 
 1. Guardá la imagen en la carpeta de su categoría, dentro de `images/Productos/`.
@@ -61,15 +65,15 @@ Se define en el bloque `@theme` de `index.html` y se usa tanto en CSS (`var(--co
 3. Pegá la tarjeta dentro del `<div class="card">` de esa sección, después de la última:
 
 ```html
-<article class="article">
-    <img class="productimage" src="./images/Productos/Fuente/imagen.jpg" alt="">
-    <h2><strong>Nombre del producto</strong></h2>
-    <span class="precio">$ 100.000</span>
-    <p class="textbuy">Incluye 10% de descuento
+<article class="article flex flex-col gap-2.5 max-599:gap-2 w-full p-5 max-599:p-2.5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-2xl max-599:rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.12)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-4px)] hover:shadow-[0_10px_24px_rgba(15,23,42,0.2)]">
+    <img class="w-full max-w-[250px] aspect-square object-contain self-center" src="./images/Productos/Fuente/imagen.jpg" alt="">
+    <h2 class="text-[1rem] leading-[1.4] max-599:text-[0.8rem] max-599:leading-[1.3] max-599:[overflow-wrap:anywhere]"><strong class="font-semibold">Nombre del producto</strong></h2>
+    <span class="precio text-[1.6rem] max-599:text-[1.1rem] font-bold text-primary">$ 100.000</span>
+    <p class="text-[12px] leading-[1.5] max-599:text-[10px] max-599:leading-[1.4] text-[#475569]">Incluye 10% de descuento
         por pago con depósito o transferencia.
         Precio s/imp. nac. $ 90.000</p>
-    <span>Garantía - 12 meses</span>
-    <input class="butoncard" type="button" value="Agregar al carrito">
+    <span class="text-[0.85rem] max-599:text-[0.7rem] text-[#475569]">Garantía - 12 meses</span>
+    <input class="cursor-pointer w-full h-[42px] max-599:h-[34px] mt-auto rounded-[50px] bg-primary text-white text-[0.95rem] max-599:text-[0.78rem] font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.25)] [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-secondary hover:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" type="button" value="Agregar al carrito">
 </article>
 ```
 
@@ -87,8 +91,8 @@ Se define en el bloque `@theme` de `index.html` y se usa tanto en CSS (`var(--co
 ```
 
 Reglas a tener en cuenta:
-- Todas las tarjetas de una categoría van dentro de un mismo `<div class="card">`. Si se abre otro, quedan una debajo de la otra.
-- El precio tiene que llevar `class="precio"`. Con esa clase se ve en azul y grande, y el selector "Ordenar por" lo usa para ordenar.
+- Conviene copiar una tarjeta completa que ya exista y cambiar solo la imagen y los textos, así se conservan las clases.
+- El precio tiene que conservar la clase `precio` (además de sus clases de Tailwind): el selector "Ordenar por" la usa para leer el precio.
 - El `categoriaId` de `data/productos.js` es el `id` de la sección en `productos.html`.
 - Si cambiás un nombre o un precio en `productos.html`, cambialo también en `data/productos.js`.
 
@@ -98,7 +102,7 @@ Abrí `index.html` en el navegador. Tailwind, la fuente y los íconos se cargan 
 
 ## Tecnologías
 
-- HTML5, CSS3 y JavaScript sin librerías
-- [Tailwind CSS v4](https://tailwindcss.com/) (versión CDN)
+- HTML5 y JavaScript sin librerías
+- [Tailwind CSS v4](https://tailwindcss.com/) (versión CDN) para todos los estilos
 - [Font Awesome](https://fontawesome.com/) para los íconos
 - Google Fonts (Nata Sans)
