@@ -12,18 +12,138 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
 });
 
 // ============================================================
-// Todas las páginas: el carrito pide iniciar sesión
+// Todas las páginas: el carrito y "Agregar al carrito" piden iniciar sesión
 // ============================================================
 // La sesión se guarda en localStorage con la clave "kodex-usuario" (cuando el login esté
 // conectado a un servidor, tiene que guardar ahí el usuario al iniciar sesión).
-// Sin usuario, el carrito lleva a login.html.
-(function () {
-    var usuario = null;
-    try { usuario = localStorage.getItem('kodex-usuario'); } catch (e) { /* navegación privada: se trata como sin sesión */ }
-    document.querySelectorAll('[data-carrito]').forEach(function (link) {
-        link.href = usuario ? '#' : './login.html?desde=carrito'; // todavía no hay página del carrito
+function haySesion() {
+    try { return !!localStorage.getItem('kodex-usuario'); } catch (e) { return false; } // navegación privada: sin sesión
+}
+
+// Ícono del carrito del header: sin usuario lleva a login.html
+document.querySelectorAll('[data-carrito]').forEach(function (link) {
+    link.href = haySesion() ? '#' : './login.html?desde=carrito'; // todavía no hay página del carrito
+});
+
+function agregarAlCarrito() {
+    if (!haySesion()) {
+        window.location.href = './login.html?desde=agregar';
+        return;
+    }
+    // Con sesión iniciada: acá va la lógica para agregar el producto al carrito (todavía no existe)
+}
+
+// Botones "Agregar al carrito" de cualquier producto (también los que se agreguen después)
+document.addEventListener('click', function (e) {
+    if (e.target.closest('article input[type="button"]')) agregarAlCarrito();
+});
+
+// ============================================================
+// Todas las páginas: ventana con el detalle de un producto
+// ============================================================
+// abrirDetalle(producto) recibe { nombre, precio, precioSinImpuestos, descuento, garantia, categoria, src }
+// (en "src" va la ruta de la imagen; si falta se arma con "imagen", como viene en js/productos.js).
+var ventanaDetalle = null;
+
+function crear(tag, clases, texto) {
+    var e = document.createElement(tag);
+    if (clases) e.className = clases;
+    if (texto !== undefined) e.textContent = texto;
+    return e;
+}
+
+function armarVentanaDetalle() {
+    var d = crear('dialog', 'm-auto w-[min(860px,calc(100vw-24px))] max-h-[calc(100dvh-24px)] overflow-auto p-0 rounded-2xl bg-white text-secondary shadow-[0_20px_50px_rgba(15,23,42,0.45)] backdrop:bg-[rgba(15,23,42,0.65)]');
+    d.setAttribute('aria-labelledby', 'detalle-titulo');
+
+    var cerrar = crear('button', 'absolute top-3 right-3 z-10 grid place-items-center size-9 rounded-full bg-[rgba(15,23,42,0.08)] text-secondary text-[1.1rem] cursor-pointer hover:bg-[rgba(15,23,42,0.16)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2', '\u2715');
+    cerrar.type = 'button';
+    cerrar.setAttribute('aria-label', 'Cerrar');
+    cerrar.addEventListener('click', function () { d.close(); });
+
+    var cuerpo = crear('div', 'relative grid grid-cols-1 min-[700px]:grid-cols-2');
+    var zonaImg = crear('div', 'flex items-center justify-center p-6 bg-white');
+    var img = crear('img', 'w-full max-w-[360px] aspect-square object-contain');
+    img.alt = '';
+    zonaImg.appendChild(img);
+
+    var info = crear('div', 'flex flex-col gap-3 p-6 min-[700px]:pr-14');
+    var cat = crear('span', 'text-[0.75rem] font-semibold uppercase tracking-[0.04em] text-primary');
+    var titulo = crear('h2', 'text-[1.25rem] min-[700px]:text-[1.4rem] font-bold leading-[1.3]');
+    titulo.id = 'detalle-titulo';
+    var precio = crear('span', 'text-[2rem] font-bold text-primary');
+    var descuento = crear('p', 'p-3 rounded-xl bg-[rgba(22,163,74,0.1)] text-[#166534] text-[0.9rem] font-semibold');
+    var sinImp = crear('p', 'text-[0.9rem] text-[#475569]');
+    var garantia = crear('p', 'flex items-center gap-2 text-[0.9rem]');
+    var agregar = crear('button', 'mt-auto w-full h-11 rounded-[50px] bg-primary text-white text-[0.95rem] font-semibold cursor-pointer shadow-[0_4px_8px_rgba(0,0,0,0.25)] hover:bg-secondary focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2', 'Agregar al carrito');
+    agregar.type = 'button';
+    agregar.addEventListener('click', agregarAlCarrito);
+    info.append(cat, titulo, precio, descuento, sinImp, garantia, agregar);
+
+    cuerpo.append(zonaImg, info);
+    d.append(cerrar, cuerpo);
+    // clic fuera de la ventana (en el fondo oscuro) = cerrar
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+    document.body.appendChild(d);
+    d._ref = { img: img, cat: cat, titulo: titulo, precio: precio, descuento: descuento, sinImp: sinImp, garantia: garantia };
+    return d;
+}
+
+function abrirDetalle(p) {
+    if (!ventanaDetalle) ventanaDetalle = armarVentanaDetalle();
+    var r = ventanaDetalle._ref;
+    r.img.src = p.src || ('./' + p.imagen);
+    r.img.alt = p.nombre;
+    r.cat.textContent = p.categoria || '';
+    r.cat.hidden = !p.categoria;
+    r.titulo.textContent = p.nombre;
+    r.precio.textContent = p.precio;
+    r.descuento.textContent = 'Incluye ' + p.descuento + ' de descuento por pago con depósito o transferencia.';
+    r.descuento.hidden = !p.descuento;
+    r.sinImp.textContent = 'Precio s/imp. nac. ' + p.precioSinImpuestos;
+    r.sinImp.hidden = !p.precioSinImpuestos;
+    r.garantia.textContent = 'Garantía - ' + p.garantia;
+    r.garantia.hidden = !p.garantia;
+    ventanaDetalle.showModal();
+}
+
+// Tarjetas de producto de productos.html: al tocar la tarjeta (menos su botón) se abre el detalle
+function productoDesdeTarjeta(tarjeta) {
+    function texto(sel) { var e = tarjeta.querySelector(sel); return e ? e.textContent.replace(/\s+/g, ' ').trim() : ''; }
+    var nota = texto('p');
+    var gar = '';
+    tarjeta.querySelectorAll('span').forEach(function (sp) {
+        var m = sp.textContent.match(/Garant[ií]a\s*-\s*(.+)/);
+        if (m) gar = m[1].trim();
     });
-})();
+    var seccion = tarjeta.closest('section');
+    var tituloSeccion = seccion ? seccion.querySelector('h2') : null;
+    return {
+        nombre: texto('h2'),
+        precio: texto('.precio'),
+        precioSinImpuestos: (nota.match(/Precio s\/imp\. nac\.\s*(\$\s*[\d.]+)/) || [])[1] || '',
+        descuento: (nota.match(/(\d+%)/) || [])[1] || '',
+        garantia: gar,
+        categoria: tituloSeccion ? tituloSeccion.textContent.trim() : '',
+        src: tarjeta.querySelector('img').getAttribute('src')
+    };
+}
+
+document.querySelectorAll('article').forEach(function (tarjeta) {
+    tarjeta.tabIndex = 0;
+    tarjeta.classList.add('cursor-pointer', 'focus-visible:outline-3', 'focus-visible:outline-background', 'focus-visible:outline-offset-2');
+    tarjeta.setAttribute('aria-haspopup', 'dialog');
+});
+document.addEventListener('click', function (e) {
+    var tarjeta = e.target.closest('article');
+    if (!tarjeta || e.target.closest('input[type="button"]')) return;
+    abrirDetalle(productoDesdeTarjeta(tarjeta));
+});
+document.addEventListener('keydown', function (e) {
+    if ((e.key !== 'Enter' && e.key !== ' ') || !e.target.matches('article')) return;
+    e.preventDefault();
+    abrirDetalle(productoDesdeTarjeta(e.target));
+});
 
 // ============================================================
 // Inicio y Productos (index.html y productos.html): productos destacados que rotan cada 8 segundos
@@ -53,7 +173,11 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
     function tarjeta(p) {
         var a = document.createElement('a');
         a.className = 'flex flex-col gap-1.5 p-2.5 min-[768px]:gap-2 min-[768px]:p-3.5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:shadow-[0_8px_18px_rgba(15,23,42,0.18)] focus-visible:[transform:translateY(-3px)] focus-visible:shadow-[0_8px_18px_rgba(15,23,42,0.18)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2';
-        a.href = './productos.html#' + p.categoriaId;
+        a.href = './productos.html#' + p.categoriaId; // sin JavaScript lleva a la categoría
+        a.addEventListener('click', function (e) {
+            e.preventDefault();
+            abrirDetalle(p);
+        });
 
         var img = document.createElement('img');
         img.src = './' + p.imagen;
@@ -216,9 +340,16 @@ document.querySelectorAll('[data-abrir-categorias]').forEach(function (link) {
     var estado = document.getElementById('login-estado');
     if (!form) return;
 
-    // Si se llegó desde el carrito, se avisa por qué se pide iniciar sesión
-    if (new URLSearchParams(window.location.search).get('desde') === 'carrito') {
-        document.getElementById('login-aviso').classList.remove('hidden');
+    // Si se llegó desde el carrito o desde "Agregar al carrito", se avisa por qué se pide iniciar sesión
+    var avisos = {
+        carrito: 'Iniciá sesión para ver tu carrito.',
+        agregar: 'Iniciá sesión para agregar productos al carrito.'
+    };
+    var motivo = new URLSearchParams(window.location.search).get('desde');
+    if (avisos[motivo]) {
+        var aviso = document.getElementById('login-aviso');
+        aviso.textContent = avisos[motivo];
+        aviso.classList.remove('hidden');
     }
 
     // Mostrar / ocultar la contraseña

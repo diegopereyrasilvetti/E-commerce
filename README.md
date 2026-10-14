@@ -20,7 +20,8 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
   - tarjetas más chicas con ícono y nombre, debajo de la tarjeta de bienvenida;
   - el catálogo agrupado por categoría (solo se ve la elegida).
 - Tarjetas de producto en grilla a todo el ancho: dos por fila en celular, más columnas en pantallas grandes.
-- **Carrito**: el ícono del carrito lleva a `login.html` (con un aviso) si no hay un usuario con sesión iniciada. La sesión se guarda en `localStorage` con la clave `kodex-usuario`; cuando el login se conecte a un servidor, tiene que guardar ahí el usuario al iniciar sesión. Con sesión, el carrito queda en `#` hasta que exista la página del carrito.
+- **Detalle de producto**: al tocar una tarjeta de producto (o una de los destacados, o su botón "Ver producto") se abre una ventana con la imagen grande, el nombre, el precio, el descuento, el precio sin impuestos nacionales y la garantía, más un botón "Agregar al carrito". Se cierra con la X, con `Esc` o tocando afuera. Funciona también con el teclado (`Tab` y `Enter` sobre la tarjeta).
+- **Carrito**: el ícono del carrito y los botones "Agregar al carrito" de cualquier producto llevan a `login.html` (con un aviso) si no hay un usuario con sesión iniciada. La sesión se guarda en `localStorage` con la clave `kodex-usuario`; cuando el login se conecte a un servidor, tiene que guardar ahí el usuario al iniciar sesión. Con sesión, el ícono del carrito queda en `#` y los botones no hacen nada todavía: falta la lógica del carrito (está marcado en `js/index.js`). Los botones nuevos que agregues funcionan solos, sin configurar nada.
 - **Login**: usuario o email, contraseña con botón "Mostrar" / "Ocultar", "Recordarme", y validación de campos obligatorios. Todavía no hay servidor: al enviar solo se muestra un aviso y no se inicia sesión.
 - Botón "Subir" en el footer para volver al header.
 - Respeta la opción del sistema "reducir movimiento": no hay cambios automáticos ni animaciones.
@@ -94,6 +95,8 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html`, `produ
     "nombre": "Nombre del producto",
     "precio": "$ 100.000",
     "precioSinImpuestos": "$ 90.000",
+    "descuento": "10%",
+    "garantia": "12 meses",
     "imagen": "images/Productos/Fuente/imagen.jpg",
     "categoria": "Fuentes",
     "categoriaId": "fuentes"
@@ -103,6 +106,7 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html`, `produ
 Reglas a tener en cuenta:
 - Conviene copiar una tarjeta completa que ya exista y cambiar solo la imagen y los textos, así se conservan las clases.
 - El precio tiene que conservar la clase `precio` (además de sus clases de Tailwind): el selector "Ordenar por" la usa para leer el precio.
+- `descuento` y `garantia` de `js/productos.js` se muestran en la ventana de detalle de los destacados. Las tarjetas de `productos.html` leen esos datos de su propio texto, así que ahí hay que mantener el formato `Incluye 10% de descuento…`, `Precio s/imp. nac. $ …` y `Garantía - …`.
 - El `categoriaId` de `js/productos.js` es el `id` de la sección en `productos.html`.
 - Si cambiás un nombre o un precio en `productos.html`, cambialo también en `js/productos.js`.
 
