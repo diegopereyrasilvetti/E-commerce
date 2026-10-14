@@ -331,6 +331,98 @@ document.querySelectorAll('[data-abrir-categorias]').forEach(function (link) {
 });
 
 // ============================================================
+// Calculadora (calculate.html): cuello de botella entre procesador y placa de video
+// ============================================================
+// Compara el rendimiento estimado de cada componente (índices en js/hardware.js) según la resolución.
+(function () {
+    var form = document.getElementById('calc-form');
+    var datos = window.HARDWARE;
+    if (!form || !datos) return;
+
+    var selCpu = document.getElementById('calc-cpu');
+    var selGpu = document.getElementById('calc-gpu');
+    var selRes = document.getElementById('calc-res');
+
+    function llenar(select, lista) {
+        lista.forEach(function (c, i) {
+            var op = document.createElement('option');
+            op.value = String(i);
+            op.textContent = c.nombre;
+            select.appendChild(op);
+        });
+    }
+    llenar(selCpu, datos.procesadores);
+    llenar(selGpu, datos.placas);
+    llenar(selRes, datos.resoluciones);
+
+    function pct(n) { return Math.round(n * 100); }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var cpu = datos.procesadores[Number(selCpu.value)];
+        var gpu = datos.placas[Number(selGpu.value)];
+        var res = datos.resoluciones[Number(selRes.value)];
+
+        // Con el mismo índice, procesador y placa están equilibrados a 1080p.
+        // A mayor resolución la placa de video trabaja más, así que "rinde menos" para la misma exigencia.
+        var cpuRel = cpu.rendimiento / 100;
+        var gpuRel = (gpu.rendimiento / 100) / res.exigencia;
+
+        // Diferencia entre ambos, respecto del que más rinde (0 = equilibrados)
+        var limite = cpuRel < gpuRel ? 'cpu' : 'gpu';
+        var cuello = Math.abs(cpuRel - gpuRel) / Math.max(cpuRel, gpuRel);
+        var compat = 1 - cuello;
+
+        var veredicto, clases, detalle, trazo;
+        if (cuello <= 0.1) {
+            veredicto = 'Muy equilibrado'; clases = 'bg-[rgba(22,163,74,0.12)] text-[#166534]'; trazo = 'stroke-success';
+            detalle = 'El procesador y la placa de video rinden parecido: ninguno desperdicia al otro.';
+        } else if (cuello <= 0.2) {
+            veredicto = 'Bueno'; clases = 'bg-[rgba(22,163,74,0.12)] text-[#166534]'; trazo = 'stroke-success';
+            detalle = limite === 'cpu'
+                ? 'El procesador queda un poco por debajo de la placa de video, pero la diferencia es chica.'
+                : 'La placa de video queda un poco por debajo del procesador. En juegos es la situación más común y no es un problema.';
+        } else if (cuello <= 0.35) {
+            veredicto = 'Aceptable'; clases = 'bg-[rgba(245,158,11,0.15)] text-[#92400E]'; trazo = 'stroke-warning';
+            detalle = limite === 'cpu'
+                ? 'El procesador limita a la placa de video: puede que no aproveches toda su potencia, sobre todo a resoluciones bajas.'
+                : 'La placa de video limita al conjunto. Para jugar es aceptable; el procesador te queda de sobra.';
+        } else {
+            veredicto = 'Desbalanceado'; clases = 'bg-[rgba(220,38,38,0.1)] text-[#991B1B]'; trazo = 'stroke-error';
+            detalle = limite === 'cpu'
+                ? 'Hay un cuello de botella fuerte en el procesador: la placa de video queda muy desaprovechada. Conviene un procesador más potente.'
+                : 'Hay un cuello de botella fuerte en la placa de video: el procesador rinde mucho más de lo que la placa puede aprovechar.';
+        }
+
+        document.getElementById('calc-compat').textContent = pct(compat) + '%';
+        var v = document.getElementById('calc-veredicto');
+        v.textContent = veredicto;
+        v.className = 'px-3 py-1 rounded-full text-[0.85rem] font-bold ' + clases;
+        document.getElementById('calc-detalle').textContent =
+            cpu.nombre + ' + ' + gpu.nombre + ' a ' + res.nombre + ': ' + detalle +
+            (cuello > 0.1 ? ' Cuello de botella estimado: ' + pct(cuello) + '% en ' + (limite === 'cpu' ? 'el procesador' : 'la placa de video') + '.' : '');
+        document.getElementById('calc-cpu-valor').textContent = pct(Math.min(cpuRel, 1)) + '%';
+        document.getElementById('calc-gpu-valor').textContent = pct(Math.min(gpuRel, 1)) + '%';
+        document.getElementById('calc-res-texto').textContent = 'a ' + res.nombre;
+        document.getElementById('calc-cpu-barra').style.width = pct(Math.min(cpuRel, 1)) + '%';
+        document.getElementById('calc-gpu-barra').style.width = pct(Math.min(gpuRel, 1)) + '%';
+
+        var caja = document.getElementById('calc-resultado');
+        caja.classList.remove('hidden');
+
+        // Círculo: el arco llena la parte que corresponde al porcentaje de compatibilidad
+        var arco = document.getElementById('calc-donut-arco');
+        var largo = 2 * Math.PI * 52; // circunferencia del círculo (radio 52)
+        arco.setAttribute('class', '[transition:stroke-dashoffset_0.6s_ease,stroke_0.3s] motion-reduce:[transition:none]! ' + trazo);
+        document.getElementById('calc-donut').setAttribute('aria-label', 'Compatibilidad: ' + pct(compat) + '%');
+        requestAnimationFrame(function () {
+            arco.style.strokeDashoffset = String(largo * (1 - compat));
+        });
+        caja.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+    });
+})();
+
+// ============================================================
 // Login (login.html): formulario de inicio de sesión
 // ============================================================
 (function () {

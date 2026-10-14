@@ -6,6 +6,7 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
 
 - **Inicio (`index.html`)**: carrusel de promociones, productos destacados que rotan solos, beneficios (envío gratis, cuotas, compra segura, productos originales), acceso por categoría y banner de cuotas y envíos.
 - **Productos (`productos.html`)**: botón de categorías, productos destacados que rotan solos, tarjeta de bienvenida, acceso a las 10 categorías y catálogo agrupado por categoría. Al elegir una categoría se muestran solo sus productos, y cada categoría se puede ordenar por precio.
+- **Calculadora de cuello de botella (`calculate.html`)**: estima qué tan equilibrados están un procesador y una placa de video según la resolución en la que se juega.
 - **Login (`login.html`)**: formulario de inicio de sesión con el mismo header (solo el logo, centrado) y footer del resto del sitio.
 
 ## Características
@@ -39,6 +40,7 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 ├── login.html            Inicio de sesión (formulario sin servidor todavía)
 ├── js/
 │   ├── index.js          Todo el JavaScript del sitio (carrusel, destacados, orden, login, botón Subir)
+│   ├── hardware.js       Procesadores, placas de video y resoluciones de la calculadora
 │   └── productos.js      Copia de los productos para "Productos destacados" (se usa en el inicio y en productos)
 ├── data/
 │   └── productos.json    Ejemplos de productos (no se usa en las páginas)
@@ -118,6 +120,15 @@ Una categoría nueva se muestra en varios lugares de `productos.html`; hay que a
 2. Una tarjeta en el desplegable "Categorías" (`<details>`) y otra en las tarjetas chicas de abajo de la bienvenida. Copiá una de cada una y cambiá el `href`, el ícono y el nombre.
 3. Una tarjeta en "Comprá por categoría" de `index.html`, con el `href` `./productos.html#id`.
 4. Una carpeta con su nombre en `images/Productos/` para las imágenes.
+
+## Calculadora de cuello de botella
+
+La página `calculate.html` compara un procesador y una placa de video según la resolución. Los datos están en `js/hardware.js` y la lógica en `js/index.js`.
+
+- **Qué elige el usuario:** procesador, placa de video y resolución. Nada más.
+- **Datos:** cada componente tiene un `rendimiento`, un índice orientativo de rendimiento en juegos a 1080p. 100 es gama media (un Ryzen 5 5600 o una RTX 4060): un procesador y una placa con el mismo índice se consideran equilibrados. **Son valores estimados, no mediciones**: conviene revisarlos con reseñas o benchmarks antes de publicar. Para agregar un componente, sumá una línea con su nombre y su índice.
+- **Cálculo:** a la placa de video se le suma exigencia según la resolución (`resoluciones` en el mismo archivo, valores ajustables). El cuello de botella es la diferencia entre los dos, respecto del que más rinde. Hasta 10% se considera muy equilibrado, hasta 20% bueno, hasta 35% aceptable y más que eso desbalanceado.
+- **Es una estimación:** no mide FPS reales; depende del juego, de la memoria RAM y de la configuración.
 
 ## Cómo ejecutarlo
 
