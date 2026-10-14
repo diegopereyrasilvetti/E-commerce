@@ -153,21 +153,27 @@ document.addEventListener('keydown', function (e) {
     var productos = window.PRODUCTOS || [];
     if (!grid || !productos.length) { if (grid) grid.parentNode.hidden = true; return; }
 
-    var CANTIDAD = 4;      // tarjetas visibles
     var INTERVALO = 8000;  // cambia cada 8 segundos
     var actuales = [];
     var timer = null;
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Cuántas tarjetas mostrar: las que entran en una fila (en celular, 2 filas de 2 columnas)
+    function cantidad() {
+        var columnas = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+        return columnas > 2 ? columnas : 4;
+    }
+
     // Mezcla la lista y toma N, evitando repetir los que ya se ven si alcanzan los demás
     function elegir() {
+        var n = cantidad();
         var pool = productos.filter(function (p) { return actuales.indexOf(p) === -1; });
-        if (pool.length < CANTIDAD) pool = productos.slice();
+        if (pool.length < n) pool = productos.slice();
         for (var i = pool.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
         }
-        return pool.slice(0, Math.min(CANTIDAD, pool.length));
+        return pool.slice(0, Math.min(n, pool.length));
     }
 
     function tarjeta(p) {
@@ -234,6 +240,14 @@ document.addEventListener('keydown', function (e) {
 
     render();
     start();
+
+    var ajuste = null;
+    window.addEventListener('resize', function () {
+        clearTimeout(ajuste);
+        ajuste = setTimeout(function () {
+            if (cantidad() !== actuales.length) render();
+        }, 150);
+    });
 })();
 
 // ============================================================

@@ -14,7 +14,7 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
 - Diseño responsive para celular, tablet y escritorio.
 - Header fijo arriba al hacer scroll, con menú en línea en escritorio y menú hamburguesa en pantallas chicas, accesible con teclado.
 - Carrusel con cambio automático cada 4 segundos, flechas y pausa al pasar el mouse. Cada imagen lleva a la página de productos.
-- **Productos destacados** (en el inicio y en la página de productos): 4 productos al azar que cambian cada 8 segundos, con pausa al pasar el mouse o enfocar con teclado. Cada tarjeta lleva a su categoría.
+- **Productos destacados** (en el inicio y en la página de productos): productos al azar que cambian cada 8 segundos y llenan una fila (de 3 a 8 tarjetas según el ancho de la pantalla; en celular, 4 en dos filas), con pausa al pasar el mouse o enfocar con teclado. Cada tarjeta lleva a su categoría.
 - **Ordenar por precio**: cada categoría tiene un selector "Más relevantes", "Menor precio" y "Mayor precio".
 - **Categorías de tres formas** en la página de productos, todas llevan a la misma categoría:
   - botón "Categorías" arriba y centrado, que al abrirse muestra tarjetas grandes (de a 2 por fila en celular, de a 5 desde tablet) y se cierra solo al elegir una;
