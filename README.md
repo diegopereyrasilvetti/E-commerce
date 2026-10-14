@@ -28,8 +28,11 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 ```
 ├── index.html            Página de inicio (estilos con clases de Tailwind)
 ├── productos.html        Catálogo de productos (estilos con clases de Tailwind)
+├── login.html            Inicio de sesión (formulario sin servidor todavía)
+├── js/
+│   ├── index.js          Todo el JavaScript del sitio (carrusel, destacados, orden, login, botón Subir)
+│   └── productos.js      Copia de los productos para "Productos destacados" (se usa en el inicio)
 ├── data/
-│   ├── productos.js      Copia de los productos para "Productos destacados" (se usa en el inicio)
 │   └── productos.json    Ejemplos de productos (no se usa en las páginas)
 ├── images/
 │   ├── marketing/        Banners del carrusel y de promociones
@@ -39,7 +42,7 @@ Procesadores, Mothers, Placas de Video, Memorias RAM, Almacenamiento, Refrigerac
 
 ## Paleta de colores
 
-Se define en el bloque `@theme` que está en el `<head>` de `index.html` y de `productos.html`, y se usa con clases de Tailwind (`bg-primary`, `text-secondary`, `border-background`, etc.). Si cambiás un color, cambialo en las dos páginas.
+Se define en el bloque `@theme` que está en el `<head>` de `index.html`, `productos.html` y `login.html`, y se usa con clases de Tailwind (`bg-primary`, `text-secondary`, `border-background`, etc.). Si cambiás un color, cambialo en las tres páginas.
 
 | Variable | Color | Uso |
 |---|---|---|
@@ -56,7 +59,7 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html` y de `p
 - Todo el diseño está en las clases de cada elemento. Para cambiar cómo se ve algo, editá sus clases en el HTML.
 - En el bloque `<style type="text/tailwindcss">` del `<head>` hay tres configuraciones: la variante `hover` (para que funcione también en pantallas táctiles), los cortes de pantalla `max-400`, `max-599`, `max-767` y `max-1099` (equivalentes a `max-width`), y el tema con la paleta. Los cortes hacia arriba usan los de Tailwind, por ejemplo `min-[768px]:` y `min-[1100px]:`.
 - Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. No las borres.
-- Las tarjetas de "Productos destacados" se crean desde JavaScript (al final de `index.html`), con sus clases de Tailwind escritas ahí.
+- Las tarjetas de "Productos destacados" se crean desde JavaScript (en `js/index.js`), con sus clases de Tailwind escritas ahí.
 
 ## Cómo agregar un producto
 
@@ -77,7 +80,7 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html` y de `p
 </article>
 ```
 
-4. Para que aparezca en "Productos destacados" del inicio, agregalo también en `data/productos.js`, con el mismo formato que los demás:
+4. Para que aparezca en "Productos destacados" del inicio, agregalo también en `js/productos.js`, con el mismo formato que los demás:
 
 ```js
 {
@@ -93,8 +96,8 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html` y de `p
 Reglas a tener en cuenta:
 - Conviene copiar una tarjeta completa que ya exista y cambiar solo la imagen y los textos, así se conservan las clases.
 - El precio tiene que conservar la clase `precio` (además de sus clases de Tailwind): el selector "Ordenar por" la usa para leer el precio.
-- El `categoriaId` de `data/productos.js` es el `id` de la sección en `productos.html`.
-- Si cambiás un nombre o un precio en `productos.html`, cambialo también en `data/productos.js`.
+- El `categoriaId` de `js/productos.js` es el `id` de la sección en `productos.html`.
+- Si cambiás un nombre o un precio en `productos.html`, cambialo también en `js/productos.js`.
 
 ## Cómo ejecutarlo
 
@@ -102,7 +105,7 @@ Abrí `index.html` en el navegador. Tailwind, la fuente y los íconos se cargan 
 
 ## Tecnologías
 
-- HTML5 y JavaScript sin librerías
+- HTML5 y JavaScript sin librerías (todo el JavaScript está en `js/`)
 - [Tailwind CSS v4](https://tailwindcss.com/) (versión CDN) para todos los estilos
 - [Font Awesome](https://fontawesome.com/) para los íconos
 - Google Fonts (Nata Sans)
