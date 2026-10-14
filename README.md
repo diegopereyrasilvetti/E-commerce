@@ -140,3 +140,23 @@ Abrí `index.html` en el navegador. Tailwind, la fuente y los íconos se cargan 
 - [Tailwind CSS v4](https://tailwindcss.com/) (versión CDN) para todos los estilos
 - [Font Awesome](https://fontawesome.com/) para los íconos
 - Google Fonts (Nata Sans)
+
+## Versión en React (carpeta `react/`)
+
+Dentro de `react/` hay un proyecto nuevo con **React + Vite + Tailwind** para ir pasando el sitio a React de a poco. **El sitio de esta carpeta (los `.html` de la raíz) sigue funcionando igual y no se toca.**
+
+Para trabajar con React:
+
+```
+cd react
+npm install     # una sola vez
+npm run dev     # abre el sitio en http://localhost:5173
+npm run build   # genera react/dist para publicar
+```
+
+Qué hay hecho y qué falta:
+
+- **Hecho:** React Router con las rutas `/`, `/productos`, `/login` y `/calculadora`; el header (completo y solo con el logo) y el footer como componentes (`react/src/components/`); la paleta y los cortes de pantalla en `react/src/index.css`; los productos y los datos de la calculadora como módulos (`react/src/data/`).
+- **Falta:** pasar el contenido de cada página. Las páginas de `react/src/pages/` son de arranque; el diseño y la lógica de verdad están en los `.html` y en `js/` de la raíz, para copiarlos de ahí. Orden sugerido: Login, Calculadora, Productos y, al final, Inicio (carrusel y destacados).
+- **Imágenes:** no se duplican. La versión React usa esta misma carpeta `images/` (se sirven en `/images/...`).
+- **Datos:** `react/src/data/` es una copia de `js/productos.js` y `js/hardware.js`. Si cambiás un producto en el sitio original, hay que cambiarlo también ahí.

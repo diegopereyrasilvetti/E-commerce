@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+/* hover real también en pantallas táctiles (por defecto Tailwind v4 solo lo aplica si el dispositivo tiene mouse) */
+@custom-variant hover (&:hover);
+/* cortes de pantalla "hasta" (max-width es inclusivo): max-400:, max-599:, max-767:, max-1099: */
+@custom-variant max-400 (@media (max-width: 400px));
+@custom-variant max-599 (@media (max-width: 599px));
+@custom-variant max-767 (@media (max-width: 767px));
+@custom-variant max-1099 (@media (max-width: 1099px));
+
+/* Paleta del sitio: se usa con clases como bg-primary, text-secondary, border-background */
+@theme static {
+  --color-primary: #4F46E5;    /* Azul índigo */
+  --color-secondary: #0F172A;  /* Azul noche */
+  --color-background: #06B6D4; /* Cian */
+  --color-text: #000;          /* Texto principal (sobre fondos oscuros) */
+  --color-surface: #F1F5F9;    /* Fondo claro de la página */
+
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-error: #DC2626;
+}
