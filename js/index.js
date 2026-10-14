@@ -12,6 +12,20 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
 });
 
 // ============================================================
+// Todas las páginas: el carrito pide iniciar sesión
+// ============================================================
+// La sesión se guarda en localStorage con la clave "kodex-usuario" (cuando el login esté
+// conectado a un servidor, tiene que guardar ahí el usuario al iniciar sesión).
+// Sin usuario, el carrito lleva a login.html.
+(function () {
+    var usuario = null;
+    try { usuario = localStorage.getItem('kodex-usuario'); } catch (e) { /* navegación privada: se trata como sin sesión */ }
+    document.querySelectorAll('[data-carrito]').forEach(function (link) {
+        link.href = usuario ? '#' : './login.html?desde=carrito'; // todavía no hay página del carrito
+    });
+})();
+
+// ============================================================
 // Inicio y Productos (index.html y productos.html): productos destacados que rotan cada 8 segundos
 // ============================================================
 (function () {
@@ -201,6 +215,11 @@ document.querySelectorAll('[data-abrir-categorias]').forEach(function (link) {
     var boton = document.getElementById('login-mostrar');
     var estado = document.getElementById('login-estado');
     if (!form) return;
+
+    // Si se llegó desde el carrito, se avisa por qué se pide iniciar sesión
+    if (new URLSearchParams(window.location.search).get('desde') === 'carrito') {
+        document.getElementById('login-aviso').classList.remove('hidden');
+    }
 
     // Mostrar / ocultar la contraseña
     boton.addEventListener('click', function () {

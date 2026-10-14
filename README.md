@@ -20,6 +20,7 @@ Proyecto de e-commerce de productos de computación, desarrollado con HTML, Java
   - tarjetas más chicas con ícono y nombre, debajo de la tarjeta de bienvenida;
   - el catálogo agrupado por categoría (solo se ve la elegida).
 - Tarjetas de producto en grilla a todo el ancho: dos por fila en celular, más columnas en pantallas grandes.
+- **Carrito**: el ícono del carrito lleva a `login.html` (con un aviso) si no hay un usuario con sesión iniciada. La sesión se guarda en `localStorage` con la clave `kodex-usuario`; cuando el login se conecte a un servidor, tiene que guardar ahí el usuario al iniciar sesión. Con sesión, el carrito queda en `#` hasta que exista la página del carrito.
 - **Login**: usuario o email, contraseña con botón "Mostrar" / "Ocultar", "Recordarme", y validación de campos obligatorios. Todavía no hay servidor: al enviar solo se muestra un aviso y no se inicia sesión.
 - Botón "Subir" en el footer para volver al header.
 - Respeta la opción del sistema "reducir movimiento": no hay cambios automáticos ni animaciones.
@@ -64,7 +65,7 @@ Se define en el bloque `@theme` que está en el `<head>` de `index.html`, `produ
 
 - Todo el diseño está en las clases de cada elemento. Para cambiar cómo se ve algo, editá sus clases en el HTML.
 - En el bloque `<style type="text/tailwindcss">` del `<head>` hay tres configuraciones: la variante `hover` (para que funcione también en pantallas táctiles), los cortes de pantalla `max-400`, `max-599`, `max-767` y `max-1099` (equivalentes a `max-width`), y el tema con la paleta. Los cortes hacia arriba usan los de Tailwind, por ejemplo `min-[768px]:` y `min-[1100px]:`.
-- Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. También se usan por `id`: `destacados-grid`, `login-form`, `password`, `login-mostrar` y `login-estado`. No los borres.
+- Algunas clases no tienen estilo y se mantienen porque el JavaScript las usa para encontrar elementos: `carousel`, `carousel-track`, `carousel-slide`, `carousel-prev`, `carousel-next`, `footer-top`, `categoria`, `card`, `article`, `precio` y `orden-select`. También se usan por `id`: `destacados-grid`, `login-form`, `password`, `login-mostrar`, `login-estado` y `login-aviso`, y el atributo `data-carrito` del ícono del carrito. No los borres.
 - Las tarjetas de "Productos destacados" se crean desde JavaScript (en `js/index.js`), con sus clases de Tailwind escritas ahí.
 
 ## Cómo agregar un producto
