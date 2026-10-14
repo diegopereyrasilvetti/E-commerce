@@ -77,9 +77,30 @@
             <button type="button" class="carousel-next absolute top-1/2 z-[2] w-10 h-10 max-767:w-8 max-767:h-8 [transform:translateY(-50%)] rounded-[50%] bg-[rgba(15,23,42,0.7)] text-white text-[1.1rem] max-767:text-[0.9rem] cursor-pointer [transition:background-color_0.2s] motion-reduce:[transition:none]! hover:bg-primary focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2 right-2" aria-label="Imagen siguiente">&#10095;</button>
         </div>
     </section>
-    <a class="block w-full bg-[#011833] mb-6 text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:-outline-offset-3" href="./calculate.html">
-        <img class="block w-[min(884px,100%)] aspect-[1536/452] mx-auto object-cover" src="./images/marketing/calculate%202.png" alt="Calculadora de cuello de botella: analizá si tus componentes son compatibles. Probar calculadora">
-    </a>
+    <section class="w-full mb-6" aria-label="Calculadora de cuello de botella">
+        <a class="flex items-center gap-4 px-4 min-[768px]:px-10 py-4 bg-[linear-gradient(135deg,#011833,#0B2A5C)] text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:-outline-offset-3" href="./calculate.html" aria-label="Calculadora de cuello de botella: analizá si tus componentes son compatibles. Probar calculadora">
+            <div class="relative size-14 shrink-0" aria-hidden="true">
+                <svg viewBox="0 0 56 56" class="size-full -rotate-90">
+                    <circle cx="28" cy="28" r="22" fill="none" stroke-width="6" class="stroke-[rgba(255,255,255,0.15)]"></circle>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke-width="6" stroke-linecap="round" class="stroke-background" style="stroke-dasharray:138.23;stroke-dashoffset:8.29"></circle>
+                </svg>
+                <span class="absolute inset-0 grid place-content-center text-[0.9rem] font-bold leading-none">94%</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+                <h2 class="text-[0.95rem] min-[768px]:text-[1.25rem] font-bold leading-[1.2] min-[768px]:whitespace-nowrap">Calculadora de <span class="text-background">cuello de botella</span></h2>
+                <p class="hidden min-[900px]:block min-[1280px]:hidden text-[0.8rem] text-[#CBD5E1] whitespace-nowrap">Analizá si tu procesador y tu placa de video son compatibles antes de comprar.</p>
+            </div>
+
+            <div class="hidden min-[1280px]:flex items-center gap-4 ml-auto" aria-hidden="true">
+                <span class="px-3 py-1 rounded-full bg-[rgba(22,163,74,0.2)] text-[#86EFAC] text-[0.75rem] font-bold whitespace-nowrap">Muy equilibrado</span>
+                <span class="flex items-center gap-2 text-[0.75rem] font-semibold">CPU<span class="w-16 h-2 rounded-full bg-[rgba(255,255,255,0.12)] overflow-hidden"><span class="block h-full rounded-full bg-primary" style="width:90%"></span></span>90%</span>
+                <span class="flex items-center gap-2 text-[0.75rem] font-semibold">GPU<span class="w-16 h-2 rounded-full bg-[rgba(255,255,255,0.12)] overflow-hidden"><span class="block h-full rounded-full bg-background" style="width:85%"></span></span>85%</span>
+                <span class="text-[0.6rem] font-semibold uppercase tracking-[0.05em] text-[#94A3B8]">Ejemplo</span>
+            </div>
+
+            <span class="ml-auto min-[1280px]:ml-0 shrink-0 inline-flex items-center gap-2 px-4 min-[768px]:px-5 py-2 rounded-full bg-primary text-white text-[0.8rem] min-[768px]:text-[0.9rem] font-semibold whitespace-nowrap">Probar<span class="hidden min-[768px]:inline"> calculadora</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+        </a>
+    </section>
     <section class="w-full px-4 min-[768px]:px-10" id="destacados" aria-labelledby="destacados-titulo">
         <div class="flex items-baseline justify-between gap-3">
             <h2 class="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(0.98rem,2.2vw,1.15rem)] text-secondary" id="destacados-titulo">Productos destacados</h2>
