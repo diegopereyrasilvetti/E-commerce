@@ -170,6 +170,15 @@ document.querySelectorAll('.footer-top').forEach(function (b) {
 })();
 
 // ============================================================
+// Productos (productos.html): el desplegable "Categorías" se cierra al elegir una
+// ============================================================
+document.querySelectorAll('details a').forEach(function (link) {
+    link.addEventListener('click', function () {
+        link.closest('details').open = false;
+    });
+});
+
+// ============================================================
 // Login (login.html): formulario de inicio de sesión
 // ============================================================
 (function () {
