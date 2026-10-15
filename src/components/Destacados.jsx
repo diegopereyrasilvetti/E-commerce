@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PRODUCTOS } from '../data/productos.js'
+import { useCatalogo } from '../catalogo.jsx'
 
 const INTERVALO = 8000 // cambia cada 8 segundos
 
 // Mezcla la lista y toma `n`, evitando repetir los que ya se ven si alcanzan los demás
-function elegir(n, actuales) {
-  let pool = PRODUCTOS.filter((p) => !actuales.includes(p))
-  if (pool.length < n) pool = PRODUCTOS.slice()
+function elegir(n, actuales, catalogo) {
+  let pool = catalogo.filter((p) => !actuales.includes(p))
+  if (pool.length < n) pool = catalogo.slice()
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[pool[i], pool[j]] = [pool[j], pool[i]]
@@ -20,6 +20,7 @@ const sinAnimaciones = () => window.matchMedia('(prefers-reduced-motion: reduce)
 // "Productos destacados": tarjetas al azar que se renuevan solas.
 // `verTodos` es el enlace que va a la derecha del título; `titulo` y `className` ajustan el texto y el margen de la sección.
 export default function Destacados({ onAbrir, verTodos, titulo = 'Productos destacados', className = '' }) {
+  const { productos: catalogo } = useCatalogo()
   const grilla = useRef(null)
   const [productos, setProductos] = useState([])
   const [visible, setVisible] = useState(true)
@@ -33,11 +34,12 @@ export default function Destacados({ onAbrir, verTodos, titulo = 'Productos dest
   }, [])
 
   const renovar = useCallback(() => {
-    actuales.current = elegir(cantidad(), actuales.current)
+    actuales.current = elegir(cantidad(), actuales.current, catalogo)
     setProductos(actuales.current)
-  }, [cantidad])
+  }, [cantidad, catalogo])
 
   useEffect(() => {
+    if (!catalogo.length) return // todavía no llegaron los productos de la API
     renovar()
     let espera
     const timer = sinAnimaciones()
@@ -61,9 +63,9 @@ export default function Destacados({ onAbrir, verTodos, titulo = 'Productos dest
       clearTimeout(ajuste)
       window.removeEventListener('resize', alCambiarTamano)
     }
-  }, [renovar, cantidad])
+  }, [renovar, cantidad, catalogo])
 
-  if (!PRODUCTOS.length) return null
+  if (!catalogo.length) return null
 
   // Se pausa mientras el mouse o el foco del teclado están sobre las tarjetas
   const pausar = () => { pausado.current = true }

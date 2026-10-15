@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCatalogo } from '../catalogo.jsx'
 import { buscarProductos, idDe, rutaDe } from '../utils/productos.js'
 
 const MINIMO = 2 // letras que hay que escribir para que aparezcan sugerencias
@@ -8,6 +9,7 @@ const MINIMO = 2 // letras que hay que escribir para que aparezcan sugerencias
 // Funciona con el teclado (flechas, Enter y Esc) y avisa su estado a los lectores de pantalla (patrón "combobox").
 export default function BuscadorProductos() {
   const navegar = useNavigate()
+  const { productos: catalogo, cargando } = useCatalogo()
   const id = useId()
   const contenedor = useRef(null)
   const [consulta, setConsulta] = useState('')
@@ -15,7 +17,7 @@ export default function BuscadorProductos() {
   const [activo, setActivo] = useState(-1) // posición de la sugerencia resaltada con el teclado
 
   const escribiendo = consulta.trim().length >= MINIMO
-  const resultados = useMemo(() => (escribiendo ? buscarProductos(consulta) : []), [consulta, escribiendo])
+  const resultados = useMemo(() => (escribiendo ? buscarProductos(catalogo, consulta) : []), [catalogo, consulta, escribiendo])
   const visible = abierto && escribiendo
 
   // Se cierra al tocar fuera
@@ -81,7 +83,9 @@ export default function BuscadorProductos() {
       {visible && (
         <div className="absolute top-full left-1/2 z-30 mt-2 w-[min(380px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-xl border border-[rgba(15,23,42,0.08)] bg-white shadow-[0_8px_24px_rgba(15,23,42,0.2)] min-[1100px]:left-0 min-[1100px]:translate-x-0 min-[1100px]:w-[max(100%,380px)]">
           {resultados.length === 0 ? (
-            <p className="px-4 py-3 text-[0.9rem] text-[#475569]" role="status">No encontramos productos para “{consulta.trim()}”.</p>
+            <p className="px-4 py-3 text-[0.9rem] text-[#475569]" role="status">
+              {cargando ? 'Cargando productos…' : `No encontramos productos para “${consulta.trim()}”.`}
+            </p>
           ) : (
             <ul id={id + '-lista'} role="listbox" aria-label="Productos sugeridos" className="max-h-[min(70vh,440px)] overflow-y-auto p-1.5">
               {resultados.map((p, i) => (
