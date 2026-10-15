@@ -59,7 +59,7 @@ src/
   lib/supabase.js       Cliente de Supabase
   layouts/Layout.jsx    Header + página + footer
   pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, NoEncontrada
-  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida
+  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas
   data/                 Productos, categorías y datos de la calculadora
   utils/                Sesión, título de la pestaña, validaciones y hook useFormulario
 ```
@@ -73,7 +73,7 @@ src/
 
 ## Qué falta (a propósito)
 
-- **"Finalizar compra" no cobra:** muestra un aviso, no hay pagos conectados.
+- **No hay ventas:** "Finalizar compra" está desactivado y el footer aclara que es un proyecto de portfolio. Se activa con `COMPRAS_HABILITADAS` en `src/config.js`, cuando exista un medio de pago y un backend de pedidos.
 - **Los productos están en un archivo.** Las próximas etapas son guardar perfiles y direcciones en PostgreSQL y, más adelante, una API propia con Node.js y Express para productos y pedidos.
 - El índice de rendimiento de la calculadora es una estimación orientativa, no mediciones reales.
 

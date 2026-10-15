@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { nombreDe, useAuth } from '../auth.jsx'
+import { primerNombre, useAuth } from '../auth.jsx'
+import MenuUsuario, { Avatar } from './MenuUsuario.jsx'
 import { CartBadge } from '../cart.jsx'
 
 // Header del sitio. Con `soloLogo` muestra solo el logo centrado (login y calculadora).
@@ -51,13 +52,19 @@ export default function Header({ soloLogo = false }) {
               </label>
               <input type="checkbox" name="menu" id="menu" checked={menuAbierto} onChange={(e) => setMenuAbierto(e.target.checked)} className="peer absolute w-px h-px opacity-0 overflow-hidden [clip-path:inset(50%)] min-[1100px]:hidden" aria-label="Abrir menú de navegación" />
               <ul className="absolute top-full left-0 z-10 w-full max-h-0 overflow-hidden flex flex-col items-center gap-[25px] bg-secondary invisible [transition:max-height_0.4s,visibility_0s_0.4s] peer-checked:max-h-[400px] peer-checked:visible peer-checked:[transition:max-height_0.4s,visibility_0s] peer-checked:border-b peer-checked:border-[rgba(24,52,155,0.12)] min-[1100px]:visible min-[1100px]:static min-[1100px]:w-auto min-[1100px]:max-h-none min-[1100px]:overflow-visible min-[1100px]:flex-row min-[1100px]:gap-[20px] min-[1280px]:gap-[30px] min-[1100px]:bg-transparent min-[1100px]:[transition:none] min-[1100px]:peer-checked:border-b-0 motion-reduce:[transition:none]!">
+                  {usuario && (
+                    <li className="min-[1100px]:hidden mt-[25px] flex items-center gap-3 text-white">
+                      <Avatar usuario={usuario} className="size-9" />
+                      <span className="text-[20px] font-semibold">Hola, {primerNombre(usuario)}</span>
+                    </li>
+                  )}
                   <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" to="/">Inicio</Link></li>
                   <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" to="/productos">Productos</Link></li>
                   <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" to="/calculadora">Calculadora</Link></li>
                   {usuario ? (
                     <>
-                      <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><span className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold whitespace-nowrap opacity-80">Hola, {nombreDe(usuario)}</span></li>
-                      <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><button type="button" onClick={cerrarSesion} className="cursor-pointer text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary">Cerrar sesión</button></li>
+                      <li className="max-1099:hidden"><MenuUsuario usuario={usuario} onCerrarSesion={cerrarSesion} /></li>
+                      <li className="min-[1100px]:hidden last:mb-[25px]"><button type="button" onClick={cerrarSesion} className="cursor-pointer text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary">Cerrar sesión</button></li>
                     </>
                   ) : (
                   <li className="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" to="/login">Iniciar sesión</Link></li>

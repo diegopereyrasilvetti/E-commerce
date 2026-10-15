@@ -13,6 +13,8 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './auth.jsx'
+import { COMPRAS_HABILITADAS } from './config.js'
+import CarritoVacio from './components/CarritoVacio.jsx'
 import { useTitulo } from './utils/useTitulo.js'
 
 // ---------- Configuración ----------
@@ -181,22 +183,7 @@ export default function Cart() {
   const total = medio === 'transferencia' ? totalTransferencia : subtotal
   const valorCuota = Math.ceil(total / cuotas)
 
-  if (items.length === 0) {
-    return (
-      <main className="flex-1 px-4 py-10">
-        <div className="mx-auto w-full max-w-[720px] rounded-2xl bg-white p-8 text-center shadow-[0_4px_12px_rgba(15,23,42,0.12)]">
-          <h2 className="text-[1.5rem] font-bold">Tu carrito está vacío</h2>
-          <p className="mt-2 text-[#475569]">Agregá productos para ver el total y las cuotas.</p>
-          <Link
-            to="/productos"
-            className="mt-5 inline-block rounded-[50px] bg-primary px-6 py-2.5 font-semibold text-white hover:bg-secondary"
-          >
-            Ver productos
-          </Link>
-        </div>
-      </main>
-    )
-  }
+  if (items.length === 0) return <CarritoVacio />
 
   return (
     <main className="flex-1 px-4 py-8 min-[768px]:px-10">
@@ -308,11 +295,18 @@ export default function Cart() {
 
             <button
               type="button"
+              disabled={!COMPRAS_HABILITADAS}
+              aria-describedby={COMPRAS_HABILITADAS ? undefined : 'compras-aviso'}
               onClick={() => setAviso('Todavía no hay un medio de pago conectado: el pedido no se envía a ningún lado.')}
-              className="mt-5 h-11 w-full cursor-pointer rounded-[50px] bg-primary text-[0.95rem] font-semibold text-white shadow-[0_4px_8px_rgba(0,0,0,0.25)] hover:bg-secondary"
+              className="mt-5 h-11 w-full cursor-pointer rounded-[50px] bg-primary text-[0.95rem] font-semibold text-white shadow-[0_4px_8px_rgba(0,0,0,0.25)] hover:bg-secondary disabled:cursor-not-allowed disabled:bg-[#E2E8F0] disabled:text-[#475569] disabled:shadow-none disabled:hover:bg-[#E2E8F0]"
             >
               Finalizar compra
             </button>
+            {!COMPRAS_HABILITADAS && (
+              <p id="compras-aviso" className="mt-3 text-center text-[0.8rem] text-[#475569]">
+                Las compras todavía no están habilitadas. Este sitio es un proyecto de demostración.
+              </p>
+            )}
             {aviso && <p role="status" className="mt-3 rounded-xl bg-[#F1F5F9] p-3 text-[0.85rem] text-[#475569]">{aviso}</p>}
           </aside>
         </div>

@@ -51,6 +51,12 @@ export function nombreDe(usuario) {
   return usuario?.user_metadata?.nombre || usuario?.email?.split('@')[0] || ''
 }
 
+// Primer nombre con la primera letra en mayúscula: "diego pereyra" -> "Diego"
+export function primerNombre(usuario) {
+  const primero = nombreDe(usuario).trim().split(/\s+/)[0] || ''
+  return primero.charAt(0).toUpperCase() + primero.slice(1)
+}
+
 const MENSAJES = {
   invalid_credentials: 'El email o la contraseña no son correctos.',
   email_not_confirmed: 'Todavía no confirmaste tu email. Revisá tu correo y tocá el enlace que te enviamos.',

@@ -18,8 +18,8 @@ function elegir(n, actuales) {
 const sinAnimaciones = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // "Productos destacados": tarjetas al azar que se renuevan solas.
-// `verTodos` es el enlace que va a la derecha del título; `className` ajusta el margen de la sección.
-export default function Destacados({ onAbrir, verTodos, className = '' }) {
+// `verTodos` es el enlace que va a la derecha del título; `titulo` y `className` ajustan el texto y el margen de la sección.
+export default function Destacados({ onAbrir, verTodos, titulo = 'Productos destacados', className = '' }) {
   const grilla = useRef(null)
   const [productos, setProductos] = useState([])
   const [visible, setVisible] = useState(true)
@@ -73,7 +73,7 @@ export default function Destacados({ onAbrir, verTodos, className = '' }) {
     <section className={className} aria-labelledby="destacados-titulo">
       <div className="flex items-baseline justify-between gap-3">
         <h2 id="destacados-titulo" className="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(0.98rem,2.2vw,1.15rem)] text-secondary">
-          Productos destacados
+          {titulo}
         </h2>
         {verTodos}
       </div>
