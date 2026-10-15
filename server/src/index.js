@@ -4,6 +4,8 @@ import { leerConfig } from './config.js'
 import {
   crearClienteSupabase,
   crearRepositorioCategorias,
+  crearRepositorioDirecciones,
+  crearRepositorioPedidos,
   crearRepositorioProductos,
 } from './repositorios/supabase.js'
 
@@ -15,11 +17,14 @@ const app = crearApp({
   repositorios: {
     productos: crearRepositorioProductos(supabase),
     categorias: crearRepositorioCategorias(supabase),
+    pedidos: crearRepositorioPedidos(supabase),
+    direcciones: crearRepositorioDirecciones(supabase),
   },
   corsOrigins: config.CORS_ORIGINS,
   produccion: config.NODE_ENV === 'production',
+  pedidosHabilitados: config.PEDIDOS_HABILITADOS,
 })
 
 app.listen(config.PORT, () => {
-  console.log(`API de Kodex lista en http://localhost:${config.PORT} (${config.NODE_ENV})`)
+  console.log(`API de Kodex lista en http://localhost:${config.PORT} (${config.NODE_ENV}, pedidos ${config.PEDIDOS_HABILITADOS ? 'habilitados' : 'deshabilitados'})`)
 })

@@ -5,12 +5,13 @@ import helmet from 'helmet'
 import { requerirRol, requerirSesion } from './middleware/auth.js'
 import { manejarErrores, noEncontrada } from './middleware/errores.js'
 import { rutasCategorias } from './routes/categorias.js'
+import { rutasPedidos } from './routes/pedidos.js'
 import { rutasProductos } from './routes/productos.js'
 import { rutasSalud } from './routes/salud.js'
 import { rutasYo } from './routes/yo.js'
 
 // Arma la aplicación. Recibe sus dependencias (repositorios de datos y configuración) para poder probarla con datos falsos.
-export function crearApp({ repositorios, autenticador, corsOrigins = [], produccion = false }) {
+export function crearApp({ repositorios, autenticador, corsOrigins = [], produccion = false, pedidosHabilitados = false }) {
   const app = express()
 
   app.disable('x-powered-by')
@@ -42,10 +43,20 @@ export function crearApp({ repositorios, autenticador, corsOrigins = [], producc
     message: { error: { codigo: 'DEMASIADAS_SOLICITUDES', mensaje: 'Hiciste demasiados cambios seguidos. Esperá unos minutos.' } },
   })
 
+  const limitarPedidos = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 20,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: { codigo: 'DEMASIADAS_SOLICITUDES', mensaje: 'Hiciste demasiados pedidos seguidos. Esperá unos minutos.' } },
+  })
+
   app.use('/api/salud', rutasSalud())
   app.use('/api/yo', rutasYo(sesion))
   app.use('/api/categorias', rutasCategorias(repositorios.categorias))
   app.use('/api/productos', rutasProductos(repositorios.productos, { sesion, soloAdmin, limitarEscrituras }))
+
+  app.use('/api/pedidos', rutasPedidos(repositorios, { sesion, soloAdmin, limitarPedidos, pedidosHabilitados }))
 
   app.use(noEncontrada)
   app.use(manejarErrores)

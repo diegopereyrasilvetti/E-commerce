@@ -62,6 +62,13 @@ npm run dev                                # el sitio (en otra terminal); Vite r
 | POST | `/api/productos` | **Solo admin.** Crea un producto |
 | PATCH | `/api/productos/:slug` | **Solo admin.** Modifica los campos enviados |
 | DELETE | `/api/productos/:slug` | **Solo admin.** Oculta el producto del catálogo (no lo borra de la base) |
+| POST | `/api/pedidos` | **Con sesión.** Crea un pedido: `{ items: [{ slug, cantidad }], medioPago, cuotas?, direccionId }` |
+| GET | `/api/pedidos` | **Con sesión.** Mis pedidos (con `?todos=true`, un administrador ve los de todos) |
+| GET | `/api/pedidos/:id` | **Con sesión.** Un pedido (solo el dueño o un administrador) |
+| POST | `/api/pedidos/:id/cancelar` | **Con sesión.** El dueño cancela su pedido mientras esté pendiente |
+| PATCH | `/api/pedidos/:id/estado` | **Solo admin.** Pasa el pedido al siguiente estado |
+
+**Pedidos:** el navegador solo manda qué productos quiere, en qué cantidad, el medio de pago, las cuotas y el id de una dirección suya. Los precios, el descuento por transferencia, el total y el valor de la cuota **los calcula el servidor** con los precios de la base, y la dirección se copia al pedido (si después se edita o se borra, el pedido conserva a dónde se mandó). Cada usuario solo ve y cancela sus pedidos; consultar el de otro responde 404. Estados: `pendiente → pagado → enviado → entregado` (o `cancelado`). Mientras `PEDIDOS_HABILITADOS` sea `false` (por defecto), la API responde 503: el sitio es de demostración y no realiza ventas.
 
 **Autenticación y roles:** las rutas protegidas piden la cabecera `Authorization: Bearer <token>` con el token de sesión de Supabase. El servidor no confía en el cliente: le pregunta a Supabase si el token es válido y lee el rol (`cliente` o `admin`) de la tabla `perfiles`. Sin sesión responde 401; con sesión pero sin permiso, 403. Las escrituras tienen además un límite de 60 por IP cada 15 minutos.
 
@@ -74,6 +81,7 @@ Las migraciones (SQL) están en `supabase/migrations/` y se ejecutan en orden en
 1. `001_perfiles_y_direcciones.sql`: tablas `perfiles` y `direcciones`, sus políticas de seguridad (RLS) y el trigger que crea el perfil al registrarse.
 2. `002_catalogo.sql`: tablas `categorias` y `productos`. No tienen políticas: solo la API (clave secret) puede leerlas.
 3. `003_roles.sql`: columna `rol` en `perfiles`. Los usuarios no pueden cambiarse el rol a sí mismos (se les quita el permiso de escribir esa columna). Para hacer administrador a alguien se ejecuta un `update` a mano en el SQL Editor (está explicado en el archivo).
+4. `004_pedidos.sql`: tablas `pedidos` y `pedido_items` (con la dirección y los precios copiados al momento de comprar) y la función `crear_pedido`, que guarda el pedido y sus renglones en una sola transacción. Solo la API puede usarlas.
 
 ### Variables de entorno
 
@@ -105,7 +113,8 @@ server/                 API REST (Node.js + Express)
   src/app.js            Arma la aplicación: seguridad y rutas
   src/index.js          Arranque: lee la configuración y conecta con Supabase
   src/auth.js           Verifica el token de Supabase y obtiene el rol del usuario
-  src/routes/           Rutas: salud, yo, categorías, productos
+  src/pedidos/          Cuentas de un pedido (totales, descuento y cuotas)
+  src/routes/           Rutas: salud, yo, categorías, productos, pedidos
   src/repositorios/     Acceso a la base de datos (Supabase)
   src/middleware/       Sesión y roles, manejo de errores
   seed/                 Productos de partida y su conversión a filas de la base

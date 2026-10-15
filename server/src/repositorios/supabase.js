@@ -71,6 +71,13 @@ export function crearRepositorioProductos(supabase) {
       return data ? aProducto(data) : null
     },
 
+    // Los productos activos con esos identificadores (los que no existan o estén ocultos simplemente no vuelven)
+    async obtenerVarios(slugs) {
+      const { data, error } = await supabase.from('productos').select(CON_CATEGORIA).in('slug', slugs).eq('activo', true)
+      if (error) throw error
+      return data.map(aProducto)
+    },
+
     // Crea un producto al final de la lista. El identificador (slug) sale del nombre.
     async crear(datos) {
       const { data: ultimo, error: errorUltimo } = await supabase.from('productos').select('posicion').order('posicion', { ascending: false }).limit(1).maybeSingle()
@@ -101,6 +108,88 @@ export function crearRepositorioCategorias(supabase) {
   return {
     async listar() {
       const { data, error } = await supabase.from('categorias').select('id, nombre').order('orden', { ascending: true })
+      if (error) throw error
+      return data
+    },
+  }
+}
+
+// De una fila de la tabla `pedidos` (con sus renglones) al objeto que devuelve la API
+export function aPedido(fila) {
+  return {
+    id: fila.id,
+    usuarioId: fila.usuario_id,
+    estado: fila.estado,
+    medioPago: fila.medio_pago,
+    cuotas: fila.cuotas,
+    subtotal: fila.subtotal,
+    descuento: fila.descuento,
+    total: fila.total,
+    valorCuota: fila.valor_cuota,
+    envio: {
+      destinatario: fila.envio_destinatario,
+      calle: fila.envio_calle,
+      numero: fila.envio_numero,
+      pisoDepto: fila.envio_piso_depto,
+      ciudad: fila.envio_ciudad,
+      provincia: fila.envio_provincia,
+      codigoPostal: fila.envio_codigo_postal,
+      telefono: fila.envio_telefono,
+    },
+    items: (fila.pedido_items ?? []).map((i) => ({
+      productoId: i.producto_id,
+      nombre: i.nombre,
+      precioUnitario: i.precio_unitario,
+      descuentoPct: i.descuento_pct,
+      cantidad: i.cantidad,
+      subtotal: i.subtotal,
+    })),
+    creadoEn: fila.creado_en,
+  }
+}
+
+const CON_ITEMS = '*, pedido_items(*)'
+
+export function crearRepositorioPedidos(supabase) {
+  return {
+    // Guarda el pedido y sus renglones de una sola vez (función crear_pedido de la base, que es una transacción)
+    async crear({ usuarioId, pedido, items }) {
+      const { data: id, error } = await supabase.rpc('crear_pedido', { p_usuario_id: usuarioId, p_pedido: pedido, p_items: items })
+      if (error) throw error
+      return this.obtener(id)
+    },
+
+    async obtener(id) {
+      const { data, error } = await supabase.from('pedidos').select(CON_ITEMS).eq('id', id).maybeSingle()
+      if (error) throw error
+      return data ? aPedido(data) : null
+    },
+
+    // Los pedidos de un usuario (o de todos si usuarioId es null), del más nuevo al más viejo
+    async listar({ usuarioId, pagina, limite }) {
+      let consulta = supabase.from('pedidos').select(CON_ITEMS, { count: 'exact' }).order('creado_en', { ascending: false })
+      if (usuarioId) consulta = consulta.eq('usuario_id', usuarioId)
+      const desde = (pagina - 1) * limite
+      const { data, count, error } = await consulta.range(desde, desde + limite - 1)
+      if (error) throw error
+      return { pedidos: data.map(aPedido), total: count ?? 0 }
+    },
+
+    // Cambia el estado solo si todavía está en el estado anterior (evita pisar un cambio hecho en el mismo momento).
+    // Devuelve el pedido actualizado o null.
+    async cambiarEstado(id, desde, hacia) {
+      const { data, error } = await supabase.from('pedidos').update({ estado: hacia }).eq('id', id).eq('estado', desde).select(CON_ITEMS).maybeSingle()
+      if (error) throw error
+      return data ? aPedido(data) : null
+    },
+  }
+}
+
+export function crearRepositorioDirecciones(supabase) {
+  return {
+    // Una dirección, pero solo si es de ese usuario
+    async obtenerDeUsuario(id, usuarioId) {
+      const { data, error } = await supabase.from('direcciones').select('*').eq('id', id).eq('usuario_id', usuarioId).maybeSingle()
       if (error) throw error
       return data
     },
