@@ -25,7 +25,8 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 - [React Router 7](https://reactrouter.com) para las rutas
 - [Vite 8](https://vite.dev) como herramienta de desarrollo y compilación
 - [Tailwind CSS 4](https://tailwindcss.com) con la paleta del sitio definida en `src/index.css`
-- [Supabase](https://supabase.com): Auth para las cuentas y PostgreSQL para los perfiles y las direcciones
+- [Supabase](https://supabase.com): Auth para las cuentas y PostgreSQL para perfiles, direcciones y catálogo
+- [Node.js](https://nodejs.org) + [Express 5](https://expressjs.com) para la API REST, con [Zod](https://zod.dev) (validación), Helmet, CORS y límite de solicitudes (seguridad)
 - Font Awesome para los íconos
 
 ## Cómo correrlo
@@ -39,9 +40,33 @@ npm run build   # genera la carpeta dist/ para publicar
 npm run preview # prueba el build local
 ```
 
+### API (carpeta `server/`)
+
+El catálogo de productos sale de una API propia que lee de PostgreSQL. Para correrla:
+
+```bash
+npm --prefix server install                # una sola vez
+# copiá server/.env.example como server/.env y completalo (ver abajo)
+npm --prefix server run cargar-productos   # carga los productos en la base (una sola vez, o para actualizarlos)
+npm --prefix server run dev                # API en http://localhost:3001
+npm run dev                                # el sitio (en otra terminal); Vite redirige /api al servidor
+```
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| GET | `/api/salud` | Comprueba que el servidor está andando |
+| GET | `/api/categorias` | Lista las categorías |
+| GET | `/api/productos` | Lista productos. Parámetros: `categoria`, `q` (búsqueda), `orden` (`relevancia`, `precio_asc`, `precio_desc`), `pagina`, `limite` (máx. 100) |
+| GET | `/api/productos/:slug` | Un producto |
+
+Las respuestas de error tienen siempre la forma `{ "error": { "codigo", "mensaje", "detalles?" } }`. Seguridad: todo dato de entrada se valida con Zod, cabeceras seguras con Helmet, CORS limitado a los sitios configurados, 300 solicitudes cada 15 minutos por IP y el cuerpo de las solicitudes limitado a 10 KB. El servidor usa la clave *secret* de Supabase (solo en `server/.env`), que se salta las reglas RLS, por eso las reglas de acceso se programan en la API.
+
 ### Base de datos
 
-El esquema (tablas `perfiles` y `direcciones`, sus políticas de seguridad y el trigger que crea el perfil al registrarse) está en `supabase/schema.sql`. Para usar tu propio proyecto de Supabase, ejecutalo en *SQL Editor*.
+Las migraciones (SQL) están en `supabase/migrations/` y se ejecutan en orden en el *SQL Editor* de Supabase:
+
+1. `001_perfiles_y_direcciones.sql`: tablas `perfiles` y `direcciones`, sus políticas de seguridad (RLS) y el trigger que crea el perfil al registrarse.
+2. `002_catalogo.sql`: tablas `categorias` y `productos`. No tienen políticas: solo la API (clave secret) puede leerlas.
 
 ### Variables de entorno
 
@@ -56,26 +81,35 @@ Para publicarlo en un hosting estático hay que redirigir todas las direcciones 
 ```
 index.html              Único HTML de la aplicación
 public/images/          Imágenes de productos y promociones (se sirven en /images/...)
-src/
-  main.jsx              Punto de entrada: Router y CartProvider
+src/                    Frontend (React)
+  main.jsx              Punto de entrada: Router y proveedores (sesión, catálogo, carrito)
   App.jsx               Rutas
   index.css             Tailwind, paleta de colores y cortes de pantalla
   auth.jsx              Sesión con Supabase: AuthProvider y hook useAuth
-  lib/cuenta.js         Consultas a la base: perfil y direcciones
+  catalogo.jsx          Catálogo traído de la API: CatalogoProvider y hook useCatalogo
   cart.jsx              Carrito: estado, hook useCart, botón, globito y página /carrito
-  lib/supabase.js       Cliente de Supabase
-supabase/schema.sql     Tablas, índices, políticas de seguridad y trigger de la base
   layouts/Layout.jsx    Header + página + footer
   pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
   components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos
-  data/                 Productos, categorías y datos de la calculadora
-  utils/                Sesión, título de la pestaña, validaciones, hook useFormulario y búsqueda de productos
+  lib/                  supabase.js (cliente), api.js (cliente de la API), cuenta.js (perfil y direcciones)
+  data/                 Categorías y datos de la calculadora
+  utils/                Dinero, validaciones, búsqueda de productos, hook useFormulario, título de la pestaña
+server/                 API REST (Node.js + Express)
+  src/app.js            Arma la aplicación: seguridad y rutas
+  src/index.js          Arranque: lee la configuración y conecta con Supabase
+  src/routes/           Rutas: salud, categorías, productos
+  src/repositorios/     Acceso a la base de datos (Supabase)
+  src/middleware/       Manejo de errores
+  seed/                 Productos de partida y su conversión a filas de la base
+  scripts/              Carga de productos en la base
+  test/                 Repositorio en memoria y servidor de prueba (sin base de datos)
+supabase/migrations/    Esquema de la base de datos (SQL)
 ```
 
 ## Decisiones de diseño
 
 - **Un solo estado del carrito para toda la app.** `CartProvider` usa `useReducer` y comparte el carrito por contexto; cualquier componente lo lee con `useCart()`. Los totales se calculan a partir de los productos, no se guardan.
-- **Los productos son datos, no HTML.** Para agregar uno se suma un objeto en `src/data/productos.js` y aparece solo en su categoría, en los destacados y en el detalle.
+- **Los productos son datos, no HTML.** Para agregar uno se suma a la base de datos (o a `server/seed/productos.js` y se corre `npm --prefix server run cargar-productos`) y aparece solo en su categoría, en los destacados y en el detalle.
 - **Rutas con la categoría en la dirección** (`/productos/:categoria`): se puede compartir el enlace de una categoría y funcionan los botones de atrás y adelante.
 - **Sin dependencias de más:** el carrusel, la ventana de detalle (`<dialog>`), el gráfico circular (SVG) y el cálculo son código propio.
 

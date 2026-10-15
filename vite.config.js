@@ -5,4 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 // Las imágenes están en public/images y se sirven en /images/...
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // En desarrollo, las llamadas a /api van al servidor local (carpeta server/)
+  server: { proxy: { '/api': 'http://localhost:3001' } },
 })

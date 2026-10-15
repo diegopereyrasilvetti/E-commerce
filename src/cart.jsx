@@ -7,7 +7,7 @@
    - CartBadge ........... globito con la cantidad de productos (para el ícono del carrito del header).
    - Cart (export default) página /carrito: productos, cantidades, total, medios de pago y cuotas.
 
-   Un "producto" es un objeto como los de src/data/productos.js:
+   Un "producto" es un objeto como los que arma src/lib/api.js a partir de la API:
    { nombre, precio: "$ 723.042", imagen: "images/...", categoria, descuento: "10%", garantia: "12 meses" } */
 
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './auth.jsx'
 import { COMPRAS_HABILITADAS } from './config.js'
 import CarritoVacio from './components/CarritoVacio.jsx'
+import { formatoPesos, precioANumero } from './utils/dinero.js'
 import { useTitulo } from './utils/useTitulo.js'
 
 // ---------- Configuración ----------
@@ -24,15 +25,7 @@ const CANTIDAD_MAXIMA = 99
 export const OPCIONES_CUOTAS = [1, 6, 12, 18]
 
 // ---------- Ayudas ----------
-// "$ 723.042" -> 723042
-export function precioANumero(texto) {
-  return Number(String(texto).replace(/[^\d]/g, '')) || 0
-}
-
-// 723042 -> "$ 723.042"
-export function formatoPesos(numero) {
-  return '$ ' + Math.round(numero).toLocaleString('es-AR')
-}
+export { precioANumero, formatoPesos } // se siguen pudiendo importar desde acá
 
 // "10%" -> 10
 function porcentaje(texto) {

@@ -4,7 +4,7 @@ import Destacados from '../components/Destacados.jsx'
 import ProductoCard from '../components/ProductoCard.jsx'
 import ProductoDetalle from '../components/ProductoDetalle.jsx'
 import { CATEGORIAS } from '../data/categorias.js'
-import { PRODUCTOS } from '../data/productos.js'
+import { useCatalogo } from '../catalogo.jsx'
 import { claveDe, precioANumero } from '../cart.jsx'
 import { idDe, productoPorId } from '../utils/productos.js'
 import { useTitulo } from '../utils/useTitulo.js'
@@ -62,7 +62,8 @@ export default function Productos() {
   useTitulo(categoria ? categoria.nombre : 'Productos')
   const [categoriasAbiertas, setCategoriasAbiertas] = useState(false)
   const [params, setParams] = useSearchParams()
-  const detalle = productoPorId(params.get('producto')) ?? null
+  const { productos: catalogo, cargando, error: errorCatalogo, recargar } = useCatalogo()
+  const detalle = productoPorId(catalogo, params.get('producto')) ?? null
   // Abrir o cerrar el detalle cambia la dirección (al cerrar se reemplaza para no llenar el historial)
   const setDetalle = (producto) => setParams(producto ? { producto: idDe(producto) } : {}, { replace: !producto })
   const desplegable = useRef(null)
@@ -121,12 +122,21 @@ export default function Productos() {
       {categoria ? (
         <>
           <div ref={seccion} className="min-w-0 min-[900px]:col-span-2">
-            <Categoria
-              key={categoria.id}
-              categoria={categoria}
-              productos={PRODUCTOS.filter((p) => p.categoriaId === categoria.id)}
-              onAbrir={setDetalle}
-            />
+            {cargando ? (
+              <p className="mt-6 rounded-2xl bg-white p-6 text-center text-[#475569]" role="status">Cargando productos…</p>
+            ) : errorCatalogo ? (
+              <div className="mt-6 rounded-2xl bg-white p-6 text-center" role="alert">
+                <p className="font-semibold text-error">{errorCatalogo}</p>
+                <button type="button" onClick={recargar} className="mt-4 h-10 cursor-pointer rounded-[50px] bg-primary px-6 text-[0.9rem] font-semibold text-white hover:bg-secondary">Reintentar</button>
+              </div>
+            ) : (
+              <Categoria
+                key={categoria.id}
+                categoria={categoria}
+                productos={catalogo.filter((p) => p.categoriaId === categoria.id)}
+                onAbrir={setDetalle}
+              />
+            )}
           </div>
           {miniNav}
         </>

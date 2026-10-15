@@ -1,7 +1,6 @@
-/* Productos de la tienda. Para agregar uno, sumá un objeto a la lista:
-   - categoriaId: uno de los ids de src/data/categorias.js (define en qué categoría aparece)
-   - imagen: ruta dentro de public/ (por ejemplo "images/Productos/Cooler/coolerx3.jpg"); se usa también como identificador en el carrito
-   - precio, precioSinImpuestos: texto con el formato "$ 723.042"; descuento: por pago con transferencia ("10%") */
+/* Productos de partida. Se cargan en la base de datos con: npm --prefix server run cargar-productos
+   Después de cargarlos, el catálogo se administra en la base (Supabase) y desde la API; este archivo es solo la semilla.
+   "imagen" es una ruta dentro de public/ del frontend (por ejemplo "images/Productos/Cooler/coolerx3.jpg"). */
 export const PRODUCTOS = [
     {
         "nombre": "Procesador AMD Ryzen 7 5800X3D 4.5GHz Turbo AM4 10th Anniversary Edition",
