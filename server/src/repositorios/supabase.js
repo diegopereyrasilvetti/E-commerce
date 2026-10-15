@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
+import { ErrorHttp } from '../errores.js'
+import { slugDe } from '../slug.js'
 
 // Conexión del servidor a la base de datos. Usa la clave SECRET: tiene acceso total, por eso vive solo en el servidor
 // (nunca en el frontend) y por eso las reglas de quién puede qué se programan acá, en la API.
@@ -27,6 +29,23 @@ function limpiarBusqueda(texto) {
   return texto.replace(/[%_\\]/g, ' ').trim()
 }
 
+// De los datos que manda un administrador (camelCase) a las columnas de la tabla (solo los campos presentes)
+function aColumnas(datos) {
+  const columnas = {}
+  const mapa = { nombre: 'nombre', precio: 'precio', precioSinImpuestos: 'precio_sin_impuestos', descuento: 'descuento', garantia: 'garantia', imagen: 'imagen', categoriaId: 'categoria_id', activo: 'activo' }
+  for (const [campo, columna] of Object.entries(mapa)) if (datos[campo] !== undefined) columnas[columna] = datos[campo]
+  return columnas
+}
+
+// Errores de la base que el cliente puede entender (nombre repetido, categoría que no existe); el resto sigue como error interno
+function traducirError(error) {
+  if (error.code === '23505') return new ErrorHttp(409, 'PRODUCTO_DUPLICADO', 'Ya existe un producto con ese nombre.')
+  if (error.code === '23503') return new ErrorHttp(400, 'CATEGORIA_INEXISTENTE', 'La categoría indicada no existe.')
+  return error
+}
+
+const CON_CATEGORIA = '*, categorias(nombre)'
+
 export function crearRepositorioProductos(supabase) {
   return {
     async listar({ categoria, q, orden, pagina, limite }) {
@@ -47,14 +66,33 @@ export function crearRepositorioProductos(supabase) {
     },
 
     async obtener(slug) {
-      const { data, error } = await supabase
-        .from('productos')
-        .select('*, categorias(nombre)')
-        .eq('slug', slug)
-        .eq('activo', true)
-        .maybeSingle()
+      const { data, error } = await supabase.from('productos').select(CON_CATEGORIA).eq('slug', slug).eq('activo', true).maybeSingle()
       if (error) throw error
       return data ? aProducto(data) : null
+    },
+
+    // Crea un producto al final de la lista. El identificador (slug) sale del nombre.
+    async crear(datos) {
+      const { data: ultimo, error: errorUltimo } = await supabase.from('productos').select('posicion').order('posicion', { ascending: false }).limit(1).maybeSingle()
+      if (errorUltimo) throw errorUltimo
+      const fila = { ...aColumnas(datos), slug: slugDe(datos.nombre), posicion: (ultimo?.posicion ?? -1) + 1 }
+      const { data, error } = await supabase.from('productos').insert(fila).select(CON_CATEGORIA).single()
+      if (error) throw traducirError(error)
+      return aProducto(data)
+    },
+
+    // Modifica los campos enviados. Devuelve el producto actualizado o null si no existe.
+    async actualizar(slug, cambios) {
+      const { data, error } = await supabase.from('productos').update(aColumnas(cambios)).eq('slug', slug).select(CON_CATEGORIA).maybeSingle()
+      if (error) throw traducirError(error)
+      return data ? aProducto(data) : null
+    },
+
+    // Lo oculta del catálogo (no lo borra). Devuelve false si no existía o ya estaba oculto.
+    async desactivar(slug) {
+      const { data, error } = await supabase.from('productos').update({ activo: false }).eq('slug', slug).eq('activo', true).select('slug').maybeSingle()
+      if (error) throw error
+      return Boolean(data)
     },
   }
 }

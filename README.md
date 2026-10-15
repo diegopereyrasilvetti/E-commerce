@@ -58,6 +58,12 @@ npm run dev                                # el sitio (en otra terminal); Vite r
 | GET | `/api/categorias` | Lista las categorías |
 | GET | `/api/productos` | Lista productos. Parámetros: `categoria`, `q` (búsqueda), `orden` (`relevancia`, `precio_asc`, `precio_desc`), `pagina`, `limite` (máx. 100) |
 | GET | `/api/productos/:slug` | Un producto |
+| GET | `/api/yo` | **Con sesión.** Quién soy según el servidor: `id`, `email` y `rol` |
+| POST | `/api/productos` | **Solo admin.** Crea un producto |
+| PATCH | `/api/productos/:slug` | **Solo admin.** Modifica los campos enviados |
+| DELETE | `/api/productos/:slug` | **Solo admin.** Oculta el producto del catálogo (no lo borra de la base) |
+
+**Autenticación y roles:** las rutas protegidas piden la cabecera `Authorization: Bearer <token>` con el token de sesión de Supabase. El servidor no confía en el cliente: le pregunta a Supabase si el token es válido y lee el rol (`cliente` o `admin`) de la tabla `perfiles`. Sin sesión responde 401; con sesión pero sin permiso, 403. Las escrituras tienen además un límite de 60 por IP cada 15 minutos.
 
 Las respuestas de error tienen siempre la forma `{ "error": { "codigo", "mensaje", "detalles?" } }`. Seguridad: todo dato de entrada se valida con Zod, cabeceras seguras con Helmet, CORS limitado a los sitios configurados, 300 solicitudes cada 15 minutos por IP y el cuerpo de las solicitudes limitado a 10 KB. El servidor usa la clave *secret* de Supabase (solo en `server/.env`), que se salta las reglas RLS, por eso las reglas de acceso se programan en la API.
 
@@ -67,6 +73,7 @@ Las migraciones (SQL) están en `supabase/migrations/` y se ejecutan en orden en
 
 1. `001_perfiles_y_direcciones.sql`: tablas `perfiles` y `direcciones`, sus políticas de seguridad (RLS) y el trigger que crea el perfil al registrarse.
 2. `002_catalogo.sql`: tablas `categorias` y `productos`. No tienen políticas: solo la API (clave secret) puede leerlas.
+3. `003_roles.sql`: columna `rol` en `perfiles`. Los usuarios no pueden cambiarse el rol a sí mismos (se les quita el permiso de escribir esa columna). Para hacer administrador a alguien se ejecuta un `update` a mano en el SQL Editor (está explicado en el archivo).
 
 ### Variables de entorno
 
@@ -97,9 +104,10 @@ src/                    Frontend (React)
 server/                 API REST (Node.js + Express)
   src/app.js            Arma la aplicación: seguridad y rutas
   src/index.js          Arranque: lee la configuración y conecta con Supabase
-  src/routes/           Rutas: salud, categorías, productos
+  src/auth.js           Verifica el token de Supabase y obtiene el rol del usuario
+  src/routes/           Rutas: salud, yo, categorías, productos
   src/repositorios/     Acceso a la base de datos (Supabase)
-  src/middleware/       Manejo de errores
+  src/middleware/       Sesión y roles, manejo de errores
   seed/                 Productos de partida y su conversión a filas de la base
   scripts/              Carga de productos en la base
   test/                 Repositorio en memoria y servidor de prueba (sin base de datos)

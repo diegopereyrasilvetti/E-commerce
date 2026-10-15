@@ -1,4 +1,5 @@
 import { crearApp } from './app.js'
+import { crearAutenticador } from './auth.js'
 import { leerConfig } from './config.js'
 import {
   crearClienteSupabase,
@@ -10,6 +11,7 @@ const config = leerConfig()
 const supabase = crearClienteSupabase({ url: config.SUPABASE_URL, claveSecreta: config.SUPABASE_SECRET_KEY })
 
 const app = crearApp({
+  autenticador: crearAutenticador(supabase),
   repositorios: {
     productos: crearRepositorioProductos(supabase),
     categorias: crearRepositorioCategorias(supabase),

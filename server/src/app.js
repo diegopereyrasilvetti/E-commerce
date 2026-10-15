@@ -2,13 +2,15 @@ import cors from 'cors'
 import express from 'express'
 import { rateLimit } from 'express-rate-limit'
 import helmet from 'helmet'
+import { requerirRol, requerirSesion } from './middleware/auth.js'
 import { manejarErrores, noEncontrada } from './middleware/errores.js'
 import { rutasCategorias } from './routes/categorias.js'
 import { rutasProductos } from './routes/productos.js'
 import { rutasSalud } from './routes/salud.js'
+import { rutasYo } from './routes/yo.js'
 
 // Arma la aplicación. Recibe sus dependencias (repositorios de datos y configuración) para poder probarla con datos falsos.
-export function crearApp({ repositorios, corsOrigins = [], produccion = false }) {
+export function crearApp({ repositorios, autenticador, corsOrigins = [], produccion = false }) {
   const app = express()
 
   app.disable('x-powered-by')
@@ -29,9 +31,21 @@ export function crearApp({ repositorios, corsOrigins = [], produccion = false })
   )
   app.use(express.json({ limit: '10kb' }))
 
+  // Quién hace la solicitud y qué puede hacer; las escrituras (crear, modificar, borrar) tienen un límite más estricto
+  const sesion = requerirSesion(autenticador)
+  const soloAdmin = requerirRol('admin')
+  const limitarEscrituras = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 60,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: { codigo: 'DEMASIADAS_SOLICITUDES', mensaje: 'Hiciste demasiados cambios seguidos. Esperá unos minutos.' } },
+  })
+
   app.use('/api/salud', rutasSalud())
+  app.use('/api/yo', rutasYo(sesion))
   app.use('/api/categorias', rutasCategorias(repositorios.categorias))
-  app.use('/api/productos', rutasProductos(repositorios.productos))
+  app.use('/api/productos', rutasProductos(repositorios.productos, { sesion, soloAdmin, limitarEscrituras }))
 
   app.use(noEncontrada)
   app.use(manejarErrores)

@@ -3,7 +3,9 @@
 
 import { filasDesdeSeed } from '../seed/filas.js'
 import { PRODUCTOS } from '../seed/productos.js'
+import { ErrorHttp } from '../src/errores.js'
 import { aProducto } from '../src/repositorios/supabase.js'
+import { slugDe } from '../src/slug.js'
 
 export const CATEGORIAS_DE_PRUEBA = [
   ['procesadores', 'Procesadores'], ['mothers', 'Mothers'], ['placas-de-video', 'Placas de Video'],
@@ -31,6 +33,33 @@ export function crearRepositoriosEnMemoria() {
       async obtener(slug) {
         const fila = filas.find((f) => f.slug === slug && f.activo)
         return fila ? aProducto(fila) : null
+      },
+      async crear(datos) {
+        const slug = slugDe(datos.nombre)
+        if (filas.some((f) => f.slug === slug)) throw new ErrorHttp(409, 'PRODUCTO_DUPLICADO', 'Ya existe un producto con ese nombre.')
+        if (!nombreDe[datos.categoriaId]) throw new ErrorHttp(400, 'CATEGORIA_INEXISTENTE', 'La categoría indicada no existe.')
+        const fila = {
+          id: 'id-' + filas.length, slug, nombre: datos.nombre, precio: datos.precio, precio_sin_impuestos: datos.precioSinImpuestos ?? null,
+          descuento: datos.descuento, garantia: datos.garantia ?? null, imagen: datos.imagen, categoria_id: datos.categoriaId, activo: true,
+          posicion: filas.length, categorias: { nombre: nombreDe[datos.categoriaId] },
+        }
+        filas.push(fila)
+        return aProducto(fila)
+      },
+      async actualizar(slug, cambios) {
+        const fila = filas.find((f) => f.slug === slug)
+        if (!fila) return null
+        if (cambios.categoriaId && !nombreDe[cambios.categoriaId]) throw new ErrorHttp(400, 'CATEGORIA_INEXISTENTE', 'La categoría indicada no existe.')
+        const mapa = { nombre: 'nombre', precio: 'precio', precioSinImpuestos: 'precio_sin_impuestos', descuento: 'descuento', garantia: 'garantia', imagen: 'imagen', categoriaId: 'categoria_id', activo: 'activo' }
+        for (const [campo, columna] of Object.entries(mapa)) if (cambios[campo] !== undefined) fila[columna] = cambios[campo]
+        fila.categorias = { nombre: nombreDe[fila.categoria_id] }
+        return aProducto(fila)
+      },
+      async desactivar(slug) {
+        const fila = filas.find((f) => f.slug === slug && f.activo)
+        if (!fila) return false
+        fila.activo = false
+        return true
       },
     },
     categorias: {
