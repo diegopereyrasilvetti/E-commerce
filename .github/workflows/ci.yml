@@ -1,0 +1,38 @@
+name: CI
+
+# Corre las pruebas y compila el sitio en cada push y en cada pull request.
+# No necesita claves: las pruebas usan datos en memoria, no se conectan a Supabase.
+on:
+  push:
+    branches: [main, etapa-4]
+  pull_request:
+
+jobs:
+  frontend:
+    name: Frontend (pruebas y build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  servidor:
+    name: Servidor (pruebas)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run coverage

@@ -1,0 +1,24 @@
+# Configuración del servidor (API) para Render: https://render.com
+# Se usa con "New + -> Blueprint" apuntando a este repositorio. Las claves NO van acá: se cargan en el panel de Render.
+services:
+  - type: web
+    name: kodex-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/salud
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false # se carga a mano en Render
+      - key: SUPABASE_SECRET_KEY
+        sync: false # la clave SECRET: se carga a mano en Render, nunca en este archivo
+      - key: CORS_ORIGINS
+        sync: false # direcciones del sitio, separadas por coma
+      - key: PEDIDOS_HABILITADOS
+        value: "false" # el sitio es de demostración

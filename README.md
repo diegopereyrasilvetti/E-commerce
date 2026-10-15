@@ -1,5 +1,7 @@
 # Kodex Tech Store
 
+[![CI](https://github.com/diegopereyrasilvetti/E-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/diegopereyrasilvetti/E-commerce/actions/workflows/ci.yml)
+
 Tienda online de hardware de PC (procesadores, placas de video, memorias, almacenamiento y más) hecha con **React, Vite y Tailwind CSS**. Es una aplicación de una sola página (SPA): un único `index.html` y las pantallas como componentes.
 
 ![Inicio](docs/inicio.png)
@@ -39,6 +41,18 @@ npm run dev     # desarrollo en http://localhost:5173
 npm run build   # genera la carpeta dist/ para publicar
 npm run preview # prueba el build local
 ```
+
+### Pruebas
+
+```bash
+npm test                       # frontend: validaciones, dinero y búsqueda (40 pruebas)
+npm --prefix server test       # servidor: API completa (142 pruebas)
+npm --prefix server run coverage   # lo mismo, con el porcentaje de código cubierto
+```
+
+Las pruebas del servidor levantan la API real con datos en memoria y usuarios simulados (Vitest + Supertest), así que no necesitan claves ni conexión a Supabase. Cubren el catálogo público, los permisos (sin sesión, cliente y administrador), las validaciones, los pedidos (cuentas, privacidad entre usuarios y estados), las cabeceras de seguridad, CORS y los límites de solicitudes, además de la lógica de acceso a la base con un cliente de Supabase simulado. Cobertura del servidor: ~99 % de las líneas. GitHub Actions las corre en cada push (`.github/workflows/ci.yml`).
+
+Además, las reglas de seguridad de la base (RLS, permisos por columna, transacciones y restricciones) se verificaron contra una base real de Supabase con usuarios temporales.
 
 ### API (carpeta `server/`)
 
@@ -89,7 +103,26 @@ Copiá `.env.example` como `.env.local` y completá la URL y la clave pública (
 
 En Supabase (*Authentication → URL Configuration*) hay que poner la **Site URL** (por ejemplo `http://localhost:5173`) y agregar la dirección del sitio en **Redirect URLs** (`http://localhost:5173/**`); si no, los enlaces de los correos (confirmar cuenta y recuperar contraseña) no vuelven al sitio.
 
-Para publicarlo en un hosting estático hay que redirigir todas las direcciones a `index.html` (así funcionan `/productos/mothers` o `/carrito` al recargar).
+## Publicación
+
+El proyecto se publica en dos partes:
+
+| Parte | Dónde | Configuración |
+|---|---|---|
+| Sitio (React) | [Vercel](https://vercel.com) | `vercel.json` redirige todas las direcciones a `index.html` (así funcionan `/productos/mothers` o `/carrito` al recargar) |
+| API (Express) | [Render](https://render.com) | `render.yaml` (servicio web con la carpeta `server/` como raíz) |
+| Base de datos y cuentas | [Supabase](https://supabase.com) | migraciones en `supabase/migrations/` |
+
+**Variables de entorno en Vercel** (*Settings → Environment Variables*, en Production y Preview):
+- `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`: la URL y la clave pública (*publishable*) de Supabase.
+- `VITE_API_URL`: la dirección de la API en Render, sin barra al final (por ejemplo `https://kodex-api.onrender.com`).
+
+**Variables de entorno en Render** (*Environment* del servicio):
+- `SUPABASE_URL` y `SUPABASE_SECRET_KEY`: la URL y la clave *secret* (solo se carga en el servidor).
+- `CORS_ORIGINS`: las direcciones del sitio que pueden usar la API, separadas por coma (por ejemplo `https://ecommerce-chi-hazel.vercel.app`).
+- `PEDIDOS_HABILITADOS`: `false` mientras el sitio sea de demostración.
+
+El plan gratuito de Render duerme el servidor tras 15 minutos sin uso: la primera visita después de un rato puede tardar entre 30 y 60 segundos (el sitio muestra "Cargando productos…" mientras tanto).
 
 ## Estructura
 
@@ -119,7 +152,7 @@ server/                 API REST (Node.js + Express)
   src/middleware/       Sesión y roles, manejo de errores
   seed/                 Productos de partida y su conversión a filas de la base
   scripts/              Carga de productos en la base
-  test/                 Repositorio en memoria y servidor de prueba (sin base de datos)
+  test/                 Pruebas automáticas, repositorio en memoria y servidor de prueba (sin base de datos)
 supabase/migrations/    Esquema de la base de datos (SQL)
 ```
 
