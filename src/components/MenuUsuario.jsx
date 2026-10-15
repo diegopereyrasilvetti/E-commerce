@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { primerNombre } from '../auth.jsx'
 
 // Círculo con la inicial del usuario
@@ -61,6 +62,15 @@ export default function MenuUsuario({ usuario, onCerrarSesion }) {
             <p className="truncate text-[0.8rem] text-[#475569]">{usuario.email}</p>
           </div>
           <hr className="my-1 border-[rgba(15,23,42,0.08)]" />
+          <Link
+            to="/cuenta"
+            role="menuitem"
+            onClick={() => setAbierto(false)}
+            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-[0.9rem] font-semibold text-secondary hover:bg-[rgba(15,23,42,0.06)] focus-visible:bg-[rgba(15,23,42,0.06)] focus-visible:outline-none"
+          >
+            <i className="fa-solid fa-user text-[0.85rem]" aria-hidden="true"></i>
+            Mi cuenta
+          </Link>
           <button
             type="button"
             role="menuitem"

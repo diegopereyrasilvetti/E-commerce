@@ -39,3 +39,23 @@ export const repetirPassword = (valor, todos) => {
 }
 
 export const aceptado = (valor) => (valor ? '' : 'Tenés que aceptar los términos para crear la cuenta.')
+
+// ---------- Cuenta: perfil y direcciones ----------
+
+// Crea una regla que solo pide que el campo no esté vacío
+export const obligatorio = (mensaje) => (valor) => (valor.trim() ? '' : mensaje)
+
+export const telefonoOpcional = (valor) => {
+  const v = valor.trim()
+  if (!v) return ''
+  if (!/^\+?[\d\s()-]{8,20}$/.test(v)) return 'El teléfono no es válido. Ejemplo: +54 11 5555-1234'
+  return ''
+}
+
+// Código postal argentino: 1425 (viejo) o C1425ABC (CPA)
+export const codigoPostal = (valor) => {
+  const v = valor.trim()
+  if (!v) return 'Ingresá el código postal.'
+  if (!/^[A-Za-z]?\d{4}([A-Za-z]{3})?$/.test(v)) return 'El código postal no es válido. Ejemplos: 1425 o C1425ABC'
+  return ''
+}

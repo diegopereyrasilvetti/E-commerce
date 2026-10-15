@@ -11,6 +11,7 @@ import { email, passwordIngreso } from '../utils/validaciones.js'
 const MOTIVOS = {
   carrito: { aviso: 'Iniciá sesión para ver tu carrito.', destino: '/carrito' },
   agregar: { aviso: 'Iniciá sesión para agregar productos al carrito.', destino: '/productos' },
+  cuenta: { aviso: 'Iniciá sesión para ver tu cuenta.', destino: '/cuenta' },
 }
 
 export default function Login() {

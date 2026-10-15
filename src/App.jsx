@@ -10,6 +10,7 @@ import Calculadora from './pages/Calculadora.jsx'
 import Cart from './cart.jsx'
 import RutaProtegida from './components/RutaProtegida.jsx'
 import NoEncontrada from './pages/NoEncontrada.jsx'
+import Cuenta from './pages/Cuenta.jsx'
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="productos/:categoria?" element={<Productos />} />
         <Route path="carrito" element={<RutaProtegida><Cart /></RutaProtegida>} />
         <Route path="calculadora" element={<Calculadora />} />
+        <Route path="cuenta" element={<RutaProtegida motivo="cuenta"><Cuenta /></RutaProtegida>} />
         <Route path="*" element={<NoEncontrada />} />
       </Route>
 

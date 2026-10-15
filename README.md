@@ -10,7 +10,8 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 - **Productos:** las 10 categorías, cada una con su lista y orden por menor o mayor precio. Al tocar un producto se abre una ventana con la imagen, los precios, el descuento y la garantía.
 - **Carrito:** agregar, cambiar cantidades, quitar y vaciar. Muestra subtotal, descuento por transferencia, total y cuotas sin interés (1, 6, 12 o 18). Se guarda en el navegador y sigue ahí al recargar.
 - **Calculadora de cuello de botella:** compara un procesador y una placa de video según la resolución, con un gráfico circular del porcentaje de compatibilidad.
-- **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` solo se abre con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
+- **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` y `/cuenta` solo se abren con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
+- **Mi cuenta (PostgreSQL):** el usuario edita su perfil y administra sus direcciones de envío (alta, edición, baja y dirección principal), guardadas en la base de datos. Cada usuario solo puede ver y modificar sus propios datos gracias a las políticas RLS.
 - **Responsive y accesible:** pensado para celular, tablet y escritorio; navegable con teclado y con respeto a `prefers-reduced-motion`.
 
 | Categoría | Calculadora | Celular |
@@ -23,7 +24,7 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 - [React Router 7](https://reactrouter.com) para las rutas
 - [Vite 8](https://vite.dev) como herramienta de desarrollo y compilación
 - [Tailwind CSS 4](https://tailwindcss.com) con la paleta del sitio definida en `src/index.css`
-- [Supabase](https://supabase.com) (Auth) para las cuentas de usuario
+- [Supabase](https://supabase.com): Auth para las cuentas y PostgreSQL para los perfiles y las direcciones
 - Font Awesome para los íconos
 
 ## Cómo correrlo
@@ -36,6 +37,10 @@ npm run dev     # desarrollo en http://localhost:5173
 npm run build   # genera la carpeta dist/ para publicar
 npm run preview # prueba el build local
 ```
+
+### Base de datos
+
+El esquema (tablas `perfiles` y `direcciones`, sus políticas de seguridad y el trigger que crea el perfil al registrarse) está en `supabase/schema.sql`. Para usar tu propio proyecto de Supabase, ejecutalo en *SQL Editor*.
 
 ### Variables de entorno
 
@@ -55,11 +60,13 @@ src/
   App.jsx               Rutas
   index.css             Tailwind, paleta de colores y cortes de pantalla
   auth.jsx              Sesión con Supabase: AuthProvider y hook useAuth
+  lib/cuenta.js         Consultas a la base: perfil y direcciones
   cart.jsx              Carrito: estado, hook useCart, botón, globito y página /carrito
   lib/supabase.js       Cliente de Supabase
+supabase/schema.sql     Tablas, índices, políticas de seguridad y trigger de la base
   layouts/Layout.jsx    Header + página + footer
-  pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, NoEncontrada
-  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas
+  pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
+  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion
   data/                 Productos, categorías y datos de la calculadora
   utils/                Sesión, título de la pestaña, validaciones y hook useFormulario
 ```
@@ -74,7 +81,7 @@ src/
 ## Qué falta (a propósito)
 
 - **No hay ventas:** "Finalizar compra" está desactivado y el footer aclara que es un proyecto de portfolio. Se activa con `COMPRAS_HABILITADAS` en `src/config.js`, cuando exista un medio de pago y un backend de pedidos.
-- **Los productos están en un archivo.** Las próximas etapas son guardar perfiles y direcciones en PostgreSQL y, más adelante, una API propia con Node.js y Express para productos y pedidos.
+- **Los productos están en un archivo.** La próxima etapa es una API propia con Node.js y Express para productos, usuarios y pedidos.
 - El índice de rendimiento de la calculadora es una estimación orientativa, no mediciones reales.
 
 ## Datos del carrito

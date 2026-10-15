@@ -64,6 +64,7 @@ export default function Header({ soloLogo = false }) {
                   {usuario ? (
                     <>
                       <li className="max-1099:hidden"><MenuUsuario usuario={usuario} onCerrarSesion={cerrarSesion} /></li>
+                      <li className="min-[1100px]:hidden"><Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" to="/cuenta">Mi cuenta</Link></li>
                       <li className="min-[1100px]:hidden last:mb-[25px]"><button type="button" onClick={cerrarSesion} className="cursor-pointer text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary">Cerrar sesión</button></li>
                     </>
                   ) : (
