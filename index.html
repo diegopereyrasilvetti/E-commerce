@@ -3,144 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kodex</title>
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="Encontrá productos de computación, componentes, periféricos y accesorios para PC. Calidad, variedad y todo lo que necesitás para potenciar tu equipo.">
+    <title>Kodex Tech Store</title>
+    <meta name="description" content="Kodex Tech Store: componentes de PC, periféricos y accesorios. Procesadores, placas de video, memorias, almacenamiento y más, con cuotas sin interés.">
+    <meta name="theme-color" content="#4F46E5">
+    <link rel="icon" type="image/png" href="/images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/0609dfb132.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-        /* hover real también en pantallas táctiles (por defecto Tailwind v4 solo lo aplica si el dispositivo tiene mouse) */
-        @custom-variant hover (&:hover);
-        /* mismos cortes de pantalla que usaba el CSS (max-width es inclusivo) */
-        @custom-variant max-400 (@media (max-width: 400px));
-        @custom-variant max-599 (@media (max-width: 599px));
-        @custom-variant max-767 (@media (max-width: 767px));
-        @custom-variant max-1099 (@media (max-width: 1099px));
-
-        @theme static {
-            --color-primary: #4F46E5;    /* Azul índigo */
-            --color-secondary: #0F172A;  /* Azul noche */
-            --color-background: #06B6D4; /* Cian */
-            --color-text: #000;       /* Texto principal (sobre fondos oscuros) */
-            --color-surface: #F1F5F9;    /* Fondo claro de la página */
-
-            --color-success: #16A34A;
-            --color-warning: #F59E0B;
-            --color-error: #DC2626;
-        }
-    </style>
 </head>
 <body class="min-h-dvh flex flex-col bg-surface text-secondary font-[family-name:Nata_Sans,sans-serif] leading-[1.7] selection:bg-background selection:text-secondary">
-    <header class="sticky top-0 z-20 h-[70px] px-5 max-400:px-3 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
-        <nav class="flex justify-between items-center h-full">
-            <h1 class="text-[20px] font-bold">
-                <a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" href="./index.html">
-                    <span class="sr-only m-0!">Kodex</span>
-                    <picture>
-                        <source media="(min-width: 768px)" srcset="./images/Logotipo%20Kodex%20con%20circuito%20azul.png">
-                        <img class="w-[60px] min-[768px]:w-auto min-[768px]:h-[60px] min-[768px]:ml-5" src="./images/Imagen_de_ChatGPT_2_oct_2026_12_39_50_p.m.png" alt="">
-                    </picture>
-                </a>
-            </h1>
-            <input type="search" class="bg-white text-secondary border border-[rgba(15,23,42,0.2)] rounded-[999px] px-[14px] w-[180px] h-9 text-[0.9rem] shadow-[0_1px_3px_rgba(15,23,42,0.1)] [transition:border-color_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! placeholder:text-[#64748B] focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(79,70,229,0.3)] max-1099:absolute max-1099:top-1/2 max-1099:left-1/2 max-1099:[transform:translate(-50%,-50%)] max-400:w-[110px] min-[768px]:w-[240px] min-[1100px]:w-[200px] min-[1100px]:mx-auto min-[1280px]:w-[340px]" placeholder="Buscar..." aria-label="Buscar productos">
-            <a class="text-text max-1099:ml-auto max-1099:mr-4 min-[1100px]:order-1 min-[1100px]:ml-6 min-[1100px]:mr-0 min-[1100px]:hover:text-primary text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" href="./login.html?desde=carrito" data-carrito aria-label="Carrito"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i></a>
-            <label class="text-2xl cursor-pointer opacity-80 text-black hover:opacity-100 has-[+#menu:focus-visible]:opacity-100 has-[+#menu:focus-visible]:outline-3 has-[+#menu:focus-visible]:outline-primary has-[+#menu:focus-visible]:outline-offset-4 has-[+#menu:focus-visible]:rounded-[4px] min-[1100px]:hidden" for="menu">
-                <i class="fa-solid fa-bars"></i>
-            </label>
-            <input type="checkbox" name="menu" id="menu" class="peer absolute w-px h-px opacity-0 overflow-hidden [clip-path:inset(50%)] min-[1100px]:hidden" aria-label="Abrir menú de navegación">
-            <ul class="absolute top-full left-0 z-10 w-full max-h-0 overflow-hidden flex flex-col items-center gap-[25px] bg-secondary invisible [transition:max-height_0.4s,visibility_0s_0.4s] peer-checked:max-h-[400px] peer-checked:visible peer-checked:[transition:max-height_0.4s,visibility_0s] peer-checked:border-b peer-checked:border-[rgba(24,52,155,0.12)] min-[1100px]:visible min-[1100px]:static min-[1100px]:w-auto min-[1100px]:max-h-none min-[1100px]:overflow-visible min-[1100px]:flex-row min-[1100px]:gap-[20px] min-[1280px]:gap-[30px] min-[1100px]:bg-transparent min-[1100px]:[transition:none] min-[1100px]:peer-checked:border-b-0 motion-reduce:[transition:none]!">
-                <li class="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" href="./index.html">Inicio</a></li>
-                <li class="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" href="./productos.html">Productos</a></li>
-                <li class="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" href="./calculate.html">Calculadora</a></li>
-                <li class="first:mt-[25px] last:mb-[25px] min-[1100px]:first:mt-0 min-[1100px]:last:mb-0"><a class="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]! min-[1100px]:hover:text-primary min-[1100px]:focus-visible:text-primary" href="./login.html">Iniciar Sesion</a></li>
-                
-            </ul>
-        </nav>
-    </header>
-    <main class="flex-1">
-    <section class="w-full" id="marketing" aria-label="Promociones">
-        <div class="carousel relative w-full" role="group" aria-roledescription="carrusel">
-            <button type="button" class="carousel-prev absolute top-1/2 z-[2] w-10 h-10 max-767:w-8 max-767:h-8 [transform:translateY(-50%)] rounded-[50%] bg-[rgba(15,23,42,0.7)] text-white text-[1.1rem] max-767:text-[0.9rem] cursor-pointer [transition:background-color_0.2s] motion-reduce:[transition:none]! hover:bg-primary focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2 left-2" aria-label="Imagen anterior">&#10094;</button>
-            <div class="overflow-hidden">
-                <div class="carousel-track flex [transition:transform_0.5s_ease] motion-reduce:[transition:none]!">
-                    <a class="carousel-slide block flex-[0_0_100%] text-white" href="./productos.html">
-                        <img class="w-full" src="./images/marketing/marketing1.png" alt="Los mejores productos de computación. Ver productos">
-                    </a>
-                    <a class="carousel-slide block flex-[0_0_100%] text-white" href="./productos.html">
-                        <img class="w-full" src="./images/marketing/marketing2.png" alt="Coolers y water cooling de alto rendimiento. Ver productos">
-                    </a>
-                </div>
-            </div>
-            <button type="button" class="carousel-next absolute top-1/2 z-[2] w-10 h-10 max-767:w-8 max-767:h-8 [transform:translateY(-50%)] rounded-[50%] bg-[rgba(15,23,42,0.7)] text-white text-[1.1rem] max-767:text-[0.9rem] cursor-pointer [transition:background-color_0.2s] motion-reduce:[transition:none]! hover:bg-primary focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2 right-2" aria-label="Imagen siguiente">&#10095;</button>
-        </div>
-    </section>
-    <section class="w-full mb-6" aria-label="Calculadora de cuello de botella">
-        <a class="flex items-center gap-4 px-4 min-[768px]:px-10 py-4 bg-[linear-gradient(135deg,#011833,#0B2A5C)] text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:-outline-offset-3" href="./calculate.html" aria-label="Calculadora de cuello de botella: analizá si tus componentes son compatibles. Probar calculadora">
-            <div class="relative size-14 shrink-0" aria-hidden="true">
-                <svg viewBox="0 0 56 56" class="size-full -rotate-90">
-                    <circle cx="28" cy="28" r="22" fill="none" stroke-width="6" class="stroke-[rgba(255,255,255,0.15)]"></circle>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke-width="6" stroke-linecap="round" class="stroke-background" style="stroke-dasharray:138.23;stroke-dashoffset:8.29"></circle>
-                </svg>
-                <span class="absolute inset-0 grid place-content-center text-[0.9rem] font-bold leading-none">94%</span>
-            </div>
-            <div class="flex flex-col gap-0.5">
-                <h2 class="text-[0.95rem] min-[768px]:text-[1.25rem] font-bold leading-[1.2] min-[768px]:whitespace-nowrap">Calculadora de <span class="text-background">cuello de botella</span></h2>
-                <p class="hidden min-[900px]:block min-[1280px]:hidden text-[0.8rem] text-[#CBD5E1] whitespace-nowrap">Analizá si tu procesador y tu placa de video son compatibles antes de comprar.</p>
-            </div>
-
-            <div class="hidden min-[1280px]:flex items-center gap-4 ml-auto" aria-hidden="true">
-                <span class="px-3 py-1 rounded-full bg-[rgba(22,163,74,0.2)] text-[#86EFAC] text-[0.75rem] font-bold whitespace-nowrap">Muy equilibrado</span>
-                <span class="flex items-center gap-2 text-[0.75rem] font-semibold">CPU<span class="w-16 h-2 rounded-full bg-[rgba(255,255,255,0.12)] overflow-hidden"><span class="block h-full rounded-full bg-primary" style="width:90%"></span></span>90%</span>
-                <span class="flex items-center gap-2 text-[0.75rem] font-semibold">GPU<span class="w-16 h-2 rounded-full bg-[rgba(255,255,255,0.12)] overflow-hidden"><span class="block h-full rounded-full bg-background" style="width:85%"></span></span>85%</span>
-                <span class="text-[0.6rem] font-semibold uppercase tracking-[0.05em] text-[#94A3B8]">Ejemplo</span>
-            </div>
-
-            <span class="ml-auto min-[1280px]:ml-0 shrink-0 inline-flex items-center gap-2 px-4 min-[768px]:px-5 py-2 rounded-full bg-primary text-white text-[0.8rem] min-[768px]:text-[0.9rem] font-semibold whitespace-nowrap">Probar<span class="hidden min-[768px]:inline"> calculadora</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
-        </a>
-    </section>
-    <section class="w-full px-4 min-[768px]:px-10" id="destacados" aria-labelledby="destacados-titulo">
-        <div class="flex items-baseline justify-between gap-3">
-            <h2 class="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(0.98rem,2.2vw,1.15rem)] text-secondary" id="destacados-titulo">Productos destacados</h2>
-            <a class="shrink-0 text-primary font-semibold text-[0.75rem] hover:underline" href="./productos.html">Ver todos</a>
-        </div>
-        <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-2.5 min-[768px]:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] min-[768px]:gap-4 [transition:opacity_0.3s_ease] motion-reduce:[transition:none]!" id="destacados-grid"></div>
-    </section>
-    <section class="w-full max-w-[1200px] mx-auto px-4 mt-6 min-[768px]:px-10" aria-label="Beneficios">
-        <ul class="grid grid-cols-[repeat(2,1fr)] gap-2 min-[768px]:grid-cols-[repeat(4,1fr)]">
-            <li class="flex items-center gap-2 px-3 py-2 bg-white border border-[rgba(15,23,42,0.08)] rounded-[10px] text-[0.78rem] leading-[1.25] shadow-[0_2px_6px_rgba(15,23,42,0.06)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-2px)] hover:shadow-[0_6px_14px_rgba(15,23,42,0.12)]"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span><strong>Envío gratis</strong> a toda la Argentina</span></li>
-            <li class="flex items-center gap-2 px-3 py-2 bg-white border border-[rgba(15,23,42,0.08)] rounded-[10px] text-[0.78rem] leading-[1.25] shadow-[0_2px_6px_rgba(15,23,42,0.06)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-2px)] hover:shadow-[0_6px_14px_rgba(15,23,42,0.12)]"><i class="fa-solid fa-credit-card" aria-hidden="true"></i><span><strong>6 a 18 cuotas</strong> sin interés</span></li>
-            <li class="flex items-center gap-2 px-3 py-2 bg-white border border-[rgba(15,23,42,0.08)] rounded-[10px] text-[0.78rem] leading-[1.25] shadow-[0_2px_6px_rgba(15,23,42,0.06)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-2px)] hover:shadow-[0_6px_14px_rgba(15,23,42,0.12)]"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span><strong>Compra segura</strong> y protegida</span></li>
-            <li class="flex items-center gap-2 px-3 py-2 bg-white border border-[rgba(15,23,42,0.08)] rounded-[10px] text-[0.78rem] leading-[1.25] shadow-[0_2px_6px_rgba(15,23,42,0.06)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-2px)] hover:shadow-[0_6px_14px_rgba(15,23,42,0.12)]"><i class="fa-solid fa-box" aria-hidden="true"></i><span><strong>Productos</strong> originales</span></li>
-        </ul>
-    </section>
-    <section class="w-full max-w-[1200px] mx-auto px-4 min-[768px]:px-10" aria-labelledby="categorias-home-titulo">
-        <h2 class="mt-10 mb-4 pl-3 border-l-4 border-background text-[length:clamp(1.3rem,3vw,1.7rem)] text-secondary" id="categorias-home-titulo">Comprá por categoría</h2>
-        <ul class="grid grid-cols-[repeat(2,1fr)] gap-3 min-[768px]:grid-cols-[repeat(5,1fr)] min-[768px]:gap-4">
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#procesadores"><i class="fa-solid fa-microchip" aria-hidden="true"></i><span>Procesadores</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#mothers"><i class="fa-solid fa-sitemap" aria-hidden="true"></i><span>Mothers</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#placas-de-video"><i class="fa-solid fa-display" aria-hidden="true"></i><span>Placas de Video</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#memorias-ram"><i class="fa-solid fa-memory" aria-hidden="true"></i><span>Memorias RAM</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#almacenamiento"><i class="fa-solid fa-hard-drive" aria-hidden="true"></i><span>Almacenamiento</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#refrigeracion"><i class="fa-solid fa-fan" aria-hidden="true"></i><span>Refrigeración</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#gabinetes"><i class="fa-solid fa-computer" aria-hidden="true"></i><span>Gabinetes</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#fuentes"><i class="fa-solid fa-plug" aria-hidden="true"></i><span>Fuentes</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#monitores"><i class="fa-solid fa-desktop" aria-hidden="true"></i><span>Monitores</span></a></li>
-            <li><a class="flex flex-col items-center gap-2.5 h-full px-3 py-5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] text-center font-semibold text-[0.95rem] [transition:background-color_0.2s,color_0.2s,border-color_0.2s,transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:bg-primary hover:border-primary hover:shadow-[0_8px_18px_rgba(79,70,229,0.35)] hover:text-white focus-visible:[transform:translateY(-3px)] focus-visible:bg-primary focus-visible:border-primary focus-visible:shadow-[0_8px_18px_rgba(79,70,229,0.35)] focus-visible:text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2" href="./productos.html#perifericos"><i class="fa-solid fa-keyboard" aria-hidden="true"></i><span>Periféricos</span></a></li>
-        </ul>
-    </section>
-    <a class="block w-[calc(100%-32px)] max-w-[1200px] my-10 mx-auto rounded-2xl overflow-hidden shadow-[0_4px_12px_rgba(15,23,42,0.25)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:shadow-[0_10px_24px_rgba(15,23,42,0.35)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-[3px] min-[768px]:w-[calc(100%-80px)] text-white" href="./productos.html">
-        <img class="w-full" src="./images/marketing/marketing3.png" alt="6 a 18 cuotas sin interés y envío gratis a toda la Argentina. Ver productos">
-    </a>
-    </main>
-    <footer class="flex shrink-0 min-h-[90px] px-5 py-6 flex-wrap items-center justify-center gap-x-7 gap-y-3.5 mt-12 border-t-[3px] border-background bg-secondary">
-        <a class="inline-flex px-3 py-2 items-center gap-2 rounded-[10px] text-[0.94rem] font-semibold text-white no-underline opacity-80 hover:opacity-100 [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:text-white hover:bg-[rgba(255,255,255,0.12)] hover:[transform:translateY(-1px)] focus-visible:text-white focus-visible:bg-[rgba(255,255,255,0.12)] focus-visible:[transform:translateY(-1px)]" href="mailto:soft-tecnology@gmail.com"><i class="fa-solid fa-envelope"></i>Enviar Email</a>
-        <a class="inline-flex px-3 py-2 items-center gap-2 rounded-[10px] text-[0.94rem] font-semibold text-white no-underline opacity-80 hover:opacity-100 [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:text-white hover:bg-[rgba(255,255,255,0.12)] hover:[transform:translateY(-1px)] focus-visible:text-white focus-visible:bg-[rgba(255,255,255,0.12)] focus-visible:[transform:translateY(-1px)]" href="https://www.instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i>Instagram</a>
-        <button type="button" class="footer-top inline-flex items-center gap-2 px-4 py-2 border border-background rounded-[999px] bg-transparent text-white text-[0.94rem] font-semibold cursor-pointer [transition:background-color_0.2s,color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-background hover:text-secondary hover:[transform:translateY(-1px)] focus-visible:bg-background focus-visible:text-secondary focus-visible:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-white focus-visible:outline-offset-2" aria-label="Volver al inicio de la página"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i>Subir</button>
-    </footer>
-    <script src="./js/productos.js"></script>
-    <script src="./js/index.js"></script>
+    <div id="root" class="flex flex-1 flex-col"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

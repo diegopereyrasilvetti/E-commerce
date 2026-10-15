@@ -1,4 +1,17 @@
+# Dependencias y compilación
 node_modules
 dist
+
+# Variables de entorno (pueden tener claves)
+.env
+.env.*
+!.env.example
 *.local
+
+# Registros
+*.log
+npm-debug.log*
+
+# Archivos del sistema
 .DS_Store
+Thumbs.db
