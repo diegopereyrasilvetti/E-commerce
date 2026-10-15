@@ -1,28 +1,37 @@
 import { useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, Navigate, useSearchParams } from 'react-router-dom'
+import CampoFormulario from '../components/CampoFormulario.jsx'
+import { mensajeDeError, useAuth } from '../auth.jsx'
+import { useFormulario } from '../utils/useFormulario.js'
 import { useTitulo } from '../utils/useTitulo.js'
+import { email, passwordIngreso } from '../utils/validaciones.js'
 
 // Si se llegó desde el carrito o desde "Agregar al carrito", se avisa por qué se pide iniciar sesión
-const AVISOS = {
-  carrito: 'Iniciá sesión para ver tu carrito.',
-  agregar: 'Iniciá sesión para agregar productos al carrito.',
+// y, después de iniciar sesión, se vuelve a donde se quería ir
+const MOTIVOS = {
+  carrito: { aviso: 'Iniciá sesión para ver tu carrito.', destino: '/carrito' },
+  agregar: { aviso: 'Iniciá sesión para agregar productos al carrito.', destino: '/productos' },
 }
-
-const CAMPO =
-  'w-full h-11 px-4 bg-white text-secondary text-[0.95rem] border border-[rgba(15,23,42,0.2)] rounded-xl shadow-[0_1px_3px_rgba(15,23,42,0.1)] [transition:border-color_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! placeholder:text-[#64748B] focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(79,70,229,0.3)]'
 
 export default function Login() {
   useTitulo('Iniciar sesión')
   const [params] = useSearchParams()
-  const aviso = AVISOS[params.get('desde')]
-  const [verPassword, setVerPassword] = useState(false)
-  const [estado, setEstado] = useState('')
+  const motivo = MOTIVOS[params.get('desde')]
+  const { usuario, iniciarSesion } = useAuth()
+  const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
+  const { campo, enviar } = useFormulario({ email: '', password: '' }, { email, password: passwordIngreso })
 
-  // Todavía no hay servidor: se valida el formulario pero no se envía a ningún lado
-  function enviar(e) {
-    e.preventDefault()
-    setEstado('Formulario completo. El inicio de sesión todavía no está conectado a un servidor.')
+  async function alEnviar(valores) {
+    setError('')
+    setEnviando(true)
+    const { error } = await iniciarSesion(valores.email.trim(), valores.password)
+    setEnviando(false)
+    if (error) setError(mensajeDeError(error))
   }
+
+  // Con la sesión iniciada no tiene sentido ver el login: se va a donde se quería ir
+  if (usuario) return <Navigate to={motivo?.destino ?? '/'} replace />
 
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-10">
@@ -30,48 +39,26 @@ export default function Login() {
         <h2 id="login-titulo" className="text-[1.5rem] font-bold">Iniciar sesión</h2>
         <p className="mt-1 text-[0.9rem] text-[#475569]">Ingresá con tu cuenta para comprar y ver tus pedidos.</p>
 
-        {aviso && (
-          <p role="status" className="mt-4 p-3 rounded-xl bg-[rgba(79,70,229,0.1)] text-primary text-[0.85rem] font-semibold">{aviso}</p>
+        {motivo && (
+          <p role="status" className="mt-4 p-3 rounded-xl bg-[rgba(79,70,229,0.1)] text-primary text-[0.85rem] font-semibold">{motivo.aviso}</p>
         )}
 
-        <form className="mt-6 flex flex-col gap-4" onSubmit={enviar}>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="usuario" className="text-[0.9rem] font-semibold">Usuario o email</label>
-            <input id="usuario" name="usuario" type="text" autoComplete="username" required placeholder="usuario / @email.com" className={CAMPO} />
+        <form className="mt-6 flex flex-col gap-4" onSubmit={enviar(alEnviar)} noValidate>
+          <CampoFormulario label="Email" type="email" autoComplete="email" placeholder="nombre@correo.com" {...campo('email')} />
+          <CampoFormulario label="Contraseña" type="password" autoComplete="current-password" placeholder="Tu contraseña" {...campo('password')} />
+
+          <div className="text-right text-[0.85rem]">
+            <Link to="/recuperar" className="text-primary font-semibold hover:underline">¿Olvidaste tu contraseña?</Link>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between gap-3">
-              <label htmlFor="password" className="text-[0.9rem] font-semibold">Contraseña</label>
-              <button
-                type="button"
-                onClick={() => setVerPassword((v) => !v)}
-                className="text-[0.8rem] font-semibold text-primary cursor-pointer hover:underline focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2"
-                aria-controls="password"
-                aria-pressed={verPassword}
-              >
-                {verPassword ? 'Ocultar' : 'Mostrar'}
-              </button>
-            </div>
-            <input id="password" name="password" type={verPassword ? 'text' : 'password'} autoComplete="current-password" required minLength={6} placeholder="Tu contraseña" className={CAMPO} />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[0.85rem]">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" name="recordarme" className="size-4 accent-primary cursor-pointer" />
-              Recordarme
-            </label>
-            <a href="#" className="text-primary font-semibold hover:underline">¿Olvidaste tu contraseña?</a>
-          </div>
-
-          <button type="submit" className="w-full h-11 rounded-[50px] bg-primary text-white text-[0.95rem] font-semibold cursor-pointer shadow-[0_4px_8px_rgba(0,0,0,0.25)] [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-secondary hover:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2">
-            Iniciar sesión
+          <button type="submit" disabled={enviando} className="w-full h-11 rounded-[50px] bg-primary text-white text-[0.95rem] font-semibold cursor-pointer shadow-[0_4px_8px_rgba(0,0,0,0.25)] [transition:background-color_0.2s,transform_0.2s] motion-reduce:[transition:none]! hover:bg-secondary hover:[transform:translateY(-1px)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2 disabled:opacity-60 disabled:cursor-wait">
+            {enviando ? 'Ingresando…' : 'Iniciar sesión'}
           </button>
 
-          {estado && <p role="status" className="p-3 rounded-xl bg-[#F1F5F9] text-[0.85rem] text-[#475569] text-center">{estado}</p>}
+          {error && <p role="alert" className="p-3 rounded-xl bg-[rgba(220,38,38,0.08)] text-[0.85rem] font-semibold text-error text-center">{error}</p>}
         </form>
 
-        <p className="mt-6 text-center text-[0.9rem]">¿No tenés cuenta? <Link to="/login" className="text-primary font-semibold hover:underline">Registrate</Link></p>
+        <p className="mt-6 text-center text-[0.9rem]">¿No tenés cuenta? <Link to="/registro" className="text-primary font-semibold hover:underline">Registrate</Link></p>
       </section>
     </main>
   )

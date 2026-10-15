@@ -12,7 +12,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { haySesion } from './utils/sesion.js'
+import { useAuth } from './auth.jsx'
 import { useTitulo } from './utils/useTitulo.js'
 
 // ---------- Configuración ----------
@@ -130,12 +130,13 @@ export const ESTILO_AGREGAR =
 
 export function AddToCartButton({ producto, className = ESTILO_AGREGAR }) {
   const { agregar } = useCart()
+  const { usuario } = useAuth()
   const navegar = useNavigate()
   const [agregado, setAgregado] = useState(false)
 
   function alTocar(e) {
     e.stopPropagation() // si el botón está dentro de una tarjeta, no abre el detalle
-    if (!haySesion()) {
+    if (!usuario) {
       navegar('/login?desde=agregar')
       return
     }
