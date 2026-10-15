@@ -15,13 +15,13 @@ export default function App() {
         <Route index element={<Inicio />} />
         <Route path="productos/:categoria?" element={<Productos />} />
         <Route path="carrito" element={<Cart />} />
+        <Route path="calculadora" element={<Calculadora />} />
         <Route path="*" element={<NoEncontrada />} />
       </Route>
 
       {/* Páginas con el header solo con el logo, centrado */}
       <Route element={<Layout soloLogo />}>
         <Route path="login" element={<Login />} />
-        <Route path="calculadora" element={<Calculadora />} />
       </Route>
     </Routes>
   )
