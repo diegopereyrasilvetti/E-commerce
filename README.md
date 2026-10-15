@@ -8,6 +8,7 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 
 - **Inicio:** carrusel de promociones que cambia solo cada 4 segundos, banner de la calculadora, productos destacados al azar que se renuevan cada 8 segundos y acceso por categoría.
 - **Productos:** las 10 categorías, cada una con su lista y orden por menor o mayor precio. Al tocar un producto se abre una ventana con la imagen, los precios, el descuento y la garantía.
+- **Buscador:** en el header, sugiere productos mientras se escribe (sin importar tildes ni mayúsculas, por nombre o categoría) y al elegir uno abre su categoría con el detalle abierto. El enlace se puede compartir (`/productos/mothers?producto=...`) y funciona con el teclado.
 - **Carrito:** agregar, cambiar cantidades, quitar y vaciar. Muestra subtotal, descuento por transferencia, total y cuotas sin interés (1, 6, 12 o 18). Se guarda en el navegador y sigue ahí al recargar.
 - **Calculadora de cuello de botella:** compara un procesador y una placa de video según la resolución, con un gráfico circular del porcentaje de compatibilidad.
 - **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` y `/cuenta` solo se abren con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
@@ -66,9 +67,9 @@ src/
 supabase/schema.sql     Tablas, índices, políticas de seguridad y trigger de la base
   layouts/Layout.jsx    Header + página + footer
   pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
-  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion
+  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos
   data/                 Productos, categorías y datos de la calculadora
-  utils/                Sesión, título de la pestaña, validaciones y hook useFormulario
+  utils/                Sesión, título de la pestaña, validaciones, hook useFormulario y búsqueda de productos
 ```
 
 ## Decisiones de diseño

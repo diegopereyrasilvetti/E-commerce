@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import Destacados from '../components/Destacados.jsx'
 import ProductoCard from '../components/ProductoCard.jsx'
 import ProductoDetalle from '../components/ProductoDetalle.jsx'
 import { CATEGORIAS } from '../data/categorias.js'
 import { PRODUCTOS } from '../data/productos.js'
 import { claveDe, precioANumero } from '../cart.jsx'
+import { idDe, productoPorId } from '../utils/productos.js'
 import { useTitulo } from '../utils/useTitulo.js'
 
 // Tarjetas de categoría: las grandes (desplegable "Categorías") y las chicas (siempre visibles)
@@ -60,7 +61,10 @@ export default function Productos() {
   const categoria = CATEGORIAS.find((c) => c.id === categoriaId)
   useTitulo(categoria ? categoria.nombre : 'Productos')
   const [categoriasAbiertas, setCategoriasAbiertas] = useState(false)
-  const [detalle, setDetalle] = useState(null)
+  const [params, setParams] = useSearchParams()
+  const detalle = productoPorId(params.get('producto')) ?? null
+  // Abrir o cerrar el detalle cambia la dirección (al cerrar se reemplaza para no llenar el historial)
+  const setDetalle = (producto) => setParams(producto ? { producto: idDe(producto) } : {}, { replace: !producto })
   const desplegable = useRef(null)
   const seccion = useRef(null)
 

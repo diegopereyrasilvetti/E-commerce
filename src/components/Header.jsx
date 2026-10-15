@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { primerNombre, useAuth } from '../auth.jsx'
+import BuscadorProductos from './BuscadorProductos.jsx'
 import MenuUsuario, { Avatar } from './MenuUsuario.jsx'
 import { CartBadge } from '../cart.jsx'
 
@@ -45,7 +46,7 @@ export default function Header({ soloLogo = false }) {
                       </picture>
                   </Link>
               </h1>
-              <input type="search" className="bg-white text-secondary border border-[rgba(15,23,42,0.2)] rounded-[999px] px-[14px] w-[180px] h-9 text-[0.9rem] shadow-[0_1px_3px_rgba(15,23,42,0.1)] [transition:border-color_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! placeholder:text-[#64748B] focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(79,70,229,0.3)] max-1099:absolute max-1099:top-1/2 max-1099:left-1/2 max-1099:[transform:translate(-50%,-50%)] max-400:w-[110px] min-[768px]:w-[240px] min-[1100px]:w-[200px] min-[1100px]:mx-auto min-[1280px]:w-[340px]" placeholder="Buscar..." aria-label="Buscar productos" />
+              <BuscadorProductos />
               <Link className="relative text-text max-1099:ml-auto max-1099:mr-4 min-[1100px]:order-1 min-[1100px]:ml-6 min-[1100px]:mr-0 min-[1100px]:hover:text-primary text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to={rutaCarrito} aria-label="Carrito"><i className="fa-solid fa-cart-shopping" aria-hidden="true"></i><CartBadge /></Link>
               <label className="text-2xl cursor-pointer opacity-80 text-black hover:opacity-100 has-[+#menu:focus-visible]:opacity-100 has-[+#menu:focus-visible]:outline-3 has-[+#menu:focus-visible]:outline-primary has-[+#menu:focus-visible]:outline-offset-4 has-[+#menu:focus-visible]:rounded-[4px] min-[1100px]:hidden" htmlFor="menu">
                   <i className="fa-solid fa-bars"></i>
