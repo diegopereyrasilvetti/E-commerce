@@ -2,7 +2,11 @@
 
 [![CI](https://github.com/diegopereyrasilvetti/E-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/diegopereyrasilvetti/E-commerce/actions/workflows/ci.yml)
 
-Tienda online de hardware de PC (procesadores, placas de video, memorias, almacenamiento y más) hecha con **React, Vite y Tailwind CSS**. Es una aplicación de una sola página (SPA): un único `index.html` y las pantallas como componentes.
+Tienda online de hardware de PC (procesadores, placas de video, memorias, almacenamiento y más): **React + Vite + Tailwind** en el frontend, **Supabase** (cuentas y PostgreSQL) y una **API propia en Node.js + Express**. Es una aplicación de una sola página (SPA): un único `index.html` y las pantallas como componentes.
+
+**Sitio publicado:** https://ecommerce-chi-hazel.vercel.app · **API:** https://kodex-api-s3su.onrender.com/api/salud
+
+> Es un proyecto de portfolio: el sitio no realiza ventas (ver [Qué falta](#qué-falta-a-propósito)). La primera visita puede tardar unos segundos si la API estaba dormida.
 
 ![Inicio](docs/inicio.png)
 
@@ -15,11 +19,15 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 - **Calculadora de cuello de botella:** compara un procesador y una placa de video según la resolución, con un gráfico circular del porcentaje de compatibilidad.
 - **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` y `/cuenta` solo se abren con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
 - **Mi cuenta (PostgreSQL):** el usuario edita su perfil y administra sus direcciones de envío (alta, edición, baja y dirección principal), guardadas en la base de datos. Cada usuario solo puede ver y modificar sus propios datos gracias a las políticas RLS.
-- **Responsive y accesible:** pensado para celular, tablet y escritorio; navegable con teclado y con respeto a `prefers-reduced-motion`.
+- **Responsive y accesible:** revisado en 9 páginas y 9 anchos de pantalla (de 320 a 1024 px) sin desbordes ni solapamientos; el menú del celular tiene un área de toque de 44 px. Navegable con teclado y con respeto a `prefers-reduced-motion`.
 
-| Categoría | Calculadora | Celular |
-|---|---|---|
-| ![Categoría](docs/categoria.png) | ![Calculadora](docs/calculadora.png) | ![Celular](docs/movil.png) |
+| Página de producto | Categoría |
+|---|---|
+| ![Producto](docs/producto.png) | ![Categoría](docs/categoria.png) |
+
+| Calculadora | Celular |
+|---|---|
+| ![Calculadora](docs/calculadora.png) | ![Celular](docs/movil.png) |
 
 ## Tecnologías
 
@@ -39,15 +47,18 @@ Requiere [Node.js](https://nodejs.org) 20 o más nuevo.
 npm install     # una sola vez
 npm run dev     # desarrollo en http://localhost:5173
 npm run build   # genera la carpeta dist/ para publicar
-npm run preview # prueba el build local
+npm run preview # prueba el build local (primero hay que correr npm run build)
 ```
+
+El sitio lee los productos de la API, así que para verlo en tu compu también tiene que estar corriendo la API, en **otra terminal** (ver [API](#api-carpeta-server)). Sin ella, las categorías muestran "El servidor no pudo responder" con un botón para reintentar.
 
 ### Pruebas
 
 ```bash
-npm test                       # frontend: validaciones, dinero y búsqueda (40 pruebas)
+npm test                       # frontend: validaciones, dinero, descuentos, cuotas y búsqueda (43 pruebas)
 npm --prefix server test       # servidor: API completa (142 pruebas)
 npm --prefix server run coverage   # lo mismo, con el porcentaje de código cubierto
+npm run test:todo              # las dos juntas
 ```
 
 Las pruebas del servidor levantan la API real con datos en memoria y usuarios simulados (Vitest + Supertest), así que no necesitan claves ni conexión a Supabase. Cubren el catálogo público, los permisos (sin sesión, cliente y administrador), las validaciones, los pedidos (cuentas, privacidad entre usuarios y estados), las cabeceras de seguridad, CORS y los límites de solicitudes, además de la lógica de acceso a la base con un cliente de Supabase simulado. Cobertura del servidor: ~99 % de las líneas. GitHub Actions las corre en cada push (`.github/workflows/ci.yml`).
@@ -99,7 +110,7 @@ Las migraciones (SQL) están en `supabase/migrations/` y se ejecutan en orden en
 
 ### Variables de entorno
 
-Copiá `.env.example` como `.env.local` y completá la URL y la clave pública (*publishable*) de tu proyecto de Supabase (*Project Settings → API Keys*). Nunca uses la clave *secret* en el frontend. `.env.local` no se sube a git.
+Copiá `.env.example` como `.env.local` y completá la URL y la clave pública (*publishable*) de tu proyecto de Supabase (*Project Settings → API Keys*). Nunca uses la clave *secret* en el frontend. `.env.local` no se sube a git. `VITE_API_URL` es opcional: en desarrollo se deja vacía y Vite redirige `/api` a la API local.
 
 En Supabase (*Authentication → URL Configuration*) hay que poner la **Site URL** (por ejemplo `http://localhost:5173`) y agregar la dirección del sitio en **Redirect URLs** (`http://localhost:5173/**`); si no, los enlaces de los correos (confirmar cuenta y recuperar contraseña) no vuelven al sitio.
 
@@ -158,15 +169,19 @@ supabase/migrations/    Esquema de la base de datos (SQL)
 
 ## Decisiones de diseño
 
+- **Cada producto tiene su propia página** (`/producto/:slug`, con un identificador legible como `mother-asus-rog-strix-b850-f-gaming-wifi-am5-ddr5`): se puede compartir el enlace, funcionan los botones de atrás y adelante y se puede abrir desde el listado, los destacados y el buscador.
 - **Un solo estado del carrito para toda la app.** `CartProvider` usa `useReducer` y comparte el carrito por contexto; cualquier componente lo lee con `useCart()`. Los totales se calculan a partir de los productos, no se guardan.
-- **Los productos son datos, no HTML.** Para agregar uno se suma a la base de datos (o a `server/seed/productos.js` y se corre `npm --prefix server run cargar-productos`) y aparece solo en su categoría, en los destacados y en el detalle.
-- **Rutas con la categoría en la dirección** (`/productos/:categoria`): se puede compartir el enlace de una categoría y funcionan los botones de atrás y adelante.
+- **Los productos son datos, no HTML.** Para agregar uno se suma a la base de datos (o a `server/seed/productos.js` y se corre `npm --prefix server run cargar-productos`) y aparece solo en su categoría, en los destacados y en su página. Las imágenes siguen en `public/images/`: la base guarda solo su ruta.
+- **La seguridad vive en la base y en la API, no en el navegador.** Cada usuario solo ve y edita lo suyo (RLS y permisos por columna), nadie puede darse el rol de administrador, y los precios de un pedido los calcula el servidor con los de la base.
+- **Rutas con la categoría en la dirección** (`/productos/:categoria`): se puede compartir el enlace de una categoría.
 - **Sin dependencias de más:** el carrusel, el gráfico circular (SVG) y el cálculo son código propio.
 
 ## Qué falta (a propósito)
 
-- **No hay ventas:** "Finalizar compra" está desactivado y el footer aclara que es un proyecto de portfolio. Se activa con `COMPRAS_HABILITADAS` en `src/config.js`, cuando exista un medio de pago y un backend de pedidos.
-- **Los productos están en un archivo.** La próxima etapa es una API propia con Node.js y Express para productos, usuarios y pedidos.
+- **No hay ventas:** "Finalizar compra" está desactivado, la API rechaza pedidos (`PEDIDOS_HABILITADOS=false`) y el footer aclara que es un proyecto de portfolio. Se activa con `COMPRAS_HABILITADAS` en `src/config.js` y `PEDIDOS_HABILITADOS` en el servidor, cuando exista un medio de pago.
+- **Pedidos y administración sin pantalla:** la API de pedidos y la de administración de productos (crear, editar y ocultar) están hechas y probadas, pero el sitio todavía no tiene "Mis pedidos" ni un panel de administrador.
+- **Usuarios:** el rol de administrador se asigna a mano con SQL; la API no tiene rutas para administrar usuarios.
+- **Hosting gratuito:** la API en Render se duerme tras 15 minutos sin uso. Los correos de Supabase (confirmar cuenta, recuperar contraseña) tienen un límite de envíos por hora.
 - El índice de rendimiento de la calculadora es una estimación orientativa, no mediciones reales.
 
 ## Datos del carrito

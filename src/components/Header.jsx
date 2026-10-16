@@ -18,7 +18,7 @@ export default function Header({ soloLogo = false }) {
 
   if (soloLogo) {
     return (
-      <header className="sticky top-0 z-20 h-[70px] px-5 max-400:px-3 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
+      <header className="sticky top-0 z-20 h-[70px] px-6 max-400:px-4 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
           <nav className="flex justify-center items-center h-full">
               <h1 className="text-[20px] font-bold">
                   <Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to="/">
@@ -35,7 +35,7 @@ export default function Header({ soloLogo = false }) {
   }
 
   return (
-      <header className="sticky top-0 z-20 h-[70px] px-5 max-400:px-3 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
+      <header className="sticky top-0 z-20 h-[70px] px-6 max-400:px-4 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
           <nav className="flex justify-between items-center h-full">
               <h1 className="text-[20px] font-bold">
                   <Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to="/">
@@ -48,7 +48,7 @@ export default function Header({ soloLogo = false }) {
               </h1>
               <BuscadorProductos />
               <Link className="relative text-text max-1099:ml-auto max-1099:mr-4 min-[1100px]:order-1 min-[1100px]:ml-6 min-[1100px]:mr-0 min-[1100px]:hover:text-primary text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to={rutaCarrito} aria-label="Carrito"><i className="fa-solid fa-cart-shopping" aria-hidden="true"></i><CartBadge /></Link>
-              <label className="text-2xl cursor-pointer opacity-80 text-black hover:opacity-100 has-[+#menu:focus-visible]:opacity-100 has-[+#menu:focus-visible]:outline-3 has-[+#menu:focus-visible]:outline-primary has-[+#menu:focus-visible]:outline-offset-4 has-[+#menu:focus-visible]:rounded-[4px] min-[1100px]:hidden" htmlFor="menu">
+              <label className="-m-2 p-2 text-2xl cursor-pointer opacity-80 text-black hover:opacity-100 has-[+#menu:focus-visible]:opacity-100 has-[+#menu:focus-visible]:outline-3 has-[+#menu:focus-visible]:outline-primary has-[+#menu:focus-visible]:outline-offset-4 has-[+#menu:focus-visible]:rounded-[4px] min-[1100px]:hidden" htmlFor="menu">
                   <i className="fa-solid fa-bars"></i>
               </label>
               <input type="checkbox" name="menu" id="menu" checked={menuAbierto} onChange={(e) => setMenuAbierto(e.target.checked)} className="peer absolute w-px h-px opacity-0 overflow-hidden [clip-path:inset(50%)] min-[1100px]:hidden" aria-label="Abrir menú de navegación" />
