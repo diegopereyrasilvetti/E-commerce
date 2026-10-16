@@ -49,8 +49,8 @@ describe('enlaces a un producto', () => {
     expect(idDe(productos[3])).toBe('mother-asus-rog-strix')
   })
 
-  it('la ruta lleva a su categoría con el detalle abierto', () => {
-    expect(rutaDe(productos[3])).toBe('/productos/mothers?producto=mother-asus-rog-strix')
+  it('la ruta lleva a la página del producto', () => {
+    expect(rutaDe(productos[3])).toBe('/producto/mother-asus-rog-strix')
   })
 
   it('productoPorId lo encuentra, y devuelve undefined si no existe o no hay id', () => {

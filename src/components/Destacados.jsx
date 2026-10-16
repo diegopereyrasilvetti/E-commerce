@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCatalogo } from '../catalogo.jsx'
+import { rutaDe } from '../utils/productos.js'
 
 const INTERVALO = 8000 // cambia cada 8 segundos
 
@@ -19,7 +20,7 @@ const sinAnimaciones = () => window.matchMedia('(prefers-reduced-motion: reduce)
 
 // "Productos destacados": tarjetas al azar que se renuevan solas.
 // `verTodos` es el enlace que va a la derecha del título; `titulo` y `className` ajustan el texto y el margen de la sección.
-export default function Destacados({ onAbrir, verTodos, titulo = 'Productos destacados', className = '' }) {
+export default function Destacados({ verTodos, titulo = 'Productos destacados', className = '' }) {
   const { productos: catalogo } = useCatalogo()
   const grilla = useRef(null)
   const [productos, setProductos] = useState([])
@@ -91,8 +92,7 @@ export default function Destacados({ onAbrir, verTodos, titulo = 'Productos dest
         {productos.map((p) => (
           <Link
             key={p.imagen}
-            to={'/productos/' + p.categoriaId}
-            onClick={(e) => { e.preventDefault(); onAbrir(p) }}
+            to={rutaDe(p)}
             className="flex flex-col gap-1.5 p-2.5 min-[768px]:gap-2 min-[768px]:p-3.5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.08)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-3px)] hover:shadow-[0_8px_18px_rgba(15,23,42,0.18)] focus-visible:[transform:translateY(-3px)] focus-visible:shadow-[0_8px_18px_rgba(15,23,42,0.18)] focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2"
           >
             <img className="w-full aspect-square object-contain bg-white rounded-lg" src={'/' + p.imagen} alt="" loading="lazy" />

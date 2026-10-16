@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './layouts/Layout.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Productos from './pages/Productos.jsx'
+import Producto from './pages/Producto.jsx'
 import Login from './pages/Login.jsx'
 import Registro from './pages/Registro.jsx'
 import RecuperarPassword from './pages/RecuperarPassword.jsx'
@@ -19,6 +20,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Inicio />} />
         <Route path="productos/:categoria?" element={<Productos />} />
+        <Route path="producto/:slug" element={<Producto />} />
         <Route path="carrito" element={<RutaProtegida><Cart /></RutaProtegida>} />
         <Route path="calculadora" element={<Calculadora />} />
         <Route path="cuenta" element={<RutaProtegida motivo="cuenta"><Cuenta /></RutaProtegida>} />

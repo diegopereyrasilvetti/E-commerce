@@ -1,17 +1,17 @@
+import { useNavigate } from 'react-router-dom'
 import { AddToCartButton } from '../cart.jsx'
+import { rutaDe } from '../utils/productos.js'
 
-// Tarjeta de producto de la lista de una categoría. Al tocarla (o con Enter / espacio) se abre el detalle.
-export default function ProductoCard({ producto, onAbrir }) {
+// Tarjeta de producto de la lista de una categoría. Al tocarla (o con Enter) se abre la página del producto.
+export default function ProductoCard({ producto }) {
+  const navegar = useNavigate()
+  const abrir = () => navegar(rutaDe(producto))
   return (
     <article
       tabIndex={0}
-      aria-haspopup="dialog"
-      onClick={() => onAbrir(producto)}
+      onClick={abrir}
       onKeyDown={(e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget) {
-          e.preventDefault()
-          onAbrir(producto)
-        }
+        if (e.key === 'Enter' && e.target === e.currentTarget) abrir()
       }}
       className="article flex flex-col gap-2.5 max-599:gap-2 w-full p-5 max-599:p-2.5 bg-white text-secondary border border-[rgba(15,23,42,0.08)] rounded-2xl max-599:rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.12)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-4px)] hover:shadow-[0_10px_24px_rgba(15,23,42,0.2)] cursor-pointer focus-visible:outline-3 focus-visible:outline-background focus-visible:outline-offset-2"
     >

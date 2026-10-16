@@ -9,8 +9,8 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 ## Qué se puede hacer
 
 - **Inicio:** carrusel de promociones que cambia solo cada 4 segundos, banner de la calculadora, productos destacados al azar que se renuevan cada 8 segundos y acceso por categoría.
-- **Productos:** las 10 categorías, cada una con su lista y orden por menor o mayor precio. Al tocar un producto se abre una ventana con la imagen, los precios, el descuento y la garantía.
-- **Buscador:** en el header, sugiere productos mientras se escribe (sin importar tildes ni mayúsculas, por nombre o categoría) y al elegir uno abre su categoría con el detalle abierto. El enlace se puede compartir (`/productos/mothers?producto=...`) y funciona con el teclado.
+- **Productos:** las 10 categorías, cada una con su lista y orden por menor o mayor precio. Cada producto tiene su propia página (`/producto/:slug`): la foto en grande a la izquierda y, a la derecha, el precio, el descuento por transferencia con su precio final, las cuotas sin interés (6, 12 y 18), la garantía y el botón para agregar al carrito.
+- **Buscador:** en el header, sugiere productos mientras se escribe (sin importar tildes ni mayúsculas, por nombre o categoría) y al elegir uno abre la página de ese producto. El enlace se puede compartir y funciona con el teclado.
 - **Carrito:** agregar, cambiar cantidades, quitar y vaciar. Muestra subtotal, descuento por transferencia, total y cuotas sin interés (1, 6, 12 o 18). Se guarda en el navegador y sigue ahí al recargar.
 - **Calculadora de cuello de botella:** compara un procesador y una placa de video según la resolución, con un gráfico circular del porcentaje de compatibilidad.
 - **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` y `/cuenta` solo se abren con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
@@ -137,8 +137,8 @@ src/                    Frontend (React)
   catalogo.jsx          Catálogo traído de la API: CatalogoProvider y hook useCatalogo
   cart.jsx              Carrito: estado, hook useCart, botón, globito y página /carrito
   layouts/Layout.jsx    Header + página + footer
-  pages/                Inicio, Productos, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
-  components/           Header, Footer, Carrusel, Destacados, ProductoCard, ProductoDetalle, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos
+  pages/                Inicio, Productos, Producto, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
+  components/           Header, Footer, Carrusel, Destacados, ProductoCard, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos
   lib/                  supabase.js (cliente), api.js (cliente de la API), cuenta.js (perfil y direcciones)
   data/                 Categorías y datos de la calculadora
   utils/                Dinero, validaciones, búsqueda de productos, hook useFormulario, título de la pestaña
@@ -161,7 +161,7 @@ supabase/migrations/    Esquema de la base de datos (SQL)
 - **Un solo estado del carrito para toda la app.** `CartProvider` usa `useReducer` y comparte el carrito por contexto; cualquier componente lo lee con `useCart()`. Los totales se calculan a partir de los productos, no se guardan.
 - **Los productos son datos, no HTML.** Para agregar uno se suma a la base de datos (o a `server/seed/productos.js` y se corre `npm --prefix server run cargar-productos`) y aparece solo en su categoría, en los destacados y en el detalle.
 - **Rutas con la categoría en la dirección** (`/productos/:categoria`): se puede compartir el enlace de una categoría y funcionan los botones de atrás y adelante.
-- **Sin dependencias de más:** el carrusel, la ventana de detalle (`<dialog>`), el gráfico circular (SVG) y el cálculo son código propio.
+- **Sin dependencias de más:** el carrusel, el gráfico circular (SVG) y el cálculo son código propio.
 
 ## Qué falta (a propósito)
 

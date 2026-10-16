@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import Destacados from '../components/Destacados.jsx'
 import ProductoCard from '../components/ProductoCard.jsx'
-import ProductoDetalle from '../components/ProductoDetalle.jsx'
 import { CATEGORIAS } from '../data/categorias.js'
 import { useCatalogo } from '../catalogo.jsx'
 import { claveDe, precioANumero } from '../cart.jsx'
-import { idDe, productoPorId } from '../utils/productos.js'
 import { useTitulo } from '../utils/useTitulo.js'
 
 // Tarjetas de categoría: las grandes (desplegable "Categorías") y las chicas (siempre visibles)
@@ -21,7 +19,7 @@ const ICONO_CHICO = 'text-[1.4rem] text-primary group-hover/cat:text-white group
 const sinAnimaciones = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // Una categoría con sus productos, ordenables por precio
-function Categoria({ categoria, productos, onAbrir }) {
+function Categoria({ categoria, productos }) {
   const [orden, setOrden] = useState('original')
   const lista = [...productos]
   if (orden === 'menor') lista.sort((a, b) => precioANumero(a.precio) - precioANumero(b.precio))
@@ -48,7 +46,7 @@ function Categoria({ categoria, productos, onAbrir }) {
           <p className="col-[1/-1] p-5 rounded-2xl bg-white text-center text-[#475569]">Todavía no hay productos en esta categoría.</p>
         )}
         {lista.map((p) => (
-          <ProductoCard key={claveDe(p)} producto={p} onAbrir={onAbrir} />
+          <ProductoCard key={claveDe(p)} producto={p} />
         ))}
       </div>
     </section>
@@ -61,18 +59,15 @@ export default function Productos() {
   const categoria = CATEGORIAS.find((c) => c.id === categoriaId)
   useTitulo(categoria ? categoria.nombre : 'Productos')
   const [categoriasAbiertas, setCategoriasAbiertas] = useState(false)
-  const [params, setParams] = useSearchParams()
+  const [params] = useSearchParams()
   const { productos: catalogo, cargando, error: errorCatalogo, recargar } = useCatalogo()
-  const detalle = productoPorId(catalogo, params.get('producto')) ?? null
-  // Abrir o cerrar el detalle cambia la dirección (al cerrar se reemplaza para no llenar el historial)
-  const setDetalle = (producto) => setParams(producto ? { producto: idDe(producto) } : {}, { replace: !producto })
   const desplegable = useRef(null)
-  const seccion = useRef(null)
 
-  // Al elegir una categoría se cierra el desplegable y se baja hasta sus productos
+  // Al elegir una categoría se cierra el desplegable y la página vuelve arriba de todo:
+  // las categorías son cortas y desde ahí ya se ven los productos, sin tener que bajar.
   useEffect(() => {
     setCategoriasAbiertas(false)
-    if (categoria) seccion.current?.scrollIntoView({ behavior: sinAnimaciones() ? 'auto' : 'smooth', block: 'start' })
+    if (categoria) window.scrollTo({ top: 0, behavior: sinAnimaciones() ? 'auto' : 'smooth' })
   }, [categoria])
 
   function verTodos(e) {
@@ -80,6 +75,9 @@ export default function Productos() {
     setCategoriasAbiertas(true)
     desplegable.current.scrollIntoView({ behavior: sinAnimaciones() ? 'auto' : 'smooth', block: 'start' })
   }
+
+  const enlaceViejo = params.get('producto')
+  if (enlaceViejo) return <Navigate to={'/producto/' + encodeURIComponent(enlaceViejo)} replace />
 
   const miniNav = (
     <nav className="mt-4 min-[900px]:col-span-2" aria-label="Categorías de productos">
@@ -121,7 +119,7 @@ export default function Productos() {
 
       {categoria ? (
         <>
-          <div ref={seccion} className="min-w-0 min-[900px]:col-span-2">
+          <div className="min-w-0 min-[900px]:col-span-2">
             {cargando ? (
               <p className="mt-6 rounded-2xl bg-white p-6 text-center text-[#475569]" role="status">Cargando productos…</p>
             ) : errorCatalogo ? (
@@ -134,7 +132,6 @@ export default function Productos() {
                 key={categoria.id}
                 categoria={categoria}
                 productos={catalogo.filter((p) => p.categoriaId === categoria.id)}
-                onAbrir={setDetalle}
               />
             )}
           </div>
@@ -144,7 +141,6 @@ export default function Productos() {
         <>
           <Destacados
             className="mt-6 min-[900px]:col-span-2 w-full"
-            onAbrir={setDetalle}
             verTodos={<a className="shrink-0 text-primary font-semibold text-[0.75rem] hover:underline" href="#" onClick={verTodos}>Ver todos</a>}
           />
           <section
@@ -167,7 +163,6 @@ export default function Productos() {
         </>
       )}
 
-      <ProductoDetalle producto={detalle} onCerrar={() => setDetalle(null)} />
     </main>
   )
 }

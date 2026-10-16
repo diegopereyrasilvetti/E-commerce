@@ -9,9 +9,9 @@ export function productoPorId(productos, id) {
   return id ? productos.find((p) => p.slug === id) : undefined
 }
 
-// Dirección de la página de un producto: su categoría con el detalle abierto
+// Dirección de la página de un producto
 export function rutaDe(producto) {
-  return `/productos/${producto.categoriaId}?producto=${encodeURIComponent(producto.slug)}`
+  return `/producto/${encodeURIComponent(producto.slug)}`
 }
 
 // Para comparar textos al buscar: sin tildes ni mayúsculas ("Refrigeración" -> "refrigeracion")

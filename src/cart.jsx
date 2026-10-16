@@ -130,7 +130,7 @@ export function AddToCartButton({ producto, className = ESTILO_AGREGAR }) {
   const [agregado, setAgregado] = useState(false)
 
   function alTocar(e) {
-    e.stopPropagation() // si el botón está dentro de una tarjeta, no abre el detalle
+    e.stopPropagation() // si el botón está dentro de una tarjeta, no abre la página del producto
     if (!usuario) {
       navegar('/login?desde=agregar')
       return

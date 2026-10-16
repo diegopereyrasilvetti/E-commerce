@@ -1,13 +1,9 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import CategoriasRapidas from './CategoriasRapidas.jsx'
 import Destacados from './Destacados.jsx'
-import ProductoDetalle from './ProductoDetalle.jsx'
 
 // Pantalla del carrito cuando no hay productos: invita a seguir comprando
 export default function CarritoVacio() {
-  const [detalle, setDetalle] = useState(null)
-
   return (
     <main className="flex-1 px-4 py-10 min-[768px]:px-10">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -28,7 +24,6 @@ export default function CarritoVacio() {
         <Destacados
           className="mt-12"
           titulo="Quizás te interese"
-          onAbrir={setDetalle}
           verTodos={<Link className="shrink-0 text-primary font-semibold text-[0.75rem] hover:underline" to="/productos">Ver todos</Link>}
         />
 
@@ -40,7 +35,6 @@ export default function CarritoVacio() {
         </section>
       </div>
 
-      <ProductoDetalle producto={detalle} onCerrar={() => setDetalle(null)} />
     </main>
   )
 }

@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Carrusel from '../components/Carrusel.jsx'
 import Destacados from '../components/Destacados.jsx'
-import ProductoDetalle from '../components/ProductoDetalle.jsx'
 import CategoriasRapidas from '../components/CategoriasRapidas.jsx'
 import { useTitulo } from '../utils/useTitulo.js'
 
@@ -14,7 +12,6 @@ const BENEFICIOS = [
 ]
 
 export default function Inicio() {
-  const [detalle, setDetalle] = useState(null)
   useTitulo()
 
   return (
@@ -64,7 +61,6 @@ export default function Inicio() {
 
       <Destacados
         className="w-full px-4 min-[768px]:px-10"
-        onAbrir={setDetalle}
         verTodos={<Link className="shrink-0 text-primary font-semibold text-[0.75rem] hover:underline" to="/productos">Ver todos</Link>}
       />
 
@@ -93,7 +89,6 @@ export default function Inicio() {
         <img className="w-full" src="/images/marketing/marketing3.png" alt="6 a 18 cuotas sin interés y envío gratis a toda la Argentina. Ver productos" />
       </Link>
 
-      <ProductoDetalle producto={detalle} onCerrar={() => setDetalle(null)} />
     </main>
   )
 }

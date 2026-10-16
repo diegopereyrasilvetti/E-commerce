@@ -5,7 +5,7 @@ import { buscarProductos, idDe, rutaDe } from '../utils/productos.js'
 
 const MINIMO = 2 // letras que hay que escribir para que aparezcan sugerencias
 
-// Buscador del header: mientras se escribe sugiere productos y, al elegir uno, va a su categoría con el detalle abierto.
+// Buscador del header: mientras se escribe sugiere productos y, al elegir uno, abre la página de ese producto.
 // Funciona con el teclado (flechas, Enter y Esc) y avisa su estado a los lectores de pantalla (patrón "combobox").
 export default function BuscadorProductos() {
   const navegar = useNavigate()
