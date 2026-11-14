@@ -39,7 +39,7 @@ export default function Carrusel() {
         onBlur={() => setPausado(false)}
       >
         <button type="button" className={FLECHA + ' left-2'} aria-label="Imagen anterior" onClick={() => ir(actual - 1)}>&#10094;</button>
-        <div className="overflow-hidden">
+        <div className="overflow-hidden bg-secondary">
           <div
             className="flex [transition:transform_0.5s_ease] motion-reduce:[transition:none]!"
             style={{ transform: `translateX(-${actual * 100}%)` }}
@@ -52,7 +52,7 @@ export default function Carrusel() {
                 inert={i !== actual} // las imágenes fuera de vista no reciben foco con el teclado
                 aria-hidden={i !== actual}
               >
-                <img className="w-full" src={s.imagen} alt={s.alt} />
+                <img className="block w-full aspect-[1984/793] object-cover" src={s.imagen} alt={s.alt} />
               </Link>
             ))}
           </div>
