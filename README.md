@@ -12,14 +12,16 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 
 ## Qué se puede hacer
 
-- **Inicio:** carrusel de promociones que cambia solo cada 4 segundos, banner de la calculadora, productos destacados al azar que se renuevan cada 8 segundos y acceso por categoría.
+- **Inicio:** carrusel de promociones que cambia solo cada 4 segundos, franja de beneficios (envío, cuotas, compra segura), banner de la calculadora, productos destacados al azar que se renuevan cada 8 segundos y acceso por categoría sobre una banda blanca que separa las secciones.
 - **Productos:** las 10 categorías, cada una con su lista y orden por menor o mayor precio. Cada producto tiene su propia página (`/producto/:slug`): la foto en grande a la izquierda y, a la derecha, el precio, el descuento por transferencia con su precio final, las cuotas sin interés (6, 12 y 18), la garantía y el botón para agregar al carrito.
 - **Buscador:** en el header, sugiere productos mientras se escribe (sin importar tildes ni mayúsculas, por nombre o categoría) y al elegir uno abre la página de ese producto. El enlace se puede compartir y funciona con el teclado.
 - **Carrito:** agregar, cambiar cantidades, quitar y vaciar. Muestra subtotal, descuento por transferencia, total y cuotas sin interés (1, 6, 12 o 18). Se guarda en el navegador y sigue ahí al recargar.
 - **Calculadora de cuello de botella:** compara un procesador y una placa de video según la resolución, con un gráfico circular del porcentaje de compatibilidad.
 - **Cuentas de usuario (Supabase Auth):** registro con confirmación por email, inicio y cierre de sesión, recuperación de contraseña por correo y sesión que se mantiene al recargar. Los formularios tienen validación propia (email, contraseña de al menos 8 caracteres con letra y número, confirmación, términos) y mensajes de error por campo. `/carrito` y `/cuenta` solo se abren con sesión, y sin usuario "Agregar al carrito" lleva a iniciar sesión.
 - **Mi cuenta (PostgreSQL):** el usuario edita su perfil y administra sus direcciones de envío (alta, edición, baja y dirección principal), guardadas en la base de datos. Cada usuario solo puede ver y modificar sus propios datos gracias a las políticas RLS.
-- **Responsive y accesible:** revisado en 9 páginas y 9 anchos de pantalla (de 320 a 1024 px) sin desbordes ni solapamientos; el menú del celular tiene un área de toque de 44 px. Navegable con teclado y con respeto a `prefers-reduced-motion`.
+- **Navegación:** el link de la página actual queda marcado (subrayado en escritorio, resaltado en el menú del celular). El menú hamburguesa tiene fondo translúcido con desenfoque, opciones centradas con ícono, la hamburguesa se transforma en una X y se cierra al tocar fuera, con Esc o al cambiar de página.
+- **Detalles de interfaz:** al agregar un producto el botón muestra un tilde animado y el globito del carrito hace un saltito; mientras llegan los productos se ven tarjetas de carga (esqueletos) en lugar de un espacio vacío; la barra de scroll es fina y usa los colores del sitio.
+- **Responsive y accesible:** revisado en 9 páginas y 9 anchos de pantalla (de 320 a 1024 px) sin desbordes ni solapamientos; el menú del celular tiene un área de toque de 44 px. Navegable con teclado y con respeto a `prefers-reduced-motion` (las animaciones se desactivan).
 
 | Página de producto | Categoría |
 |---|---|
@@ -37,7 +39,7 @@ Tienda online de hardware de PC (procesadores, placas de video, memorias, almace
 - [Tailwind CSS 4](https://tailwindcss.com) con la paleta del sitio definida en `src/index.css`
 - [Supabase](https://supabase.com): Auth para las cuentas y PostgreSQL para perfiles, direcciones y catálogo
 - [Node.js](https://nodejs.org) + [Express 5](https://expressjs.com) para la API REST, con [Zod](https://zod.dev) (validación), Helmet, CORS y límite de solicitudes (seguridad)
-- Font Awesome para los íconos
+- Font Awesome para los íconos y [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) (Google Fonts) como tipografía
 
 ## Cómo correrlo
 
@@ -133,7 +135,7 @@ El proyecto se publica en dos partes:
 - `CORS_ORIGINS`: las direcciones del sitio que pueden usar la API, separadas por coma (por ejemplo `https://ecommerce-chi-hazel.vercel.app`).
 - `PEDIDOS_HABILITADOS`: `false` mientras el sitio sea de demostración.
 
-El plan gratuito de Render duerme el servidor tras 15 minutos sin uso: la primera visita después de un rato puede tardar entre 30 y 60 segundos (el sitio muestra "Cargando productos…" mientras tanto).
+El plan gratuito de Render duerme el servidor tras 15 minutos sin uso: la primera visita después de un rato puede tardar entre 30 y 60 segundos (el sitio muestra tarjetas de carga mientras tanto).
 
 ## Estructura
 
@@ -143,13 +145,13 @@ public/images/          Imágenes de productos y promociones (se sirven en /imag
 src/                    Frontend (React)
   main.jsx              Punto de entrada: Router y proveedores (sesión, catálogo, carrito)
   App.jsx               Rutas
-  index.css             Tailwind, paleta de colores y cortes de pantalla
+  index.css             Tailwind, paleta de colores, animación `pop`, barra de scroll y cortes de pantalla
   auth.jsx              Sesión con Supabase: AuthProvider y hook useAuth
   catalogo.jsx          Catálogo traído de la API: CatalogoProvider y hook useCatalogo
   cart.jsx              Carrito: estado, hook useCart, botón, globito y página /carrito
   layouts/Layout.jsx    Header + página + footer
   pages/                Inicio, Productos, Producto, Calculadora, Login, Registro, RecuperarPassword, NuevaPassword, Cuenta, NoEncontrada
-  components/           Header, Footer, Carrusel, Destacados, ProductoCard, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos
+  components/           Header, Footer, Carrusel, Destacados, ProductoCard, CampoFormulario, RutaProtegida, MenuUsuario, CarritoVacio, CategoriasRapidas, FormularioDireccion, BuscadorProductos, EsqueletoTarjetas
   lib/                  supabase.js (cliente), api.js (cliente de la API), cuenta.js (perfil y direcciones)
   data/                 Categorías y datos de la calculadora
   utils/                Dinero, validaciones, búsqueda de productos, hook useFormulario, título de la pestaña

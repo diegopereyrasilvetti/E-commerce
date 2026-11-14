@@ -18,8 +18,20 @@ export default function Inicio() {
     <main className="flex-1">
       <Carrusel />
 
+      {/* Franja de beneficios, pegada al carrusel */}
+      <section className="w-full bg-white border-b border-[rgba(15,23,42,0.08)]" aria-label="Beneficios">
+        <ul className="grid grid-cols-[repeat(2,1fr)] gap-x-3 gap-y-2 w-full max-w-[1200px] mx-auto px-4 py-3 min-[768px]:grid-cols-[repeat(4,1fr)] min-[768px]:px-10">
+          {BENEFICIOS.map((b) => (
+            <li key={b.icono} className="flex items-center gap-2 text-[0.78rem] min-[768px]:text-[0.85rem] leading-[1.25]">
+              <i className={'fa-solid text-primary text-[1.1rem] ' + b.icono} aria-hidden="true"></i>
+              <span><strong>{b.negrita}</strong>{b.resto}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {/* Calculadora de cuello de botella: banner con un resultado de ejemplo */}
-      <section className="w-full mb-6" aria-label="Calculadora de cuello de botella">
+      <section className="w-full mt-8" aria-label="Calculadora de cuello de botella">
         <Link
           to="/calculadora"
           className="flex items-center gap-4 px-4 min-[768px]:px-10 py-4 bg-[linear-gradient(135deg,#011833,#0B2A5C)] text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:-outline-offset-3"
@@ -60,27 +72,19 @@ export default function Inicio() {
       </section>
 
       <Destacados
-        className="w-full px-4 min-[768px]:px-10"
+        className="w-full max-w-[1200px] mx-auto px-4 mt-10 min-[768px]:px-10"
         verTodos={<Link className="shrink-0 text-primary font-semibold text-[0.75rem] hover:underline" to="/productos">Ver todos</Link>}
       />
 
-      <section className="w-full max-w-[1200px] mx-auto px-4 mt-6 min-[768px]:px-10" aria-label="Beneficios">
-        <ul className="grid grid-cols-[repeat(2,1fr)] gap-2 min-[768px]:grid-cols-[repeat(4,1fr)]">
-          {BENEFICIOS.map((b) => (
-            <li key={b.icono} className="flex items-center gap-2 px-3 py-2 bg-white border border-[rgba(15,23,42,0.08)] rounded-[10px] text-[0.78rem] leading-[1.25] shadow-[0_2px_6px_rgba(15,23,42,0.06)] [transition:transform_0.2s,box-shadow_0.2s] motion-reduce:[transition:none]! hover:[transform:translateY(-2px)] hover:shadow-[0_6px_14px_rgba(15,23,42,0.12)]">
-              <i className={'fa-solid ' + b.icono} aria-hidden="true"></i>
-              <span><strong>{b.negrita}</strong>{b.resto}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="w-full max-w-[1200px] mx-auto px-4 min-[768px]:px-10" aria-labelledby="categorias-home-titulo">
-        <h2 id="categorias-home-titulo" className="mt-10 mb-4 pl-3 border-l-4 border-background text-[length:clamp(1.3rem,3vw,1.7rem)] text-secondary">
-          Comprá por categoría
-        </h2>
-        <CategoriasRapidas />
-      </section>
+      {/* Banda blanca a todo el ancho: separa las categorías del resto de la página */}
+      <div className="w-full mt-10 py-10 bg-white border-y border-[rgba(15,23,42,0.08)]">
+        <section className="w-full max-w-[1200px] mx-auto px-4 min-[768px]:px-10" aria-labelledby="categorias-home-titulo">
+          <h2 id="categorias-home-titulo" className="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(1.15rem,2.6vw,1.5rem)] font-bold text-secondary">
+            Comprá por categoría
+          </h2>
+          <CategoriasRapidas />
+        </section>
+      </div>
 
       <Link
         to="/productos"

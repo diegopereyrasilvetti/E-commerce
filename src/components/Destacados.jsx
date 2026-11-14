@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCatalogo } from '../catalogo.jsx'
 import { rutaDe } from '../utils/productos.js'
+import EsqueletoTarjetas from './EsqueletoTarjetas.jsx'
 
 const INTERVALO = 8000 // cambia cada 8 segundos
 
@@ -21,7 +22,7 @@ const sinAnimaciones = () => window.matchMedia('(prefers-reduced-motion: reduce)
 // "Productos destacados": tarjetas al azar que se renuevan solas.
 // `verTodos` es el enlace que va a la derecha del título; `titulo` y `className` ajustan el texto y el margen de la sección.
 export default function Destacados({ verTodos, titulo = 'Productos destacados', className = '' }) {
-  const { productos: catalogo } = useCatalogo()
+  const { productos: catalogo, cargando } = useCatalogo()
   const grilla = useRef(null)
   const [productos, setProductos] = useState([])
   const [visible, setVisible] = useState(true)
@@ -66,7 +67,17 @@ export default function Destacados({ verTodos, titulo = 'Productos destacados', 
     }
   }, [renovar, cantidad, catalogo])
 
-  if (!catalogo.length) return null
+  if (!catalogo.length) {
+    return cargando ? (
+      <section className={className} aria-label={titulo}>
+        <div className="mb-4 h-6 w-48 rounded-full bg-[#E2E8F0] animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+        <EsqueletoTarjetas
+          cantidad={4}
+          className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-2.5 min-[768px]:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] min-[768px]:gap-4"
+        />
+      </section>
+    ) : null
+  }
 
   // Se pausa mientras el mouse o el foco del teclado están sobre las tarjetas
   const pausar = () => { pausado.current = true }
@@ -75,7 +86,7 @@ export default function Destacados({ verTodos, titulo = 'Productos destacados', 
   return (
     <section className={className} aria-labelledby="destacados-titulo">
       <div className="flex items-baseline justify-between gap-3">
-        <h2 id="destacados-titulo" className="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(0.98rem,2.2vw,1.15rem)] text-secondary">
+        <h2 id="destacados-titulo" className="mt-0 mb-4 pl-3 border-l-4 border-background text-[length:clamp(1.15rem,2.6vw,1.5rem)] font-bold text-secondary">
           {titulo}
         </h2>
         {verTodos}

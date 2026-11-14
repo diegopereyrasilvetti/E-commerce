@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import Destacados from '../components/Destacados.jsx'
+import EsqueletoTarjetas from '../components/EsqueletoTarjetas.jsx'
 import ProductoCard from '../components/ProductoCard.jsx'
 import { CATEGORIAS } from '../data/categorias.js'
 import { useCatalogo } from '../catalogo.jsx'
@@ -121,7 +122,10 @@ export default function Productos() {
         <>
           <div className="min-w-0 min-[900px]:col-span-2">
             {cargando ? (
-              <p className="mt-6 rounded-2xl bg-white p-6 text-center text-[#475569]" role="status">Cargando productos…</p>
+              <EsqueletoTarjetas
+                cantidad={8}
+                className="mt-6 grid grid-cols-[repeat(2,minmax(0,1fr))] gap-2.5 min-[600px]:grid-cols-[repeat(auto-fill,minmax(240px,1fr))] min-[600px]:gap-5"
+              />
             ) : errorCatalogo ? (
               <div className="mt-6 rounded-2xl bg-white p-6 text-center" role="alert">
                 <p className="font-semibold text-error">{errorCatalogo}</p>
