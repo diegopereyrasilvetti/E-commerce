@@ -18,20 +18,8 @@ export default function Inicio() {
     <main className="flex-1">
       <Carrusel />
 
-      {/* Franja de beneficios, pegada al carrusel */}
-      <section className="w-full bg-white border-b border-[rgba(15,23,42,0.08)]" aria-label="Beneficios">
-        <ul className="grid grid-cols-[repeat(2,1fr)] gap-x-3 gap-y-2 w-full max-w-[1200px] mx-auto px-4 py-3 min-[768px]:grid-cols-[repeat(4,1fr)] min-[768px]:px-10">
-          {BENEFICIOS.map((b) => (
-            <li key={b.icono} className="flex items-center gap-2 text-[0.78rem] min-[768px]:text-[0.85rem] leading-[1.25]">
-              <i className={'fa-solid text-primary text-[1.1rem] ' + b.icono} aria-hidden="true"></i>
-              <span><strong>{b.negrita}</strong>{b.resto}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* Calculadora de cuello de botella: banner con un resultado de ejemplo */}
-      <section className="w-full mt-8" aria-label="Calculadora de cuello de botella">
+      <section className="w-full" aria-label="Calculadora de cuello de botella">
         <Link
           to="/calculadora"
           className="flex items-center gap-4 px-4 min-[768px]:px-10 py-4 bg-[linear-gradient(135deg,#011833,#0B2A5C)] text-white focus-visible:outline-3 focus-visible:outline-background focus-visible:-outline-offset-3"
@@ -69,6 +57,18 @@ export default function Inicio() {
             <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </span>
         </Link>
+      </section>
+
+      {/* Franja de beneficios, debajo del banner de la calculadora */}
+      <section className="w-full bg-white border-b border-[rgba(15,23,42,0.08)]" aria-label="Beneficios">
+        <ul className="grid grid-cols-[repeat(2,1fr)] gap-x-3 gap-y-2 w-full max-w-[1200px] mx-auto px-4 py-3 min-[768px]:grid-cols-[repeat(4,1fr)] min-[768px]:px-10">
+          {BENEFICIOS.map((b) => (
+            <li key={b.icono} className="flex items-center gap-2 text-[0.78rem] min-[768px]:text-[0.85rem] leading-[1.25]">
+              <i className={'fa-solid text-primary text-[1.1rem] ' + b.icono} aria-hidden="true"></i>
+              <span><strong>{b.negrita}</strong>{b.resto}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <Destacados
