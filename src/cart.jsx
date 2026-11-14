@@ -141,13 +141,20 @@ export function AddToCartButton({ producto, className = ESTILO_AGREGAR }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={alTocar}
-      className={className}
-    >
-      {agregado ? '¡Agregado!' : 'Agregar al carrito'}
-    </button>
+    <>
+      <button type="button" onClick={alTocar} className={className}>
+        {agregado ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <i className="fa-solid fa-check animate-pop motion-reduce:animate-none" aria-hidden="true"></i>
+            ¡Agregado!
+          </span>
+        ) : (
+          'Agregar al carrito'
+        )}
+      </button>
+      {/* Anuncio para lectores de pantalla (el botón cambia de texto, pero no siempre se lee solo) */}
+      <span role="status" className="sr-only">{agregado ? `${producto.nombre} agregado al carrito` : ''}</span>
+    </>
   )
 }
 
@@ -157,7 +164,8 @@ export function CartBadge() {
   if (cantidadTotal === 0) return null
   return (
     <span
-      className="absolute -right-2.5 -top-2 grid min-w-5 place-items-center rounded-full bg-primary px-1 text-[0.65rem] font-bold leading-5 text-white"
+      key={cantidadTotal} // al cambiar la cantidad se vuelve a montar y repite el saltito
+      className="animate-pop motion-reduce:animate-none absolute -right-2.5 -top-2 grid min-w-5 place-items-center rounded-full bg-primary px-1 text-[0.65rem] font-bold leading-5 text-white"
       aria-label={`${cantidadTotal} productos en el carrito`}
     >
       {cantidadTotal > 99 ? '99+' : cantidadTotal}
