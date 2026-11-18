@@ -44,9 +44,22 @@ export default function Header({ soloLogo = false }) {
     return () => document.removeEventListener('keydown', escape)
   }, [menuAbierto])
 
+  // Al bajar la página el header se vuelve un poco transparente (y desenfoca lo que pasa por detrás)
+  const [conScroll, setConScroll] = useState(false)
+  useEffect(() => {
+    const alScrollear = () => setConScroll(window.scrollY > 10)
+    alScrollear()
+    window.addEventListener('scroll', alScrollear, { passive: true })
+    return () => window.removeEventListener('scroll', alScrollear)
+  }, [])
+  // El desenfoque va en un pseudo-elemento: si estuviera en el header, el fondo oscuro del menú (position: fixed) se acomodaría a su tamaño
+  const claseHeader =
+    'sticky top-0 z-20 h-[70px] px-6 max-400:px-4 min-[768px]:px-10 shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)] [transition:background-color_0.3s] motion-reduce:[transition:none]! before:absolute before:inset-0 before:-z-10 ' +
+    (conScroll ? 'bg-[rgba(255,255,255,0.8)] before:backdrop-blur-md' : 'bg-white')
+
   if (soloLogo) {
     return (
-      <header className="sticky top-0 z-20 h-[70px] px-6 max-400:px-4 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
+      <header className={claseHeader}>
           <nav className="flex justify-center items-center h-full">
               <h1 className="text-[20px] font-bold">
                   <Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to="/">
@@ -63,7 +76,7 @@ export default function Header({ soloLogo = false }) {
   }
 
   return (
-      <header className="sticky top-0 z-20 h-[70px] px-6 max-400:px-4 min-[768px]:px-10 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.08)] shrink-0 border-b border-[rgba(120,150,255,0.12)]">
+      <header className={claseHeader}>
           <nav className="flex justify-between items-center h-full">
               <h1 className="text-[20px] font-bold">
                   <Link className="text-white text-[22px] max-400:text-[20px] min-[1100px]:text-[18px] min-[1100px]:text-secondary min-[1100px]:font-semibold min-[1100px]:[transition:color_0.2s,opacity_0.2s] whitespace-nowrap no-underline opacity-80 hover:opacity-100 motion-reduce:[transition:none]!" to="/">
