@@ -11,6 +11,14 @@ const BENEFICIOS = [
   { icono: 'fa-box', negrita: 'Productos', resto: ' originales' },
 ]
 
+// Imágenes del carrusel de abajo (no son enlaces)
+const JUEGOS = [
+  { imagen: '/images/juegos/gta6-portada.jpg', alt: 'Arte oficial de Grand Theft Auto VI: una pareja apoyada en un auto entre palmeras al atardecer' },
+  { imagen: '/images/juegos/gta6-personajes.webp', alt: 'Arte oficial de Grand Theft Auto VI: los protagonistas frente a un auto clásico en una calle con palmeras' },
+  { imagen: '/images/juegos/gta6-collage.jpg', alt: 'Collage de personajes y escenas de Grand Theft Auto VI con el logo del juego' },
+]
+const IMAGEN_JUEGOS = 'block w-full aspect-[16/9] min-[768px]:aspect-[21/9] object-cover'
+
 export default function Inicio() {
   useTitulo()
 
@@ -93,6 +101,10 @@ export default function Inicio() {
         <img className="w-full" src="/images/marketing/marketing3.png" alt="6 a 18 cuotas sin interés y envío gratis a toda la Argentina. Ver productos" />
       </Link>
 
+      {/* Carrusel de abajo: cambia solo cada 4 segundos */}
+      <div className="w-[calc(100%-32px)] max-w-[1200px] mb-10 mx-auto rounded-2xl overflow-hidden shadow-[0_4px_12px_rgba(15,23,42,0.25)] min-[768px]:w-[calc(100%-80px)]">
+        <Carrusel slides={JUEGOS} etiqueta="Juegos" id="juegos" claseImagen={IMAGEN_JUEGOS} />
+      </div>
     </main>
   )
 }
